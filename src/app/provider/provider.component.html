@@ -1,0 +1,188 @@
+<div id="wrapper">
+  <aside id="sidebar-wrapper">
+    <div class="sidebar-brand" *ngIf="metaData">
+      <!-- <i class="fa fa-user-secret fa-3x" aria-hidden="true"></i> -->
+      <img src="/assets/img/login/logo.png" height="60px">
+      <h2>Hello, {{fname|capitalize}}</h2>
+      <b>{{role}}</b>
+    </div>
+    <ul class="sidebar-nav">
+      <p class="qd">Quick Dashboard</p>
+      <li>
+        <a [routerLink]="['/dash']"><i class="fa fa-home"></i>Home</a>
+      </li>
+      <li>
+        <a (click)="ap()"><i class="fa fa-plus-circle"></i>Add Patient</a>
+      </li>
+      <li>
+        <a (click)="af()"><i class="fa fa-users"></i>Add Facility</a>
+      </li>
+      <li>
+        <a (click)="app()"><i class="fa fa-calendar-times-o"></i>Add Provider</a>
+      </li>
+      <li>
+        <a (click)="ai()"><i class="fa fa-university"></i>Add Insurance</a>
+      </li>
+      <li>
+        <a (click)="ae()"><i class="fa fa-medkit"></i>Expensive Medicines</a>
+      </li>
+      <li>
+        <a [routerLink]="['/reports']"><i class="fa fa-file-text-o"></i>Reports</a>
+      </li>
+      <li>
+        <a [routerLink]="['/register']"><i class="fa fa-users"></i>Users</a>
+      </li>
+    </ul>
+  </aside>
+
+  <div id="navbar-wrapper">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a href="#" class="navbar-brand" id="sidebar-toggle">
+            <!-- <i class="fa fa-bars" style="color: #87C442;"></i> -->
+            <img src="/assets/img/bar.png" class="img-fluid" style="margin-left: -27px;transform: scale(1.45);">
+          </a>
+        </div>
+        <div style="float: right; cursor: pointer;" (click)="logout()"><img src="/assets/img/dash/logout.png"
+            height="50px" class="logout"></div>
+      </div>
+    </nav>
+  </div>
+
+  <section id="content-wrapper" style=" padding-left: 0rem;  ">
+    <!-- header of the page   -->
+    <div class="row">
+      <div class="col-lg-12">
+        <img src="/assets/img/shared/providerlogo.png" class="img-fluid ptl">
+        <h2 class="content-title">Provider</h2>
+        <button type="button" class="btn btn-outline-custom btn-lg iambtn" data-toggle="modal" data-target="#myModalap"
+          (click)="func()">Add Provider</button>
+      </div>
+      <div class="box"></div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <!-- Search Bar -->
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search by name" style="border:2px solid #87C442;"
+            [(ngModel)]="searchString">
+          <div class="input-group-append">
+            <button class="btn btn-custom" type="submit" style="background-color: #87C442; color:white;">Go</button>
+          </div>
+        </div>
+        <!-- List of all Faculty -->
+        <div *ngIf="metaData">
+          <div class="row" *ngFor="let i of providers|pipe:searchString;let m=index">
+            <div class="col-md-1 counting">{{m+1}}</div>
+            <div class="col-md-11">
+              <div class="details">
+                <div class="row">
+                  <div class="col-md-3 name">{{i.name}}</div>
+                  <div class="col-md-3">{{i.role}}</div>
+                  <div class="col-md-3 edit"><i class="fa fa-pencil" aria-hidden="true" data-toggle="modal"
+                      data-target="#myModalap" (click)="assign(i,i._id)"></i></div>
+                      <div class="col-md-1" style="text-align: right;">
+                        <div *ngIf="i.ain == 'Active'; else kk">
+                          <span class="dot1"></span>
+                          <p>Active</p>
+                        </div>
+                        <ng-template #kk>
+                          <span class="dot2"></span>
+                          <p>Inactive</p>
+                        </ng-template>
+                      </div>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- <img src="/assets/img/login/logo.png" height="200px" style="position: fixed; right: 0; bottom: 0; padding: 50px;"> -->
+</div>
+
+<div class="modal fade" id="myModalap" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content mc1">
+
+      <p style="text-align: end; margin-top:20px; cursor: pointer;" data-dismiss="modal"><i class="fa fa-times"
+        aria-hidden="true"></i></p>
+      <div class="modal-body">
+        <form #form="ngForm" (submit)="form.form.valid && submit(form)">
+          <h4 class="ap">Add Provider</h4>
+          <div class="row mt-4">
+            <div class="col-md-12">
+              <div class="row" #row>
+                <input type="hidden" name="id" #id="ngModel" [(ngModel)]="s_id">
+                <div class="col-md-6 nj">
+                  <span>Name</span>
+                </div>
+                <div class="col-md-12 mt-1">
+                  <input type="text" class="form-control ip" required id="name" name="name" #name="ngModel"
+                    [(ngModel)]="providerData.name" [ngClass]="{ 'is-invalid': form.submitted && name.invalid }">
+                    <div *ngIf="name.invalid && form.submitted"    class="alert alert-danger mt-1">
+                      <div *ngIf="name.errors.required">Name is required.</div>
+                  </div>
+                </div>
+                <div class="col-md-8 nj mt-4">
+                  <span>Select Insurance from the list</span>
+                </div>
+                <div class="col-md-12">
+                  <div class="row mt-4">
+                    <div class="b col-md-4" *ngFor="let i of insurances;let ii=index" #batch>
+                      <input type="checkbox" name="insurance" required id="{{ii+1}}" value="{{i.name}}" class="chkbx" 
+                      >
+                      <label for="{{ii+1}}">&nbsp;{{i.name}}</label>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="col-md-12 nj mt-4">
+                  <span>Select Provider type from the list</span>
+                </div>
+                <div class="col-md-12">
+                  <div class="row mt-4">
+                    <div class="b col-md-6" *ngFor="let i of types;let mm:index">
+                      <input type="checkbox" name="providerType" required id="{{mm+100}}" value="{{i}}" class="chkbx2">
+                      <label for="{{mm+100}}">&nbsp;{{i}}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <!-- <div class="col-md-1"></div> -->
+            <div class="col-md-11" style="text-align: center; color: grey;">
+              <h4>Status</h4>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="custom-control custom-radio">
+                    <input id="ain1" type="radio" class="custom-control-input" value="Active" name="ain" #ain="ngModel"
+                      [(ngModel)]="providerData.ain">
+                    <label class="custom-control-label lor" for="ain1">Active</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="custom-control custom-radio">
+                    <input id="ain2" type="radio" class="custom-control-input" value="Inactive" name="ain" #ain="ngModel"
+                      [(ngModel)]="providerData.ain">
+                    <label class="custom-control-label lor" for="ain2">Inactive</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="das" style="text-align: center;">
+            <button type="submit" class="btn btn-custom bo" >Add</button>
+            <button type="button" class="btn btn-custom bo" data-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

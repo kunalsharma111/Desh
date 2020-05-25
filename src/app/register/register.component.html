@@ -1,0 +1,119 @@
+<div id="wrapper">
+    <aside id="sidebar-wrapper">
+        <div class="sidebar-brand" *ngIf="metaData">
+            <!-- <i class="fa fa-user-secret fa-3x" aria-hidden="true"></i> -->
+            <img src="/assets/img/login/logo.png" height="60px">
+            <h2>Hello, {{name|capitalize}}</h2>
+            <b>Admin</b>
+        </div>
+        <ul class="sidebar-nav">
+            <p class="qd">Quick Dashboard</p>
+            <li>
+              <a [routerLink]="['/dash']"><i class="fa fa-home"></i>Home</a>
+            </li>
+            <li>
+              <a (click)="ap()"><i class="fa fa-plus-circle"></i>Add Patient</a>
+            </li>
+            <li>
+              <a (click)="af()"><i class="fa fa-users"></i>Add Facility</a>
+            </li>
+            <li>
+              <a (click)="app()"><i class="fa fa-calendar-times-o"></i>Add Provider</a>
+            </li>
+            <li>
+              <a (click)="ai()"><i class="fa fa-university"></i>Add Insurance</a>
+            </li>
+            <li>
+              <a (click)="ae()"><i class="fa fa-medkit"></i>Expensive Medicines</a>
+            </li>
+            <li>
+              <a [routerLink]="['/reports']"><i class="fa fa-file-text-o"></i>Reports</a>
+            </li>
+            <li>
+              <a [routerLink]="['/register']"><i class="fa fa-users"></i>Users</a>
+            </li>
+          </ul>
+    </aside>
+
+    <div id="navbar-wrapper">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="#" class="navbar-brand" id="sidebar-toggle">
+                        <img src="/assets/img/bar.png" class="img-fluid"
+                            style="margin-left: -27px;transform: scale(1.45);">
+                    </a>
+                </div>
+                <div style="float: right; cursor: pointer;" (click)="logout()"><img src="/assets/img/dash/logout.png"
+                        height="50px" class="logout"></div>
+            </div>
+        </nav>
+    </div>
+
+    <section id="content-wrapper" style=" padding-left: 0rem;  ">
+        <!-- <div class="row">
+            <div class="col-lg-12">
+                <img src="/assets/img/shared/patientlogo.png" class="img-fluid ptl">
+                <h2 class="content-title">Reports</h2>
+            </div>
+        </div> -->
+
+        <div class="box"></div>
+        <section id="register">
+            <div class="container">
+                <div class="boxit">
+                    <h1 class="text-center">Register</h1>
+                    <hr>
+                    <form #form="ngForm" autocomplete="off" (submit)="submit(form)">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="fname" #fname="ngModel"
+                                [(ngModel)]="ctrl.adminData.fname" placeholder="Enter first name" required>
+                                <div *ngIf="fname.invalid && (fname.dirty || fname.touched)"    class="alert alert-danger mt-1">
+                                    <div *ngIf="fname.errors.required">First Name is required.</div>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="lname" #lname="ngModel"
+                                [(ngModel)]="ctrl.adminData.lname" placeholder="Enter last name" required>
+                                <div *ngIf="lname.invalid && (lname.dirty || lname.touched)"    class="alert alert-danger mt-1">
+                                    <div *ngIf="lname.errors.required">Last Name is required.</div>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" name="email" #email="ngModel"
+                                [(ngModel)]="ctrl.adminData.email" placeholder="Enter email" required>
+                                <div *ngIf="email.invalid && (email.dirty || email.touched)"    class="alert alert-danger mt-1">
+                                    <div *ngIf="email.errors.required">Email is required.</div>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="pwd" #pwd="ngModel"
+                                [(ngModel)]="ctrl.adminData.pwd" placeholder="Enter password" required>
+                                <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)"    class="alert alert-danger mt-1">
+                                    <div *ngIf="pwd.errors.required">Password is required.</div>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="mobile" #mobile="ngModel"
+                                [(ngModel)]="ctrl.adminData.mobile" placeholder="Enter mobile number" required>
+                                <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)"    class="alert alert-danger mt-1">
+                                    <div *ngIf="mobile.errors.required">Mobile No. is required.</div>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="sel1">User Role:</label>
+                            <select class="form-control" name="userrole" #ueserrole="ngModel"
+                            [(ngModel)]="ctrl.adminData.userrole">
+                                <option *ngFor="let role of roles" [value]="role">{{role}}</option>
+                            </select>
+                          </div>
+                        <input type="submit" value="Submit" class="btn btn-info btn-block" [disabled]="form.invalid">
+
+                        <!-- <p class="text-center">Already a member ? <a routerLink="/login"> Login </a></p> -->
+                    </form>
+                </div>
+            </div>
+        </section>
+    </section>
+    <!-- <img src="/assets/img/login/logo.png" height="200px" style="position: fixed; right: 0; bottom: 0; padding: 50px;"> -->
+</div>

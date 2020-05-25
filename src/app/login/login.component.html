@@ -1,0 +1,62 @@
+<div class="container-fluid" style=" padding-left: 0rem; padding-right: 0rem; overflow-x:hidden;" #page>
+  <div class="row" style="position: relative;z-index: 0;">
+    <div class="col-md-6">
+      <div class="box">
+        <img src="/assets/img/login/logo.png" class="img-fluid" />
+        <h3 style="text-align: center; color: white; margin-top: 10px;">Dr. Desh's App</h3>
+        <h5 style="text-align: center; color: white; margin-top: 10px;">Doctor Management System</h5>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-6" style="margin-top: 25vh;">
+          <h1 class="text-center head">Login</h1>
+          <form (submit)="submit(form)" #form="ngForm">
+            <input class="form-control ipq" type="text" placeholder="Email" name="email" id="name"
+             #email="ngModel" [(ngModel)]="user.email" required>
+            <input class="form-control ipq" type="password" placeholder="Password" name="pwd" id="name" #pwd="ngModel"
+            [(ngModel)]="user.pwd" required>
+            <div class="row mt-3 mb-5 si">
+              <div class="col-md-4"></div>
+              <div class="com-md-4" class="fp">Forget Password?</div>
+            </div>
+            <button type="submit" class="btn btn-custom btn-lg btn-block">
+              LOGIN
+            </button>
+            <div class="rg">
+            <i [routerLink]="['/register']">Dont have an account? Register</i>
+            </div>
+          </form>
+          <!-- <form (submit)="submit(form)" #form="ngForm">
+            <div class="form__group field">
+              <input type="input" class="form__field" placeholder="Name" name="email" id="name" #email="ngModel"
+                [(ngModel)]="user.email" required />
+              <label for="name" class="form__label">&nbsp; &nbsp;Email ID</label>
+            </div>
+            <div class="form__group field">
+              <input type="password" class="form__field" placeholder="Name" name="pwd" id="name" #pwd="ngModel"
+                [(ngModel)]="user.pwd" required />
+              <label for="name" class="form__label">&nbsp; &nbsp;Password</label>
+            </div>
+            <div class="row mt-5 mb-5 si">
+              <div class="col-md-6">
+                <input type="checkbox" id="fruit1" name="fruit-1" value="Apple" />
+                <label for="fruit1">&nbsp;Keep me signed in</label>
+              </div>
+              <div class="com-md-6" class="fp">Forget Password?</div>
+            </div>
+            <button type="submit" class="btn btn-custom btn-lg btn-block">
+              LOGIN
+            </button>
+          </form> -->
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="word" #ctr>
+  Loading ....
+</div>

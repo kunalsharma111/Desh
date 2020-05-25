@@ -1,0 +1,1732 @@
+<!-- Template Driven Form -->
+<div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content mc2">
+        <p style="text-align: end; margin-top:20px; cursor: pointer;" data-dismiss="modal"><i class="fa fa-times"
+            aria-hidden="true"></i></p>
+        <div class="modal-body">
+          <h4 class="ap" *ngIf="meta">Patient Profile : {{naam}}</h4>
+          <form #userForm="ngForm" (submit)="submit2(userForm)">
+            <input type="hidden" name="id" #id="ngModel" [(ngModel)]="s_id">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <label class="col-md-5 qw" for="iop">Patient Service Type</label>
+              <div class="col-md-6">
+              </div>
+              <div class="col-md-1"></div>
+              <div class="col-md-11">
+                <div class="form-group">
+                  <div class="container-fluid">
+                    <div class="row" style="text-align: left;">
+                      <div class="col-md-4" *ngFor="let iii of services;let mm:index">
+                        <input type="checkbox" class="chkbx3" id="{{mm+100}}" value="{{iii}}"
+                          (change)="ep(iii,$event.target.checked)">
+                        <label for="{{mm+100}}" style="font-weight: 500;"><br>{{iii}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-11" style="color: black;">
+                  <h6 style="text-align: left;font-weight: 600;">Patient Condition</h6>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="custom-control custom-radio">
+                        <input id="pc1" type="radio" class="custom-control-input" value="normal" name="patientcondition"
+                          #patientcondition="ngModel" [(ngModel)]="patientData.patientcondition">
+                        <label class="custom-control-label lor" for="pc1">Normal</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="custom-control custom-radio">
+                        <input id="pc2" type="radio" class="custom-control-input" value="urgent" name="patientcondition"
+                          #patientcondition="ngModel" [(ngModel)]="patientData.patientcondition">
+                        <label class="custom-control-label lor" for="pc2">Urgent</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="custom-control custom-radio">
+                        <input id="pc3" type="radio" class="custom-control-input" value="veryurgent"
+                          name="patientcondition" #patientcondition="ngModel" [(ngModel)]="patientData.patientcondition">
+                        <label class="custom-control-label lor" for="pc3">Very Urgent</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="pii">Primary Insurance</label>
+                <div class="col-md-6">
+                  <select class="form-control aq" id="pii" name="pinsurance" #pinsurance="ngModel"
+                    [(ngModel)]="patientData.pinsurance" (ngModelChange)='one($event)'>
+                    <option *ngFor="let spii of insurances" [value]="spii.name">{{spii.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <!-- Paients Secondary Insurance -->
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="si">Secondary Insurance</label>
+                <div class="col-md-6">
+                  <select class="form-control aq" id="si" name="sinsurance" #sinsurance="ngModel"
+                    [(ngModel)]="patientData.sinsurance">
+                    <option *ngFor="let sii of insurances" [value]="sii.name">{{sii.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <!-- Facility Location -->
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="fl">Facility Location</label>
+                <div class="col-md-6">
+                  <select class="form-control aq" id="fl" name="facility" #facility="ngModel"
+                    [(ngModel)]="patientData.facility">
+                    <option *ngFor="let fll of facilities" [value]="fll.name">{{fll.name}},{{fll.address}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <!-- Room Number -->
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="rn">Room Number</label>
+                <div class="col-md-6">
+                  <input type="text" class="form-control ii" id="rn" placeholder="Enter Room Number" name="room"
+                    #room="ngModel" [(ngModel)]="patientData.room">
+                </div>
+              </div>
+            </div>
+            <hr>
+            <!-- Is On Expensive Medicine -->
+            <div class="form-group" *ngIf="showexpensivemeds">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="iop">Is On Expensive Medicine</label>
+                <div class="col-md-6">
+                  <div class="row">
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="custom-control custom-radio">
+                        <input id="ep1" type="radio" class="custom-control-input" value="yes" name="medication"
+                          #medication="ngModel" [(ngModel)]="patientData.medication" required>
+                        <label class="custom-control-label" for="ep1">Yes</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="custom-control custom-radio">
+                        <input id="ep2" type="radio" class="custom-control-input" value="no" name="medication"
+                          #medication="ngModel" [(ngModel)]="patientData.medication">
+                        <label class="custom-control-label" for="ep2">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+               
+              </div>
+              <div class="form-group" *ngIf="patientData.medication=='yes'"> 
+                <hr>
+                <div class="container-fluid">
+                  <div class="row" *ngFor="let iii of meds;let i=index" style="text-align: left;">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3">
+                      <input type="checkbox" value="{{iii.name}}" id="{{i+1}}" class="chkbx">
+                      <label for="{{i+1}}">&nbsp;{{iii.name}}</label>
+                    </div>
+                    <div class="col-md-4">
+                      <select name="medname" id="medname" class="medstatus ii"
+                        style="width: 100%;height: 90%;background: white;" [(ngModel)]="maa[i]">
+                        <option value="prior auth action not taken">prior auth action not taken</option>
+                        <option value="Faxed">Faxed</option>
+                        <option value="Approved">Approved</option>
+                      </select>
+                    </div>
+                    <!-- <div class="col-md-5"></div> -->
+                    <div class="col-md-4">
+                      <input type="date" name="meddate" id="meddate" class="meddate ii" style="height: 90%;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+            <hr>
+            
+            </div>
+            <!-- Generic Test Performed -->
+            <!-- <hr> -->
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="generictest">Generic Testing Performed</label>
+                <div class="col-md-6">
+                  <div class="row">
+                    <!-- yes -->
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="custom-control custom-radio">
+                        <input id="gt1" type="radio" class="custom-control-input" value="yes" name="generictest"
+                          #generictest="ngModel" [(ngModel)]="patientData.generictest">
+                        <label class="custom-control-label" for="gt1">Yes</label>
+                      </div>
+                    </div>
+                    <!-- no -->
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="custom-control custom-radio">
+                        <input id="gt2" type="radio" class="custom-control-input" value="no" name="generictest"
+                          #generictest="ngModel" [(ngModel)]="patientData.generictest">
+                        <label class="custom-control-label" for="gt2">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- show hide on yes no of radio button -->
+  
+            <div class="row mb-3" style="text-align: left;" id="otherAnswer1" name="otherAnswer1"
+              *ngIf="patientData.generictest=='yes'">
+  
+              <hr>
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                <div class="custom-control custom-radio">
+                  <input id="gtp1" type="radio" class="custom-control-input" value="ordered" name="genericresult"
+                    #genericresult="ngModel" [(ngModel)]="patientData.genericresult">
+                  <label class="custom-control-label lor" for="gtp1">Ordered</label>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="custom-control custom-radio">
+                  <input id="gtp2" type="radio" class="custom-control-input" value="submitted" name="genericresult"
+                    #genericresult="ngModel" [(ngModel)]="patientData.genericresult">
+                  <label class="custom-control-label lor" for="gtp2">Submitted</label>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                <div class="custom-control custom-radio">
+                  <input id="gtp3" type="radio" class="custom-control-input" value="resultObtained" name="genericresult"
+                    #genericresult="ngModel" [(ngModel)]="patientData.genericresult">
+                  <label class="custom-control-label lor" for="gtp3">Results Obtained</label>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="custom-control custom-radio">
+                  <input id="gtp4" type="radio" class="custom-control-input" value="resultUploaded" name="genericresult"
+                    #genericresult="ngModel" [(ngModel)]="patientData.genericresult">
+                  <label class="custom-control-label lor" for="gtp4">Results Uploaded</label>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <!--Primary Doctor's Order Uploaded? -->
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="pdo">Primary Doctor's Order Uploaded?</label>
+                <div class="col-md-6">
+                  <div class="row">
+                    <!-- yes -->
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="custom-control custom-radio">
+                        <input id="pd1" type="radio" class="custom-control-input" value="yes" name="docterupload"
+                          #docterupload="ngModel" [(ngModel)]="patientData.docterupload">
+                        <label class="custom-control-label" for="pd1">Yes</label>
+                      </div>
+                    </div>
+                    <!-- no -->
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="custom-control custom-radio">
+                        <input id="pd2" type="radio" class="custom-control-input" value="no" name="docterupload"
+                          #docterupload="ngModel" [(ngModel)]="patientData.docterupload">
+                        <label class="custom-control-label" for="pd2">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <!--Demographic Sheet Uploaded? -->
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="dsu">Demographic Sheet Uploaded?</label>
+                <div class="col-md-6">
+                  <div class="row">
+                    <!-- yes -->
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="custom-control custom-radio">
+                        <input id="dsu1" type="radio" class="custom-control-input" value="yes"
+                          name="demographicsheetuploaded" #demographicsheetuploaded="ngModel"
+                          [(ngModel)]="patientData.demographicsheetuploaded">
+                        <label class="custom-control-label" for="dsu1">Yes</label>
+                      </div>
+                    </div>
+                    <!-- no -->
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="custom-control custom-radio">
+                        <input id="dsu2" type="radio" class="custom-control-input" value="no"
+                          name="demographicsheetuploaded" #demographicsheetuploaded="ngModel"
+                          [(ngModel)]="patientData.demographicsheetuploaded">
+                        <label class="custom-control-label" for="dsu2">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <!--Capacity Assessment Performed? -->
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="cap">Capacity Assessment Performed?</label>
+                <div class="col-md-6">
+                  <div class="row">
+                    <!-- yes -->
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="custom-control custom-radio">
+                        <input id="cap1" type="radio" class="custom-control-input" value="yes" name="capacityassesment"
+                          #capacityassesment="ngModel" [(ngModel)]="patientData.capacityassesment">
+                        <label class="custom-control-label" for="cap1">Yes</label>
+                      </div>
+                    </div>
+                    <!-- no -->
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="custom-control custom-radio">
+                        <input id="cap2" type="radio" class="custom-control-input" value="no" name="capacityassesment"
+                          #capacityassesment="ngModel" [(ngModel)]="patientData.capacityassesment">
+                        <label class="custom-control-label" for="cap2">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" *ngIf="patientData.capacityassesment=='yes'">
+              <hr>
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="cap">Do They Have Capacity?</label>
+                <div class="col-md-6">
+                  <div class="row">
+                    <!-- yes -->
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="custom-control custom-radio">
+                        <input id="dc1" type="radio" class="custom-control-input" value="yes" name="capacity"
+                          #capacity="ngModel" [(ngModel)]="patientData.capacity">
+                        <label class="custom-control-label" for="dc1">Yes</label>
+                      </div>
+                    </div>
+                    <!-- no -->
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="custom-control custom-radio">
+                        <input id="dc2" type="radio" class="custom-control-input" value="no" name="capacity"
+                          #capacity="ngModel" [(ngModel)]="patientData.capacity">
+                        <label class="custom-control-label" for="dc2">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="bhi">Patient signed up for BHI program?</label>
+                <div class="col-md-6">
+                  <div class="row">
+                    <!-- yes -->
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="custom-control custom-radio">
+                        <input id="bh1" type="radio" class="custom-control-input" value="yes" name="bhi" #bhi="ngModel"
+                          [(ngModel)]="patientData.bhi">
+                        <label class="custom-control-label" for="bh1">Yes</label>
+                      </div>
+                    </div>
+                    <!-- no -->
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="custom-control custom-radio">
+                        <input id="bh2" type="radio" class="custom-control-input" value="no" name="bhi" #bhi="ngModel"
+                          [(ngModel)]="patientData.bhi">
+                        <label class="custom-control-label" for="bh2">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="bhi">Patient signed up for CCM program?</label>
+                <div class="col-md-6">
+                  <div class="row">
+                    <!-- yes -->
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="custom-control custom-radio">
+                        <input id="ccm1" type="radio" class="custom-control-input" value="yes" name="ccm" #ccm="ngModel"
+                          [(ngModel)]="patientData.ccm">
+                        <label class="custom-control-label" for="ccm1">Yes</label>
+                      </div>
+                    </div>
+                    <!-- no -->
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="custom-control custom-radio">
+                        <input id="ccm2" type="radio" class="custom-control-input" value="no" name="ccm" #ccm="ngModel"
+                          [(ngModel)]="patientData.ccm">
+                        <label class="custom-control-label" for="ccm2">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            
+            <!-- <div class="row mt-4"> 
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Patient signed up for CCM program? </div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-5" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="ccm1" type="radio" value="yes" name="ccm" #ccm="ngModel" [(ngModel)]="patientData.ccm">
+                      <label class="custom-radio" for="ccm1"></label>
+                      <span class="label-text">YES</span>
+                    </div>
+                  </div>
+                  <div class="col-md-5" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="ccm2" type="radio" value="no" name="ccm" #ccm="ngModel" [(ngModel)]="patientData.ccm">
+                      <label class="custom-radio" for="ccm2"></label>
+                      <span class="label-text">NO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <!-- Is eligible for scales -->
+            <div class="form-group" *ngIf="showscale">
+              <hr>
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="iefs">Is Eligible For Scales ?</label>
+                <div class="col-md-6">
+                  <div class="row">
+                    <!-- yes -->
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="custom-control custom-radio">
+                        <input id="iefs1" type="radio" class="custom-control-input" value="yes" name="scaleeligible"
+                          #scaleeligible="ngModel" [(ngModel)]="patientData.scaleeligible">
+                        <label class="custom-control-label" for="iefs1">Yes</label>
+                      </div>
+                    </div>
+                    <!-- no -->
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="custom-control custom-radio">
+                        <input id="iefs2" type="radio" class="custom-control-input" value="no" name="scaleeligible"
+                          #scaleeligible="ngModel" [(ngModel)]="patientData.scaleeligible">
+                        <label class="custom-control-label" for="iefs2">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+            </div>
+            <!-- What Scales are done -->
+            <div class="form-group" *ngIf="patientData.scaleeligible=='yes' && showscale">
+              <hr>
+              <div class="row" style="text-align: left;">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="wsd">What Scales are done ?</label>
+                <div class="col-md-6">
+                  <span class="badge" style="background: #87C442;font-size: 1rem;margin-top: 10px;width: 100%;">Scale
+                    Score: {{scale_score_text}}</span>
+                </div>
+                <div class="row">
+  
+                  <div class="col-md-1"></div>
+                  <div class="col-md-11">
+                    <div class="row mt-4">
+                      <div class="b col-md-3" *ngFor="let i of scales;let im:index" style="float: left;">
+                        <input type="checkbox" name="scale" id="{{im+200}}" value="{{i}}" class="chkbx2"
+                          (change)="openModalWithClass(template,i,$event)">
+                        <label [tooltip]="scale_date_text|date " (mouseover)="fill(i)" placement="top"
+                          for="{{im+200}}">&nbsp;{{i}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Is Eligible for Psychotherapy -->
+            <div class="form-group" *ngIf="showpsychology">
+              <hr>
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="iefp">Is Eligible for Psychotherapy?</label>
+                <div class="col-md-6">
+                  <div class="row">
+                    <!-- yes -->
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="custom-control custom-radio">
+                        <input id="iefp1" type="radio" class="custom-control-input" value="yes" name="theligible"
+                          #theligible="ngModel" [(ngModel)]="patientData.theligible">
+                        <label class="custom-control-label" for="iefp1">Yes</label>
+                      </div>
+                    </div>
+                    <!-- no -->
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="custom-control custom-radio">
+                        <input id="iefp2" type="radio" class="custom-control-input" value="no" name="theligible"
+                          #theligible="ngModel" [(ngModel)]="patientData.theligible">
+                        <label class="custom-control-label" for="iefp2">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="patientData.theligible=='yes'">
+                <hr>
+                <div class="row mt-2">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-5 qw">
+                    When was the last date the psychotherapy performed?
+                  </div>
+                  <div class="col-md-6">
+                    <input type="date" name="psychotherapydate" id="psychotherapydate" #psychotherapydate="ngModel"
+                      [(ngModel)]="patientData.psychotherapydate" class="ii" style="width: 100%;">
+                  </div>
+                </div>
+                <hr>
+                <div class="row mt-2">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-5 qw">
+                    How frequently the Psychotherapy needs to be performed?
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" class="ii" name="frequentlypsychotherapy" #frequentlypsychotherapy="ngModel"
+                      [(ngModel)]="patientData.frequentlypsychotherapy" placeholder="No. of Days" style="width: 100%;">
+                  </div>
+                </div>
+              </div>
+              <hr>
+            </div>
+            <!-- Special Note -->
+  
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <label class="col-md-5 qw" for="sn">Special Note?</label>
+                <div class="col-md-6">
+                  <div class="row">
+                    <!-- yes -->
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="custom-control custom-radio">
+                        <input id="sn1" type="radio" class="custom-control-input" value="yes" name="sn" #sn="ngModel"
+                          [(ngModel)]="commentbox">
+                        <label class="custom-control-label" for="sn1">Yes</label>
+                      </div>
+                    </div>
+  
+                    <!-- no -->
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="custom-control custom-radio">
+                        <input id="sn2" type="radio" class="custom-control-input" value="no" name="sn" #sn="ngModel"
+                          [(ngModel)]="commentbox">
+                        <label class="custom-control-label" for="sn2">No</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row" *ngIf="commentbox=='yes'">
+              <hr>
+              <div class="col-md-12">
+                <textarea rows="4" cols="47" name="comment" form="usrform" style="border: 2px solid#87C442;"
+                  id="otherAnswer3" name="comment" #comment="ngModel" [(ngModel)]="patientData.comment">
+                  Enter text here...</textarea>
+              </div>
+            </div>
+            <div class="das" style="text-align: center;">
+              <button type="submit" class="btn btn-custom bo ml-5">Add</button>
+              <button type="button" class="btn btn-custom bo" data-dismiss="modal">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <!-- Add PAtient Modal -->
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content mc2" *ngIf="exists">
+        <p style="text-align: end; margin-top:20px; cursor: pointer;" data-dismiss="modal"><i class="fa fa-times"
+            aria-hidden="true"></i></p>
+        <div class="modal-body">
+          <form #r2form='ngForm' (submit)="submit3(r2form)">
+            <!-- <p (click)="clearthisform()"></p> -->
+  
+            <!-- <input type="hidden" name="newappointmentrecord" #newappointmentrecord="ngModel"
+              [(ngModel)]="r2pdata.newappointmentrecord"> -->
+            <h4 class="ap">Provider Roundup record for patient:{{p_name}}
+            </h4>
+            <hr>
+            <div class="row mt-4 mb-2">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Is this record for new appointment</div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-5" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="pnny1" type="radio" name="newappointmentrecord" #newappointmentrecord="ngModel"
+                        [(ngModel)]="r2pdata.newappointmentrecord" value="yes">
+                      <label class="custom-radio" for="pnny1"></label>
+                      <span class="label-text">YES</span>
+                    </div>
+                  </div>
+                  <div class="col-md-5" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="pnny2" type="radio" name="newappointmentrecord" #newappointmentrecord="ngModel"
+                        [(ngModel)]="r2pdata.newappointmentrecord" value="no">
+                      <label class="custom-radio" for="pnny2"></label>
+                      <span class="label-text">NO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row mt-4 mb-2">
+              <div class="col-md-1"></div>
+              <div class="col-md-11">
+                <select name="dates" class="dateselect" id="dates" *ngIf="r2pdata.newappointmentrecord=='no'"
+                  (change)="updateacdate($event)">
+                  <option disabled>select date for which you want to update patient record</option>
+                  <option *ngFor="let date of round2_patient_dates" [value]="date">{{date|date}}</option>
+                </select>
+              </div>
+            </div>
+            <hr>
+            <input type="hidden" name="id" #id="ngModel" [(ngModel)]="s_id">
+            <!-- {{s_id}} -->
+            <div class="row mt-4 mb-2">
+              <div class="col-md-1"></div>
+              <div class="col-md-11" style="color: black;">
+                <h6 style="text-align: left;font-weight: 600;">Patient Condition</h6>
+                <br>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="custom-control custom-radio">
+                      <input id="pc1" type="radio" class="custom-control-input" value="normal" name="patientcondition"
+                        #patientcondition="ngModel" [(ngModel)]="patientData.patientcondition">
+                      <label class="custom-control-label lor" for="pc1">Normal</label>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="custom-control custom-radio">
+                      <input id="pc2" type="radio" class="custom-control-input" value="urgent" name="patientcondition"
+                        #patientcondition="ngModel" [(ngModel)]="patientData.patientcondition">
+                      <label class="custom-control-label lor" for="pc2">Urgent</label>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="custom-control custom-radio">
+                      <input id="pc3" type="radio" class="custom-control-input" value="veryurgent" name="patientcondition"
+                        #patientcondition="ngModel" [(ngModel)]="patientData.patientcondition">
+                      <label class="custom-control-label lor" for="pc3">Very Urgent</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row mt-4">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Patient was new, evaluation was done</div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-5" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="pn1" type="radio" name="custom-radio-btnpn" value="yes" name="eval" #eval="ngModel"
+                        [(ngModel)]="r2pdata.eval">
+                      <label class="custom-radio" for="pn1"></label>
+                      <span class="label-text">YES</span>
+                    </div>
+                  </div>
+                  <div class="col-md-5" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="pn2" type="radio" name="custom-radio-btnpn" value="no" name="eval" #eval="ngModel"
+                        [(ngModel)]="r2pdata.eval">
+                      <label class="custom-radio" for="pn2"></label>
+                      <span class="label-text">NO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row mt-4">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Visitation Date</div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <input type="date" name="visit" id="visit" #visit="ngModel"
+                  style="border: 2px solid #87c442; border-radius: 10px;" [(ngModel)]="r2pdata.visit">
+              </div>
+            </div>
+            <hr>
+            <div class="row mt-4">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Provider Name</div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <select name="providername" id="providername" #providername="ngModel" [(ngModel)]="r2pdata.providername"
+                  style="border: 2px solid #87c442; border-radius: 10px;background: none;">
+                  <option *ngFor="let x of providers" [value]="x.name">{{x.name}}</option>
+                </select>
+              </div>
+            </div>
+            <hr>
+            <div class="row mt-4">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Attempted to see the patient but could not see </div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-5" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="at1" type="radio" name="custom-radio-btnat" value="yes" name="seedoc" #seedoc="ngModel"
+                        [(ngModel)]="r2pdata.seedoc">
+                      <label class="custom-radio" for="at1"></label>
+                      <span class="label-text">YES</span>
+                    </div>
+                  </div>
+                  <div class="col-md-5" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="at2" type="radio" name="custom-radio-btnat" value="no" name="seedoc" #seedoc="ngModel"
+                        [(ngModel)]="r2pdata.seedoc">
+                      <label class="custom-radio" for="at2"></label>
+                      <span class="label-text">NO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row mt-4 mb-2">
+              <div class="col-md-1"></div>
+              <div class="col-md-4 qw">Patient Status</div>
+              <div class="col-md-2" style="margin-left: -12px;"></div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-6" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="pss1" type="radio" value="yes" name="medmange" #medmange="ngModel"
+                        [(ngModel)]="r2pdata.medmange">
+                      <label class="custom-radio" for="pss1"></label>
+                      <span class="label-text" style="font-size: 0.8rem;">Active</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="pss2" type="radio" value="no" name="medmange" #medmange="ngModel"
+                        [(ngModel)]="r2pdata.medmange">
+                      <label class="custom-radio" for="pss2"></label>
+                      <span class="label-text" style="font-size: 0.8rem;">Inactive</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="r2pdata.medmange=='no'">
+                <div class="container">
+                  <div class="row" style="text-align: left;">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-11">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="custom-control custom-radio">
+                            <input id="gtpp1" type="radio" class="custom-control-input" value=">Being Stable" name="psa"
+                              #psa="ngModel" [(ngModel)]="r2pdata.psa">
+                            <label class="custom-control-label lor" for="gtpp1">Being Stable</label>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="custom-control custom-radio">
+                            <input id="gtpp2" type="radio" class="custom-control-input" value="Discharged from facility"
+                              name="psa" #psa="ngModel" [(ngModel)]="r2pdata.psa">
+                            <label class="custom-control-label lor" for="gtpp2">Discharged from facility</label>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="custom-control custom-radio">
+                            <input id="gtpp3" type="radio" class="custom-control-input"
+                              value="Not Eligible for medication management" name="psa" #psa="ngModel"
+                              [(ngModel)]="r2pdata.psa">
+                            <label class="custom-control-label lor" for="gtpp3">Not Eligible for medication
+                              management</label>
+                          </div>
+                        </div>
+                        <div class="col-md-4 mt-3">
+                          <div class="custom-control custom-radio">
+                            <input id="gtpp4" type="radio" class="custom-control-input"
+                              value="Not being on any psych meds" name="psa" #psa="ngModel" [(ngModel)]="r2pdata.psa">
+                            <label class="custom-control-label lor" for="gtpp4">Not being on any psych meds</label>
+                          </div>
+                        </div>
+                        <div class="col-md-4 mt-3">
+                          <div class="custom-control custom-radio">
+                            <input id="gtpp5" type="radio" class="custom-control-input"
+                              value="Patient or family refused our services" name="psa" #psa="ngModel"
+                              [(ngModel)]="r2pdata.psa">
+                            <label class="custom-control-label lor" for="gtpp5">Patient or family refused our
+                              services</label>
+                          </div>
+                        </div>
+                        <div class="col-md-4 mt-3">
+                          <div class="custom-control custom-radio">
+                            <input id="gtpp6" type="radio" class="custom-control-input"
+                              value="Other" name="psa" #psa="ngModel"
+                              [(ngModel)]="r2pdata.psa">
+                            <label class="custom-control-label lor" for="gtpp6">Other</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row mt-4">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Was Patient stable ?</div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-5" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="ps1" type="radio" value="yes" name="stable" #stable="ngModel"
+                        [(ngModel)]="r2pdata.stable">
+                      <label class="custom-radio" for="ps1"></label>
+                      <span class="label-text">YES</span>
+                    </div>
+                  </div>
+                  <div class="col-md-5" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="ps2" type="radio" value="no" name="stable" #stable="ngModel"
+                        [(ngModel)]="r2pdata.stable">
+                      <label class="custom-radio" for="ps2"></label>
+                      <span class="label-text">NO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- if patient was unstable -->
+            <div>
+              <div class="row mt-1" *ngIf="r2pdata.stable=='no'">
+                <div class="col-md-12" style="margin-top: 5px;">
+                  <p style="font-weight: 600;">Patient was unstable</p>
+                  <div class="row custom-radio-wrap">
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="form-group">
+                        <input id="nops1" type="radio" value="yes" name="nostable" #nostable="ngModel"
+                          [(ngModel)]="r2pdata.nostable">
+                        <label class="custom-radio" for="nops1"></label>
+                        <span class="label-text">No Change in Medicine</span>
+                      </div>
+                    </div>
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="form-group">
+                        <input id="nops2" type="radio" value="no" name="nostable" #nostable="ngModel"
+                          [(ngModel)]="r2pdata.nostable">
+                        <label class="custom-radio" for="nops2"></label>
+                        <span class="label-text">Changed Medicine</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-1" *ngIf="r2pdata.nostable=='yes' && r2pdata.stable=='no'">
+                <div class="col-md-12">
+                  <label class="df">Will Just Monitor </label>
+                  <input type="text" size="8" class="gdp1" name="unstable_text" #unstable_text="ngModel"
+                    [(ngModel)]="r2pdata.unstable_text">
+                </div>
+              </div>
+              <div class="row mt-1" *ngIf="r2pdata.nostable=='no'&& r2pdata.stable=='no'">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Started</div>
+                    <div class="col-md-6"><input type="text" class="gdp" name="started" #started="ngModel"
+                        [(ngModel)]="r2pdata.started"></div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Increased</div>
+                    <div class="col-md-6"><input type="text" class="gdp" name="increase" #increase="ngModel"
+                        [(ngModel)]="r2pdata.increase"></div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Decreased</div>
+                    <div class="col-md-6"><input type="text" class="gdp" name="decrease" #decrease="ngModel"
+                        [(ngModel)]="r2pdata.decrease"></div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Stopped</div>
+                    <div class="col-md-6"><input type="text" class="gdp" name="stopped" #stopped="ngModel"
+                        [(ngModel)]="r2pdata.stopped"></div>
+                  </div>
+                  <!-- new field -->
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Added</div>
+                    <div class="col-md-6"><input type="text" class="gdp" name="added" #added="ngModel"
+                        [(ngModel)]="r2pdata.added"></div>
+                  </div>
+                  <!-- new field -->
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Stop Date Of Added Medicine</div>
+                    <div class="col-md-6"><input type="date" class="gdp" name="addeddate" #addeddate="ngModel"
+                        [(ngModel)]="r2pdata.addeddate"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- if patient was stable -->
+            <div>
+              <!-- new field -->
+              <div class="row mt-1" *ngIf="r2pdata.stable=='yes'">
+                <div class="col-md-12" style="margin-top: 5px;">
+                  <p style="font-weight: 600;">Patient was stable</p>
+                  <div class="row custom-radio-wrap">
+                    <div class="col-md-6" style="text-align: right;">
+                      <div class="form-group">
+                        <input id="yesps1" type="radio" value="yes" name="yesstable" #yesstable="ngModel"
+                          [(ngModel)]="r2pdata.yesstable">
+                        <label class="custom-radio" for="yesps1"></label>
+                        <span class="label-text">GDR was considered but could not perform as patient would become
+                          unstable</span>
+                      </div>
+                    </div>
+                    <div class="col-md-6" style="text-align: left;">
+                      <div class="form-group">
+                        <input id="yesps2" type="radio" value="no" name="yesstable" #nostable="ngModel"
+                          [(ngModel)]="r2pdata.yesstable">
+                        <label class="custom-radio" for="yesps2"></label>
+                        <span class="label-text">Performed following GDR</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="r2pdata.yesstable=='no' && r2pdata.stable=='yes'">
+                <div class="row mt-2">
+                  <div class="col-md-2"></div>
+                  <div class="col-md-8">
+                    <div class="row mt-2">
+                      <div class="col-md-6 df">Decreased</div>
+                      <div class="col-md-6"><input type="text" class="gdp" name="decrease" #decrease="ngModel"
+                          [(ngModel)]="r2pdata.decrease"></div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-6 df">Stopped</div>
+                      <div class="col-md-6"><input type="text" class="gdp" name="increase" #increase="ngModel"
+                          [(ngModel)]="r2pdata.increase"></div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-6 df">Meds continued but added stop date</div>
+                      <div class="col-md-6"><input type="date" class="gdp" name="medstopdate" #medstopdate="ngModel"
+                          [(ngModel)]="r2pdata.medstopdate"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <!-- <div class="row mt-4">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Patient was stable; GDR was considered but could not perform as patient would
+                become
+                unstable</div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-5" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="gd1" type="radio" value="yes" name="gdrstable" #gdrstable="ngModel"
+                        [(ngModel)]="r2pdata.gdrstable">
+                      <label class="custom-radio" for="gd1"></label>
+                      <span class="label-text">YES</span>
+                    </div>
+                  </div>
+                  <div class="col-md-5" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="gd2" type="radio" value="no" name="gdrstable" #gdrstable="ngModel"
+                        [(ngModel)]="r2pdata.gdrstable">
+                      <label class="custom-radio" for="gd2"></label>
+                      <span class="label-text">NO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" *ngIf="r2pdata.gdrstable=='yes'">
+              <div class="row mt-2">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Decreased</div>
+                    <div class="col-md-6"><input type="text" class="gdp" name="decrease" #decrease="ngModel"
+                        [(ngModel)]="r2pdata.decrease"></div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Stopped</div>
+                    <div class="col-md-6"><input type="text" class="gdp" name="increase" #increase="ngModel"
+                        [(ngModel)]="r2pdata.increase"></div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Meds continued but added stop date</div>
+                    <div class="col-md-6"><input type="date" class="gdp" name="medstopdate" #medstopdate="ngModel"
+                        [(ngModel)]="r2pdata.medstopdate"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" *ngIf="r2pdata.gdrstable=='no'">
+              <div class="row mt-2">
+                <div class="col-md-12">
+                  <label class="df">Patient was unstable</label>
+                  <input type="text" size="8" class="gdp1" name="unstable_text" #unstable_text="ngModel"
+                    [(ngModel)]="r2pdata.unstable_text">
+                  <label class="df"> ,will just monitor</label>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Started</div>
+                    <div class="col-md-6"><input type="text" class="gdp" name="started" #started="ngModel"
+                        [(ngModel)]="r2pdata.started"></div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Increased</div>
+                    <div class="col-md-6"><input type="text" class="gdp" name="increase" #increase="ngModel"
+                        [(ngModel)]="r2pdata.increase"></div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Decreased</div>
+                    <div class="col-md-6"><input type="text" class="gdp" name="decrease" #decrease="ngModel"
+                        [(ngModel)]="r2pdata.decrease"></div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-6 df">Stopped</div>
+                    <div class="col-md-6"><input type="text" class="gdp" name="stopped" #stopped="ngModel"
+                        [(ngModel)]="r2pdata.stopped"></div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <div class="row mt-4" *ngIf="showpsychology">
+              <!-- {{showpsychology}} -->
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Consulted psychotherapy </div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-5" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="cp1" type="radio" value="yes" name="psythreapy" #psythreapy="ngModel"
+                        [(ngModel)]="r2pdata.psythreapy">
+                      <label class="custom-radio" for="cp1"></label>
+                      <span class="label-text">YES</span>
+                    </div>
+                  </div>
+                  <div class="col-md-5" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="cp2" type="radio" value="no" name="psythreapy" #psythreapy="ngModel"
+                        [(ngModel)]="r2pdata.psythreapy">
+                      <label class="custom-radio" for="cp2"></label>
+                      <span class="label-text">NO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row" *ngIf="r2pdata.psythreapy=='yes'">
+  
+              <div class="col-md-1"></div>
+              <div class="col-md-10" id="otherAnswercpp">
+                <!-- <input type="text" class="form-control ii" style="display: none;" id="otherAnswercpp"
+                 placeholder="Follow Up in" name="room" #room="ngModel" [(ngModel)]="r2pdata.room"> -->
+                <label class="df">Follow up in </label>
+                <input type="text" size="4" class="gdp1" name="followup" #followup="ngModel"
+                  [(ngModel)]="r2pdata.followup">
+                <label class="df"> Days</label>
+              </div>
+            </div>
+            <hr>
+            <div class="row mt-4" *ngIf="showpsychology">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Dropped from psychotherapy Due to: </div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <input type="text" class="form-control ii" id="name" name="droped" #droped="ngModel"
+                  [(ngModel)]="r2pdata.droped">
+              </div>
+            </div>
+            <hr>
+            <div class="row mt-4">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Ordered any Labs today? </div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-5" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="lt1" type="radio" value="yes" name="labs" #labs="ngModel" [(ngModel)]="r2pdata.labs">
+                      <label class="custom-radio" for="lt1"></label>
+                      <span class="label-text">YES</span>
+                    </div>
+                  </div>
+                  <div class="col-md-5" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="lt2" type="radio" value="no" name="labs" #labs="ngModel" [(ngModel)]="r2pdata.labs">
+                      <label class="custom-radio" for="lt2"></label>
+                      <span class="label-text">NO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row" *ngIf="r2pdata.labs=='yes'">
+              <div class="col-md-1"></div>
+              <div class="col-md-10" id="otherAnswerltt">
+                <!-- <input type="text" class="form-control ii" style="display: none;" id="otherAnswerltt"
+                 placeholder="Enter Labs" name="labname" #labname="ngModel" [(ngModel)]="r2pdata.labname"> -->
+                <label class="df">Type in All Labs </label>
+                <input type="text" size="4" class="gdp1" name="labname" #labname="ngModel" [(ngModel)]="r2pdata.labname">
+              </div>
+            </div>
+            <hr>
+            <!-- <div class="row mt-4">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Urgent phone call was received; patient should be seen in next visit. </div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-5" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="up1" type="radio" value="yes" name="urgentcall" #urgentcall="ngModel"
+                        [(ngModel)]="r2pdata.urgentcall">
+                      <label class="custom-radio" for="up1"></label>
+                      <span class="label-text">YES</span>
+                    </div>
+                  </div>
+                  <div class="col-md-5" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="up2" type="radio" value="no" name="urgentcall" #urgentcall="ngModel"
+                        [(ngModel)]="r2pdata.urgentcall">
+                      <label class="custom-radio" for="up2"></label>
+                      <span class="label-text">NO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <!-- <div class="row mt-4">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Patient signed up for BHI program? </div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-5" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="bh1" type="radio" value="yes" name="bhi" #bhi="ngModel" [(ngModel)]="r2pdata.bhi">
+                      <label class="custom-radio" for="bh1"></label>
+                      <span class="label-text">YES</span>
+                    </div>
+                  </div>
+                  <div class="col-md-5" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="bh2" type="radio" value="no" name="bhi" #bhi="ngModel" [(ngModel)]="r2pdata.bhi">
+                      <label class="custom-radio" for="bh2"></label>
+                      <span class="label-text">NO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Patient signed up for CCM program? </div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-5" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="ccm1" type="radio" value="yes" name="ccm" #ccm="ngModel" [(ngModel)]="r2pdata.ccm">
+                      <label class="custom-radio" for="ccm1"></label>
+                      <span class="label-text">YES</span>
+                    </div>
+                  </div>
+                  <div class="col-md-5" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="ccm2" type="radio" value="no" name="ccm" #ccm="ngModel" [(ngModel)]="r2pdata.ccm">
+                      <label class="custom-radio" for="ccm2"></label>
+                      <span class="label-text">NO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <!-- <div class="row mt-4">
+              <div class="col-md-1"></div>
+              <div class="col-md-6 qw">Patient signed up for home outreach program? </div>
+              <div class="col-md-5" style="margin-top: 5px;">
+                <div class="row custom-radio-wrap">
+                  <div class="col-md-5" style="text-align: right;">
+                    <div class="form-group">
+                      <input id="sm1" type="radio" name="custom-radio-btnsm" value="yes" name="outreach"
+                        #outreach="ngModel" [(ngModel)]="r2pdata.outreach">
+                      <label class="custom-radio" for="sm1"></label>
+                      <span class="label-text">YES</span>
+                    </div>
+                  </div>
+                  <div class="col-md-5" style="text-align: left;">
+                    <div class="form-group">
+                      <input id="sm2" type="radio" name="custom-radio-btnsm" value="no" name="outreach"
+                        #outreach="ngModel" [(ngModel)]="r2pdata.outreach">
+                      <label class="custom-radio" for="sm2"></label>
+                      <span class="label-text">NO</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <div class="das" style="text-align: center;">
+              <button type="submit" class="btn btn-custom bo">Add</button>
+              <button type="button" class="btn btn-custom bo" data-dismiss="modal">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  this.service.getPatientData().subscribe(res => {
+    this.patients = res;
+    if (this.patients.length > 0) {
+      this.exists = true;
+    }
+    console.log(this.patients);
+  })
+  this.service.getR2Data().subscribe(res => {
+    this.r2patients = res;
+    console.log(this.r2patients)
+  }, err => {
+    if (err instanceof HttpErrorResponse) {
+      console.log('failure');
+    }
+  })
+  this.service.getProvider().subscribe(res => {
+    // console.log(res);
+    this.providers = res;
+  })
+  this.service.getFacility().subscribe(res => {
+    // console.log(res);
+    this.facilities = res;
+  })
+  this.service.getInsurance().subscribe(res => {
+    // console.log(res);
+    this.insurances = res;
+  })
+  this.service.getMed().subscribe(res => {
+    // console.log(res);
+    this.meds = res;
+  })
+
+  
+
+onItemChange(value) {
+    console.log(" Value is : ", value);
+  }
+
+
+  <!-- scale -->
+<ng-template #template style="overflow-y: auto;">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">
+        {{this.data.name}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form #form="ngForm" (submit)="submit_scale_form(form)">
+        <div class="form-group">
+          <label>Date of Test</label>
+          <input type="date" style="width: 100%;" class="form-control" name="scale_date" #scale_date="ngModel"
+            [(ngModel)]="obj.scale_date">
+        </div>
+        <input type="hidden" name="scale_name" #scale_name="ngModel" [(ngModel)]="this.data.name">
+        <div class="form-group">
+          <label>Test Score</label>
+          <input type="number" style="width: 100%;" min="0" max="50" class="form-control" name="scale_score"
+            #scale_score="ngModel" [(ngModel)]="obj.scale_score">
+        </div>
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="row col-md-3">
+            <input type="submit" value="submit" class="btn btn-success" style="width: 90%;">
+          </div>
+          <div class="row col-md-3">
+            <input type="button" class="btn btn-warning" style="width: 90%;" value="cancel" (click)="closemodal()">
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  
+  assign(m, id, i) {
+    this.resetForm()
+    this.maa = []
+    this.naam = i.name;
+    this.scale_form_result = i.scale_info;
+    this.meta = true;
+    this.selected = m;
+    let data = i.medicene;
+    let sata = i.scale_info;
+    let kata = i.patient_services;
+    console.log(sata)
+    this.s_id = id;
+    this.patientData = i;
+
+    setTimeout(() => {
+      let arr1 = this.el.nativeElement.querySelectorAll(".chkbx");
+      let medstatus = this.el.nativeElement.querySelectorAll('.medstatus');
+      let meddate = this.el.nativeElement.querySelectorAll('.meddate');
+
+      for (let i = 0; i < arr1.length; i++) {
+        data.forEach(element => {
+          if (arr1[i].value == element.name) {
+            arr1[i].checked = true;
+            medstatus[i].value = element.status;
+            if (element.status == 'Approved' && meddate[i] != "") {
+              console.log(element.date)
+              meddate[i].value = element.date;
+            }
+          }
+        })
+      }
+
+      console.log(this.maa)
+      let arr2 = this.el.nativeElement.querySelectorAll(".chkbx2");
+      for (let i = 0; i < arr2.length; i++) {
+        sata.forEach(element => {
+          // console.log(element)
+          // console.log(arr2[i].value)
+          if (arr2[i].value == element.scale_name) {
+            arr2[i].checked = true;
+          }
+        })
+      }
+    }, 1000);
+    let arr = this.el.nativeElement.querySelectorAll(".chkbx3");
+    for (let i = 0; i < arr.length; i++) {
+      kata.forEach(element => {
+        if (arr[i].value == element) {
+          arr[i].checked = true;
+          if (element == 'Medication management') {
+            this.showexpensivemeds = true;
+          }
+          if (element == 'Psychology') {
+            this.showpsychology = true;
+          }
+          if (element == 'Psychiatric scale') {
+            this.showscale = true;
+          }
+        }
+      })
+    }
+
+    // this.n++;
+    console.log(arr)
+    // console.log(arr1)
+    // console.log(arr2)
+  }
+
+  data: any = {};
+
+  // toto=true;
+  status = "toto wins";
+  scale_date_text: string;
+  openModalWithClass(template: TemplateRef<any>, i, event) {
+    this.clear_scale_form();
+    this.data.name = i;
+    if (event.target.checked)
+      this.modalRef = this.modalService.show(
+        template,
+        Object.assign({}, { class: 'pink modal-lg dora' })
+      );
+  }
+  submit_scale_form(form: NgForm) {
+    this.modalRef.hide();
+    console.log(form.value);
+    let flag = false;
+    let i;
+    this.scale_form_result.forEach((el, index) => {
+      if (el.scale_name == form.value.scale_name) {
+        console.log('found');
+        i = index;
+        flag = true;
+      }
+    })
+    if (flag) {
+      this.scale_form_result[i] = form.value;
+      console.log(this.scale_form_result);
+    }
+    if (!flag) {
+      this.scale_form_result.push(form.value);
+    }
+    // this.toto = true;
+  }
+  p_name;
+  current_record: any;
+  find(id, name, i) {
+    this.resetForm2();
+    let kata = i.patient_services;
+    let arr = this.el.nativeElement.querySelectorAll(".chkbx3");
+    for (let i = 0; i < arr.length; i++) {
+      kata.forEach(element => {
+        if (arr[i].value == element) {
+          arr[i].checked = true;
+          if (element == 'Medication management') {
+            this.showexpensivemeds = true;
+          }
+          if (element == 'Psychology') {
+            this.showpsychology = true;
+          }
+          if (element == 'Psychiatric scale') {
+            this.showscale = true;
+          }
+        }
+      })
+    }
+    this.p_name = name;
+    console.log(id)
+    this.s_id = id;
+    // console.log('triggered');
+    let flag = 0;
+    this.r2patients.forEach(element => {
+      if (element._id == id) {
+        this.current_record = element
+        element.visitations.forEach(res => {
+          this.round2_patient_dates.push(res.visit)
+        })
+        console.log(this.round2_patient_dates)
+        console.log('found');
+        console.log(element)
+        // this.r2pdata = element;
+        flag = 1;
+      }
+    })
+    if (flag == 0) {
+      this.resetForm2();
+    }
+  }
+  updateacdate(event) {
+    this.current_record.visitations.forEach(res => {
+      if (res.visit == event.target.value) {
+        console.log('recoord found with the date');
+        this.r2pdata = res
+      }
+    })
+  }
+  commentbox;
+  meddata: [{
+    medname: string,
+    medstatus: string,
+    meddate: Date
+  }]
+  resetForm(form?: NgForm) {
+    if (form != null) form.resetForm();
+    this.patientData = {
+      id: null,
+      name: '',
+      dob: null,
+      theligible: 'no',
+      pinsurance: '',
+      sinsurance: '',
+      facility: '',
+      provider: '',
+      room: '',
+      medication: 'no',
+      medicationName: '',
+      generictest: 'no',
+      docterupload: 'no',
+      demographicsheetuploaded: 'no',
+      capacityassesment: 'no',
+      capacity: '',
+      scaleeligible: 'no',
+      bhi: 'yes',
+      ccm: 'yes',
+      scale: '',
+      comment: '',
+      genericresult: '',
+      patientcondition: 'normal',
+      service_type: '',
+      psychotherapydate: '',
+      frequentlypsychotherapy: null
+    }
+    this.commentbox = 'no';
+    let gamma = this.el.nativeElement.querySelectorAll('.chkbx');
+    gamma.forEach(element => {
+      if (element.checked) {
+        element.checked = false;
+      }
+    })
+    let arr2 = this.el.nativeElement.querySelectorAll(".chkbx2");
+    for (let i = 0; i < arr2.length; i++) {
+      if (arr2[i].checked == true) {
+        arr2[i].checked = false;
+      }
+    }
+    let arr3 = this.el.nativeElement.querySelectorAll(".chkbx3");
+    for (let i = 0; i < arr3.length; i++) {
+      if (arr3[i].checked == true) {
+        arr3[i].checked = false;
+      }
+    }
+    this.clear_scale_form();
+  }
+  maa = [];
+  scales = ['PHQ9', 'GDS', 'BIMS', 'BTQ', 'PTSD', 'BDSS', 'GAD7', 'AUDIT', 'DAST', 'AIMS', 'CNS-LS', 'MOCA', 'NPQ', 'Faggerstorm'];
+  submit2(userForm: NgForm) {
+    console.log("++++++++++")
+    let medstatus = this.el.nativeElement.querySelectorAll('.medstatus');
+    let meddate = this.el.nativeElement.querySelectorAll('.meddate');
+    medstatus.forEach(st => {
+      console.log(st.value);
+    })
+    meddate.forEach(st => {
+      console.log(st.value);
+    })
+    console.log('++++++++++');
+    console.log(userForm.value);
+    console.log(this.kk);
+    let dummy_scale_data: any = this.scale_form_result;
+    let scale_data: any = [];
+    let medarr = this.el.nativeElement.querySelectorAll('.chkbx');
+    let med = [];
+
+    medarr.forEach((res, index) => {
+      if (res.checked) {
+        let data = {
+          name: res.value,
+          status: medstatus[index].value,
+          date: ''
+        }
+        console.log("status" + medstatus[index].value)
+        if (medstatus[index].value == 'Approved') {
+          data.date = meddate[index].value;
+        }
+        console.log(data)
+        med.push(data);
+      }
+    })
+    console.log("----------")
+    console.log(med)
+    console.log("----------")
+    let set = { medicene: med };
+    let mrr = this.el.nativeElement.querySelectorAll(".chkbx3");
+    let mm = [];
+    mrr.forEach(ele => {
+      if (ele.checked) {
+        mm.push(ele.value);
+      }
+    });
+    console.log(mm);
+    let patient_services = { patient_services: mm };
+    let arr2 = this.el.nativeElement.querySelectorAll(".chkbx2");
+    arr2.forEach(el => {
+      if (el.checked) {
+        dummy_scale_data.forEach(el2 => {
+          if (el2.scale_name == el.value) {
+            scale_data.push(el2);
+          }
+        })
+      }
+    })
+    console.log(scale_data);
+    scale_data = { scale_info: scale_data };
+    let data = { ...userForm.value, ...set, ...scale_data, ...patient_services };
+    console.log(data);
+    this.service.sendMorePatientData(data).subscribe(res => {
+      this.toastr.success('Data Saved', "Response Recorded");
+    }, err => {
+      console.log(err);
+    });
+    this.resetForm();
+    $("#myModal3").modal("hide");
+    this.ngOnInit();
+  }
+
+  round2_patient_dates = []
+  resetForm2(form?: NgForm) {
+    if (form != null) form.resetForm();
+    this.r2pdata = {
+      id: null,
+      visit: null,
+      eval: 'no',
+      seedoc: 'no',
+      droped: '',
+      stable: 'no',
+      gdrstable: 'no',
+      psythreapy: '',
+      labs: 'no',
+      labname: '',
+      medmange: 'yes',
+      urgentcall: 'no',
+      outreach: 'no',
+      followup: '',
+      patientcondition: 'normal',
+      unstable_text: '',
+      started: '',
+      increase: '',
+      decrease: '',
+      stopped: '',
+      medstopdate: null,
+      psa: '',
+      newappointmentrecord: 'no',
+      providername: '',
+      added: '',
+      addeddate: '',
+      yesstable: '',
+      nostable: ''
+    }
+    this.round2_patient_dates = []
+  }
+  submit3(data: NgForm) {
+    console.log(data.value);
+    this.service.sendDataRound2(data).subscribe(res => {
+      console.log(res);
+      this.toastr.success('Data Saved', "Response Recorded");
+    }, err => {
+      console.log(err);
+    });
+    this.resetForm2();
+    $("#myModal2").modal("hide");
+    this.ngOnInit()
+  }
+  pt: string;
+  one(val: any) {
+    console.log(val);
+    this.patientData.sinsurance = val;
+  }
+  kk: any = [];
+  showexpensivemeds: boolean;
+  showpsychology: boolean;
+  showscale: boolean;
+  ep(a: String, isCheck: boolean) {
+    console.log(a);
+    if (isCheck == true) {
+      if (a == 'Medication management') {
+        this.showexpensivemeds = true;
+      }
+      if (a == 'Psychology') {
+        this.showpsychology = true;
+      }
+      if (a == 'Psychiatric scale') {
+        this.showscale = true;
+      }
+    }
+    if (isCheck == false) {
+      if (a == 'Medication management') {
+        this.showexpensivemeds = false;
+      }
+      if (a == 'Psychology') {
+        this.showpsychology = false;
+      }
+      if (a == 'Psychiatric scale') {
+        this.showscale = false;
+      }
+    }
+  }
+
+  obj: {
+    scale_name: string
+    scale_date: string;
+    scale_score: number;
+  }
+  clear_scale_form() {
+    this.obj = {
+      scale_name: '',
+      scale_date: null,
+      scale_score: 0
+    }
+  }
+  funct(i) {
+    // this.clear_scale_form();
+    console.log(i);
+
+  }
+  scale_score_text;
+  fill(i) {
+    let flg = 0;
+    this.scale_form_result.forEach(el => {
+      if (el.scale_name == i) {
+        this.scale_date_text = el.scale_date;
+        this.scale_score_text = el.scale_score;
+        flg = 1;
+      }
+    })
+    if (flg == 0) {
+      this.scale_date_text = ""
+      this.scale_score_text = ''
+    }
+  }
+  clearthisform() {
+    this.r2pdata.visit = null;
+    this.r2pdata.eval = 'no';
+    this.r2pdata.seedoc = 'no';
+    this.r2pdata.droped = '';
+    this.r2pdata.stable = 'no';
+    this.r2pdata.gdrstable = 'no';
+    this.r2pdata.psythreapy = '';
+    this.r2pdata.labs = 'no';
+    this.r2pdata.labname = '';
+    this.r2pdata.medmange = 'yes';
+    this.r2pdata.urgentcall = 'no';
+    this.r2pdata.outreach = 'no';
+    this.r2pdata.followup = '';
+    this.r2pdata.patientcondition = 'normal';
+    this.r2pdata.unstable_text = '';
+    this.r2pdata.started = '';
+    this.r2pdata.increase = '';
+    this.r2pdata.decrease = '';
+    this.r2pdata.stopped = '';
+    this.r2pdata.medstopdate = null;
+    this.r2pdata.psa = '';
+    this.r2pdata.newappointmentrecord = 'yes';
+  }

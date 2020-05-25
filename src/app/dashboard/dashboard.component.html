@@ -1,0 +1,90 @@
+<div id="wrapper">
+  <aside id="sidebar-wrapper">
+    <div class="sidebar-brand" *ngIf="metaData">
+      <!-- <i class="fa fa-user-secret fa-3x" aria-hidden="true"></i> -->
+      <img src="/assets/img/login/logo.png" height="60px">
+      <h2>Hello, {{fname|capitalize}}</h2>
+      <b>{{role}}</b>
+    </div>
+    <ul class="sidebar-nav">
+      <p class="qd">Quick Dashboard</p>
+      <li>
+        <a [routerLink]="['/dash']"><i class="fa fa-home"></i>Home</a>
+      </li>
+      <li>
+        <a (click)="ap()"><i class="fa fa-plus-circle"></i>Add Patient</a>
+      </li>
+      <li>
+        <a (click)="af()"><i class="fa fa-users"></i>Add Facility</a>
+      </li>
+      <li>
+        <a (click)="app()"><i class="fa fa-calendar-times-o"></i>Add Provider</a>
+      </li>
+      <li>
+        <a (click)="ai()"><i class="fa fa-university"></i>Add Insurance</a>
+      </li>
+      <li>
+        <a (click)="ae()"><i class="fa fa-medkit"></i>Expensive Medicines</a>
+      </li>
+      <li>
+        <a [routerLink]="['/reports']"><i class="fa fa-file-text-o"></i>Reports</a>
+      </li>
+      <li>
+        <a [routerLink]="['/register']"><i class="fa fa-users"></i>Users</a>
+      </li>
+      <!-- <li>
+        <a [routerLink]="['/cpat']"><i class="fa fa-file-text-o"></i>new combine patients</a>
+      </li> -->
+    </ul>
+  </aside>
+
+  <div id="navbar-wrapper">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a href="#" class="navbar-brand" id="sidebar-toggle">
+            <img src="/assets/img/bar.png" class="img-fluid" style="margin-left: -27px;transform: scale(1.45);">
+          </a>
+        </div>
+        <div style="float: right; cursor: pointer;" (click)="logout()"><img src="/assets/img/dash/logout.png"
+            height="50px" class="logout"></div>
+      </div>
+    </nav>
+  </div>
+
+  <section id="content-wrapper" style=" padding-left: 0rem;  ">
+    <div class="row">
+      <div class="col-lg-12">
+        <h2 class="content-title">Dashboard</h2>
+        <div class="box">
+          <div class="row">
+            <div class="col-md-1">
+              <img src="/assets/img/dash/dl1.png" class="style_prevu_kit a1" [routerLink]="['/patient']">
+            </div>
+            <div class="col-md-1 gop"></div>
+            <div class="col-md-1">
+              <img src="/assets/img/dash/dl2.png" class="style_prevu_kit" [routerLink]="['/facility']">
+            </div>
+            <div class="col-md-1 gop"></div>
+            <div class="col-md-1">
+              <img src="/assets/img/dash/dl3.png" class="style_prevu_kit" [routerLink]="['/provider']">
+            </div>
+            <div class="col-md-1 gop"></div>
+            <div class="col-md-1">
+              <img src="/assets/img/dash/dl4.png" class="style_prevu_kit" [routerLink]="['/insurance']">
+            </div>
+            <div class="col-md-1 gop"></div>
+            <div class="col-md-1">
+              <img src="/assets/img/dash/dl5.png" class="style_prevu_kit" [routerLink]="['/expensive']">
+            </div>
+            <div class="col-md-1 gop"></div>
+            <div class="col-md-1">
+              <img src="/assets/img/dash/dl6.png" class="style_prevu_kit" [routerLink]="['/reports']">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- <img src="/assets/img/login/logo.png" height="200px" style="position: fixed; right: 0; bottom: 0; padding: 50px;"> -->
+</div>

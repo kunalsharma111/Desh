@@ -1,0 +1,176 @@
+<div id="wrapper">
+    <aside id="sidebar-wrapper">
+        <div class="sidebar-brand" *ngIf="metaData">
+            <!-- <i class="fa fa-user-secret fa-3x" aria-hidden="true"></i> -->
+            <img src="/assets/img/login/logo.png" height="60px">
+            <h2>Hello, {{fname|capitalize}}</h2>
+            <b>{{role}}</b>
+        </div>
+        <ul class="sidebar-nav">
+            <p class="qd">Quick Dashboard</p>
+            <li>
+                <a [routerLink]="['/dash']"><i class="fa fa-home"></i>Home</a>
+            </li>
+            <li>
+                <a (click)="ap()"><i class="fa fa-plus-circle"></i>Add Patient</a>
+            </li>
+            <li>
+                <a (click)="af()"><i class="fa fa-users"></i>Add Facility</a>
+            </li>
+            <li>
+                <a (click)="app()"><i class="fa fa-calendar-times-o"></i>Add Provider</a>
+            </li>
+            <li>
+                <a (click)="ai()"><i class="fa fa-university"></i>Add Insurance</a>
+            </li>
+            <li>
+                <a (click)="ae()"><i class="fa fa-medkit"></i>Expensive Medicines</a>
+            </li>
+            <li>
+                <a [routerLink]="['/reports']"><i class="fa fa-file-text-o"></i>Reports</a>
+            </li>
+            <li>
+                <a [routerLink]="['/register']"><i class="fa fa-users"></i>Users</a>
+            </li>
+        </ul>
+    </aside>
+
+    <div id="navbar-wrapper">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="#" class="navbar-brand" id="sidebar-toggle">
+                        <!-- <i class="fa fa-bars" style="color: #87C442;"></i> -->
+                        <img src="/assets/img/bar.png" class="img-fluid"
+                            style="margin-left: -28px;transform: scale(1.45);">
+                    </a>
+                </div>
+                <div style="float: right; cursor: pointer;" (click)="logout()"><img src="/assets/img/dash/logout.png"
+                        height="50px" class="logout"></div>
+            </div>
+        </nav>
+    </div>
+
+    <section id="content-wrapper" style=" padding-left: 0rem;  ">
+        <!-- header of the page   -->
+        <!-- <div class="row">
+            <div class="col-lg-12">
+                <img src="/assets/img/shared/reportslogo.png" class="img-fluid ptl">
+                <h2 class="content-title">Reports</h2>
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col-lg-12">
+              <img src="/assets/img/shared/reportslogo.png" class="img-fluid ptl">
+              <h2 class="content-title">Reports</h2>
+            </div>
+            <div class="box"></div>
+        </div>
+        <div class="row reports goa">
+            <div class="col-md-1"></div>
+            <!-- <div class="col-md-3 rr" data-toggle="modal" data-target="#myModalap">
+                <h3>Daily Visitations</h3>
+            </div> -->
+            <div class="col-md-3">
+                <figure>
+                    <div>
+                      <span data-toggle="modal" data-target="#myModalap">Get Report <i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+                      <span>Pre Rounding</span>
+                    </div>
+                  </figure>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        
+          
+    </section>
+    <!-- <img src="/assets/img/login/logo.png" height="200px" style="position: fixed; right: 0; bottom: 0; padding: 50px;"> -->
+</div>
+<div class="modal lol fade" id="myModalap" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content mc1">
+            <p style="text-align: end; margin:25px; cursor: pointer;" data-dismiss="modal" ><i class="fa fa-times"
+                    aria-hidden="true"></i></p>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-1">
+                        <img src="/assets/img/login/logo.png" height="100px" >
+                    </div>
+                    <div class="col-md-2 mt-4"><h3 style="color: #87c442;">Dr. Desh</h3></div>
+                </div>
+                <h3 class="medh3 mb-4"><u>Pre Rounding Report</u></h3>
+                <div class="row" *ngIf="gammma">
+                    <div class="col-md-3"><h5 class="ss">Facility : {{fn}}</h5></div>
+                    <div class="col-md-3"><h5 class="ss">Provider : {{pn}}</h5></div>
+                    <div class="col-md-3"><h5 class="ss">Date : {{dd}}</h5></div>
+                </div>
+                <!-- <div> <button (click)="downloadAsPDF()"
+                        style="font-size: 1.5rem;color:white;padding: 8px 16px;border-radius: 0;border: none;background: #87c442;margin:20px 0px;">Export
+                        To PDF</button></div> -->
+                <form #form="ngForm" (submit)="submit(form)" *ngIf="showit">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="facility">Facility</label>
+                            <select name="facility" id="facility" #facility="ngModel" [(ngModel)]="repo.facility">
+                                <option *ngFor="let i of facilities" [value]="i.name">{{i.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="Provider">Provider</label>
+                            <select name="provider" id="provider" #provider="ngModel" [(ngModel)]="repo.provider">
+                                <option *ngFor="let i of providers" [value]="i.name">{{i.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="Date">Date</label>
+                            <input type="date" name="date" id="date" #date="ngModel" [(ngModel)]="repo.date">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-info mt-4"
+                                style="font-size: 1.5rem; width: 100%; background: #87c442;border: none;">Find</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="col-md-12 mb-4" *ngIf="gammma">
+                    
+                    <!-- <h4 style="color: red;"><u>Very Urgent Cases</u></h4> -->
+                    <table class="table table-stripped table-hover table-condensed mt-4" #table>
+                        <thead >
+                            <tr>
+                                <th>Patient's Room</th>
+                                <th>Patient's Name</th>
+                                <th>Patient's Insurance</th>
+                                <th>Services Eligible</th>
+                                <th>Visit Type</th>
+                                <th>Pending Scales</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let i of output">
+                                <td>{{i.room}}</td>
+                                <td>{{i.name}}<p [routerLink]="['/cpat']"><i class="fa fa-pencil" aria-hidden="true"
+                                    style="color: #87c442;" (click)="service.useriden(i.id)"
+                                   tooltip="Update Patient record" data-dismiss="modal" placement="right"></i></p></td>
+                                <td>{{i.insurance}}</td>
+                                <td>{{i.services_eligible}}</td>
+                                <td>{{i.visit_type}}</td>
+                                <td>{{i.pending_scales}}</td>
+                                <td><input type="text" name="comment" id="comment" size="5"
+                                        style="background-color: transparent; border: none;border-bottom: 1px solid #87c442;margin-top: 20px;">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div> <button (click)="downloadAsPDF()"
+                        style="font-size: 1.5rem;color:white;padding: 8px 16px;border-radius: 0;border: none;background: #87c442;margin:20px 0px;">Export
+                        To PDF</button></div>
+                </div>
+                <div class="ball" #ball>
+                    <p> LOADING </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

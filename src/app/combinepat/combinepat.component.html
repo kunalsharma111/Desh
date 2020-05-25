@@ -1,0 +1,2063 @@
+<div id="wrapper">
+    <aside id="sidebar-wrapper">
+        <div class="sidebar-brand" *ngIf="metaData">
+            <!-- <i class="fa fa-user-secret fa-3x" aria-hidden="true"></i> -->
+            <img src="/assets/img/login/logo.png" height="60px">
+            <h2>Hello, {{fname|capitalize}}</h2>
+            <b>{{role}}</b>
+        </div>
+        <ul class="sidebar-nav">
+            <p class="qd">Quick Dashboard</p>
+            <li>
+                <a [routerLink]="['/dash']"><i class="fa fa-home"></i>Home</a>
+            </li>
+            <li>
+                <a (click)="ap()"><i class="fa fa-plus-circle"></i>Add Patient</a>
+            </li>
+            <li>
+                <a (click)="af()"><i class="fa fa-users"></i>Add Facility</a>
+            </li>
+            <li>
+                <a (click)="ap()"><i class="fa fa-calendar-times-o"></i>Add Provider</a>
+            </li>
+            <li>
+                <a (click)="ai()"><i class="fa fa-university"></i>Add Insurance</a>
+            </li>
+            <li>
+                <a (click)="ae()"><i class="fa fa-medkit"></i>Expensive Medicines</a>
+            </li>
+            <li>
+                <a [routerLink]="['/reports']"><i class="fa fa-file-text-o"></i>Reports</a>
+            </li>
+            <li>
+                <a [routerLink]="['/register']"><i class="fa fa-users"></i>Users</a>
+            </li>
+        </ul>
+    </aside>
+
+    <div id="navbar-wrapper">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="#" class="navbar-brand" id="sidebar-toggle">
+                        <!-- <i class="fa fa-bars" style="color: #87C442;"></i> -->
+                        <img src="/assets/img/bar.png" class="img-fluid"
+                            style="margin-left: -27px;transform: scale(1.45);">
+                    </a>
+                </div>
+                <div style="float: right; cursor: pointer;" (click)="logout()"><img src="/assets/img/dash/logout.png"
+                        height="50px" class="logout"></div>
+            </div>
+        </nav>
+    </div>
+
+    <section id="content-wrapper" style=" padding-left: 0rem;  ">
+        <!-- header of the page   -->
+        <div class="row">
+            <div class="col-lg-12">
+                <img src="/assets/img/shared/facilitylogo.png" class="img-fluid ptl">
+                <h2 class="content-title">Patient</h2>
+            </div>
+            <div class="box"></div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <form #form="ngForm" autocomplete="off" (submit)="submit(form)">
+                    <input type="hidden" name="id" #id="ngModel" [(ngModel)]="p_id">
+                    <h3 style="color: #87c442;"> <b> General Details </b> <span
+                            style="font-size: 1.2rem; color: #87c442;">( {{combined.name}}, {{combined.dob|date}}
+                            )</span></h3>
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <label for="inputname4">Visitation Date <span>*</span> </label>
+                            <input type="date" id="cid" class="form-control aq" name="visit" #visit="ngModel"
+                                [(ngModel)]="combined.visit" value={{stringdate}}>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <label for="inputname4">Select Primary Insurance <span>*</span> </label>
+                            <select class="form-control aq" id="pii" name="pinsurance" #pinsurance="ngModel"
+                                [(ngModel)]="combined.pinsurance" (ngModelChange)='one($event)'>
+                                <option hidden value="" disabled selected> Select Primary Insurance </option>
+                                <option *ngFor="let spii of insurances" [value]="spii.name">{{spii.name}}</option>
+                            </select>
+                            <p *ngIf="pinsurance.touched && pinsurance.invalid">Primary Insurance is required</p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label for="inputname4">Select Secondary insurance <span>*</span> </label>
+                            <select class="form-control aq" id="pii" name="sinsurance" #sinsurance="ngModel"
+                                [(ngModel)]="combined.sinsurance">
+                                <option hidden value="" disabled selected> Select Secondary Insurance </option>
+                                <option *ngFor="let spii of insurances" [value]="spii.name">{{spii.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <label for="facility">Select Facility <span>*</span> </label>
+                            <select class="form-control aq" id="pii" name="facility" #facility="ngModel"
+                                [(ngModel)]="combined.facility" required>
+                                <option hidden value="" disabled selected> Select Primary Insurance </option>
+                                <option *ngFor="let spii of facilities" [value]="spii.name">{{spii.name}}</option>
+                            </select>
+                            <p *ngIf="facility.touched && facility.invalid">Facility is required</p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label for="inputname4">Room number <span>*</span> </label>
+                            <input type="text" class="form-control aq" id="room" name="room" #room="ngModel"
+                                [(ngModel)]="combined.room" placeholder="Enter Room No." required>
+                            <p *ngIf="room.touched && room.invalid">Room Number is required</p>
+                        </div>
+                    </div>
+                    <h3 style="color: #87c442;" class="mt-4"> <b> Patient statuses </b></h3>
+                    <div class="form-group">
+                        <div class="form-row">
+                            <label class="col-md-4 qw" for="iop">Expensive Medicine Ordered</label>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio form-group">
+                                            <input id="ep1" type="radio" class="custom-control-input" value="yes"
+                                                name="medication" #medication="ngModel"
+                                                [(ngModel)]="combined.medication" required>
+                                            <label class="custom-control-label" for="ep1">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio form-group">
+                                            <input id="ep2" type="radio" class="custom-control-input" value="no"
+                                                name="medication" #medication="ngModel"
+                                                [(ngModel)]="combined.medication">
+                                            <label class="custom-control-label" for="ep2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row ml-4" *ngIf="combined.medication=='no'">
+                            <div class="col-md-7">
+                                <label>Discontinued due to Reason</label>
+                                <select class="form-control aq" id="exii" name="medreason" #medreason="ngModel"
+                                    [(ngModel)]="combined.medreason">
+                                    <!--  change1 -->
+                                    <option hidden value="" disabled selected> Not Applicable </option>
+                                    <option *ngFor="let spike of med_reasons" [value]="spike">{{spike}}</option>
+                                </select>
+                                <!-- <p *ngIf="medreason.touched && medreason.invalid">Reason is required</p> -->
+                            </div>
+                            <div class="col-md-4 form-group" *ngIf="combined.medreason=='Other'">
+                                <input type="text" class="form-control aq" name="othermedreason"
+                                    #othermedreason="ngModel" [(ngModel)]="combined.othermedreason"
+                                    placeholder="Specify Reason" required>
+                                <p *ngIf="othermedreason.touched && othermedreason.invalid">Field is required</p>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="combined.medication=='yes'">
+                            <div class="container-fluid">
+                                <div class="row" *ngFor="let iii of meds;let i=index;let m=false;let n='gugu'"
+                                    style="text-align: left;">
+                                    <div class="form-check col-md-2 ml-4">
+                                        <input type="checkbox" value="{{iii.name}}" id="{{i+1}}" name="meds"
+                                            class="chkbx">
+                                        <label for="{{i+1}}" class="form-check-label">{{iii.name}}</label>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <select name="medname" id="medname" class="medstatus ii form-control aq">
+                                            <option value="prior auth action not taken">prior auth action not taken
+                                            </option>
+                                            <option value="Faxed">Faxed</option>
+                                            <option value="Approved">Approved</option>
+                                        </select>
+                                    </div>
+                                    <!-- <div class="col-md-5"></div> -->
+                                    <div class="form-group col-md-3">
+                                        <input type="date" name="meddate" id="meddate"
+                                            class="meddate ii form-control aq" max="{{kd}}">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-md-4 qw" for="generictest">Genetic Testing Performed</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="gt1" type="radio" class="custom-control-input" value="yes"
+                                                name="generictest" #generictest="ngModel"
+                                                [(ngModel)]="combined.generictest" required>
+                                            <label class="custom-control-label" for="gt1">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="gt2" type="radio" class="custom-control-input" value="no"
+                                                name="generictest" #generictest="ngModel"
+                                                [(ngModel)]="combined.generictest" required>
+                                            <label class="custom-control-label" for="gt2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" style="text-align: left;" id="otherAnswer1"
+                        *ngIf="combined.generictest=='yes'">
+                        <div class="col-md-5 ml-4">
+                            <div class="custom-control custom-radio">
+                                <input id="gtp1" type="radio" class="custom-control-input" value="ordered"
+                                    name="genericresult" #genericresult="ngModel" [(ngModel)]="combined.genericresult"
+                                    required>
+                                <label class="custom-control-label lor" for="gtp1">Ordered</label>
+                            </div>
+                        </div>
+                        <div class="col-md-5 ml-4">
+                            <div class="custom-control custom-radio">
+                                <input id="gtp2" type="radio" class="custom-control-input" value="submitted"
+                                    name="genericresult" #genericresult="ngModel" [(ngModel)]="combined.genericresult"
+                                    required>
+                                <label class="custom-control-label lor" for="gtp2">Submitted</label>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-5 ml-4">
+                            <div class="custom-control custom-radio">
+                                <input id="gtp3" type="radio" class="custom-control-input" value="resultObtained"
+                                    name="genericresult" #genericresult="ngModel" [(ngModel)]="combined.genericresult"
+                                    required>
+                                <label class="custom-control-label lor" for="gtp3">Results Obtained</label>
+                            </div>
+                        </div>
+                        <div class="col-md-5 ml-4">
+                            <div class="custom-control custom-radio">
+                                <input id="gtp4" type="radio" class="custom-control-input" value="resultUploaded"
+                                    name="genericresult" #genericresult="ngModel" [(ngModel)]="combined.genericresult"
+                                    required>
+                                <label class="custom-control-label lor" for="gtp4">Results Uploaded</label>
+                            </div>
+                        </div>
+                        <p *ngIf="genericresult.touched && genericresult.invalid">Field is required</p>
+                    </div>
+                    <div class="form-group row ml-4" *ngIf="combined.generictest=='no'">
+                        <div class="col-md-7">
+                            <label>Discontinued due to</label>
+                            <select class="form-control aq" id="exii" name="geneticreason" #geneticreason="ngModel"
+                                [(ngModel)]="combined.geneticreason">
+                                <!-- change2 -->
+                                <option hidden value="" selected> Not Applicable</option>
+                                <option *ngFor="let spike of genatic_reasons" [value]="spike">{{spike}}</option>
+                            </select>
+                            <!-- <p *ngIf="geneticreason.touched && geneticreason.invalid">Field is required</p> -->
+                        </div>
+                        <div class="col-md-4 form-group" *ngIf="combined.geneticreason=='Other'">
+                            <input type="text" class="form-control aq" name="othergeneticreason"
+                                #othergeneticreason="ngModel" [(ngModel)]="combined.othergeneticreason"
+                                placeholder="Specify Reason" required>
+                            <p *ngIf="othergeneticreason.touched && othergeneticreason.invalid">Reason is required</p>
+                        </div>
+                    </div>
+                    <div class="form-group mt-4">
+                        <div class="row">
+                            <label class="col-md-4 qw" for="pcp">PCP Order Uploaded</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="pcp" type="radio" class="custom-control-input" value="yes"
+                                                name="pcp" #pcp="ngModel" [(ngModel)]="combined.pcp">
+                                            <label class="custom-control-label" for="pcp">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="pcp2" type="radio" class="custom-control-input" value="no"
+                                                name="pcp" #pcp="ngModel" [(ngModel)]="combined.pcp">
+                                            <label class="custom-control-label" for="pcp2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mt-4">
+                        <div class="row">
+                            <label class="col-md-4 qw" for="dsu">Demographic Sheet Uploaded?</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="dsu1" type="radio" class="custom-control-input" value="yes"
+                                                name="demographicsheetuploaded" #demographicsheetuploaded="ngModel"
+                                                [(ngModel)]="combined.demographicsheetuploaded">
+                                            <label class="custom-control-label" for="dsu1">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="dsu2" type="radio" class="custom-control-input" value="no"
+                                                name="demographicsheetuploaded" #demographicsheetuploaded="ngModel"
+                                                [(ngModel)]="combined.demographicsheetuploaded">
+                                            <label class="custom-control-label" for="dsu2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mt-4">
+                        <div class="row">
+                            <label class="col-md-4 qw" for="cap">Capacity Assessment Performed?</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="cap1" type="radio" class="custom-control-input" value="yes"
+                                                name="capacityassesment" #capacityassesment="ngModel"
+                                                [(ngModel)]="combined.capacityassesment">
+                                            <label class="custom-control-label" for="cap1">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="cap2" type="radio" class="custom-control-input" value="no"
+                                                name="capacityassesment" #capacityassesment="ngModel"
+                                                [(ngModel)]="combined.capacityassesment">
+                                            <label class="custom-control-label" for="cap2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="combined.capacityassesment=='yes'">
+                        <div class="row">
+                            <label class="col-md-4 qw ml-4" for="cap">Does patient have capacity to make medical
+                                decision ?</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="dc1" type="radio" class="custom-control-input" value="yes"
+                                                name="capacity" #capacity="ngModel" [(ngModel)]="combined.capacity">
+                                            <label class="custom-control-label" for="dc1">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="dc2" type="radio" class="custom-control-input" value="no"
+                                                name="capacity" #capacity="ngModel" [(ngModel)]="combined.capacity">
+                                            <label class="custom-control-label" for="dc2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 style="color: #87c442;" class="mt-4"> <b> Patient eligibility for services </b></h3>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-md-6 qw" for="cap">Med-Management</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-2" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="medmanage" type="radio" class="custom-control-input" value="yes"
+                                                name="medmanage" #medmanage="ngModel" [(ngModel)]="combined.medmanage">
+                                            <label class="custom-control-label" for="medmanage">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2" style="text-align: left; ">
+                                        <div class="custom-control custom-radio">
+                                            <input id="medmng2" type="radio" class="custom-control-input" value="no"
+                                                name="medmanage" #medmanage="ngModel" [(ngModel)]="combined.medmanage">
+                                            <label class="custom-control-label" for="medmng2">No</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="medmng3" type="radio" class="custom-control-input"
+                                                value="Every three months monitoring" name="medmanage"
+                                                #medmanage="ngModel" [(ngModel)]="combined.medmanage">
+                                            <label class="custom-control-label" for="medmng3">Every three months
+                                                monitoring</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row ml-4" *ngIf="combined.medmanage=='no'">
+                        <div class="col-md-7">
+                            <label>Discontinued due to</label>
+                            <select class="form-control aq" id="exii" name="medreason2" #medreason2="ngModel"
+                                [(ngModel)]="combined.medreason2">
+                                <!-- change3 -->
+                                <option hidden value="" selected> Not Applicable </option>
+                                <option *ngFor="let spike of med_reasons2" [value]="spike">{{spike}}</option>
+                            </select>
+                            <!-- <p *ngIf="medreason2.touched && medreason2.invalid">Reason is required</p> -->
+                        </div>
+                        <div class="col-md-4 form-group" *ngIf="combined.medreason2=='Other'">
+                            <input type="text" class="form-control aq" name="othermedreason2" #othermedreason2="ngModel"
+                                [(ngModel)]="combined.othermedreason2" placeholder="Specify Reason" required>
+                            <p *ngIf="othermedreason2.touched && othermedreason2.invalid">Field is required</p>
+                        </div>
+                    </div>
+                    <div class="form-group mt-4">
+                        <div class="row">
+                            <label class="col-md-4 qw" for="cap">Psychotherapy services</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="psythreapy" type="radio" class="custom-control-input" value="yes"
+                                                name="psythreapy" #psythreapy="ngModel"
+                                                [(ngModel)]="combined.psythreapy">
+                                            <label class="custom-control-label" for="psythreapy">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="ps1" type="radio" class="custom-control-input" value="no"
+                                                name="psythreapy" #psythreapy="ngModel"
+                                                [(ngModel)]="combined.psythreapy">
+                                            <label class="custom-control-label" for="ps1">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row ml-4" *ngIf="combined.psythreapy=='no'">
+                        <div class="col-md-7">
+                            <label>Discontinued due to</label>
+                            <select class="form-control aq" id="exii" name="psyreason" #psyreason="ngModel"
+                                [(ngModel)]="combined.psyreason">
+                                <!-- change4 -->
+                                <option hidden value="" selected> Not Applicable </option>
+                                <option *ngFor="let spike of psy_reasons" [value]="spike">{{spike}}</option>
+                            </select>
+                            <!-- <p *ngIf="psyreason.touched && psyreason.invalid">Reason is required</p> -->
+                        </div>
+                        <div class="col-md-4 form-group" *ngIf="combined.psyreason=='Other'">
+                            <input type="text" class="form-control aq" name="otherpsyreason" #otherpsyreason="ngModel"
+                                [(ngModel)]="combined.otherpsyreason" placeholder="Specify Reason" required>
+                            <p *ngIf="otherpsyreason.touched && otherpsyreason.invalid">Field is required</p>
+                        </div>
+                    </div>
+                    <div class="form-group mt-4">
+                        <div class="row">
+                            <label class="col-md-4 qw" for="cap">Case Management/Psychiatric screenings: </label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="psyscreen" type="radio" class="custom-control-input" value="yes"
+                                                name="psyscreen" #psyscreen="ngModel" [(ngModel)]="combined.psyscreen">
+                                            <label class="custom-control-label" for="psyscreen">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="psno" type="radio" class="custom-control-input" value="no"
+                                                name="psyscreen" #psyscreen="ngModel" [(ngModel)]="combined.psyscreen">
+                                            <label class="custom-control-label" for="psno">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row ml-4" *ngIf="combined.psyscreen=='no'">
+                        <div class="col-md-7">
+                            <label>Discontinued due to</label>
+                            <select class="form-control aq" id="exii" name="psyscreenreason" #psyscreenreason="ngModel"
+                                [(ngModel)]="combined.psyscreenreason">
+                                <!-- change5 -->
+                                <option hidden value="" selected> Not Applicable </option>
+                                <option *ngFor="let spike of psy_reasons" [value]="spike">{{spike}}</option>
+                            </select>
+                            <!-- <p *ngIf="psyscreenreason.touched && psyscreenreason.invalid">Reason is required</p> -->
+                        </div>
+                        <div class="col-md-4 form-group" *ngIf="combined.psyscreenreason=='Other'">
+                            <input type="text" class="form-control aq" name="otherpsyscreenreason"
+                                #otherpsyscreenreason="ngModel" [(ngModel)]="combined.otherpsyscreenreason"
+                                placeholder="Specify Reason" required>
+                            <p *ngIf="otherpsyscreenreason.touched && otherpsyscreenreason.invalid">Field is required
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-md-4 qw" for="bhi">Patient signed up for BHI program?</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="bh1" type="radio" class="custom-control-input" value="yes"
+                                                name="bhi" #bhi="ngModel" [(ngModel)]="combined.bhi">
+                                            <label class="custom-control-label" for="bh1">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="bh2" type="radio" class="custom-control-input" value="no"
+                                                name="bhi" #bhi="ngModel" [(ngModel)]="combined.bhi">
+                                            <label class="custom-control-label" for="bh2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="combined.bhi=='yes'">
+                            <div class="row ml-4">
+                                <label class="col-md-4 qw" for="cap">Concent</label>
+                                <div class="col-md-6">
+                                    <div class="row">
+
+                                        <div class="col-md-6" style="text-align: right;">
+                                            <div class="custom-control custom-radio">
+                                                <input id="bhiconcent" type="radio" class="custom-control-input"
+                                                    value="Verbal" name="bhiconcent" #bhiconcent="ngModel"
+                                                    [(ngModel)]="combined.bhiconcent" required>
+                                                <label class="custom-control-label" for="bhiconcent">Verbal</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="custom-control custom-radio">
+                                                <input id="bhiconcent2" type="radio" class="custom-control-input"
+                                                    value="Written" name="bhiconcent" #bhiconcent="ngModel"
+                                                    [(ngModel)]="combined.bhiconcent" required>
+                                                <label class="custom-control-label" for="bhiconcent2">Written</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p *ngIf="bhiconcent.touched && bhiconcent.invalid">Field is required</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row ml-4" *ngIf="combined.bhi=='no'">
+                            <div class="col-md-7">
+                                <label>Discontinued due to</label>
+                                <select class="form-control aq" id="exii" name="bhireason" #bhireason="ngModel"
+                                    [(ngModel)]="combined.bhireason">
+                                    <!-- change6 -->
+                                    <option hidden value="" selected> Not Applicable </option>
+                                    <option *ngFor="let spike of med_reasons2" [value]="spike">{{spike}}</option>
+                                </select>
+                                <!-- <p *ngIf="bhireason.touched && bhireason.invalid">Reason is required</p> -->
+                            </div>
+                            <div class="col-md-4 form-group" *ngIf="combined.bhireason=='Other'">
+                                <input type="text" class="form-control aq" name="otherbhireason"
+                                    #otherbhireason="ngModel" [(ngModel)]="combined.otherbhireason"
+                                    placeholder="Specify Reason" required>
+                                <p *ngIf="otherbhireason.touched && otherbhireason.invalid">Field is required</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-md-4 qw" for="bhi">Patient signed up for CCM program?</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="ccm1" type="radio" class="custom-control-input" value="yes"
+                                                name="ccm" #ccm="ngModel" [(ngModel)]="combined.ccm">
+                                            <label class="custom-control-label" for="ccm1">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="ccm2" type="radio" class="custom-control-input" value="no"
+                                                name="ccm" #ccm="ngModel" [(ngModel)]="combined.ccm">
+                                            <label class="custom-control-label" for="ccm2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="combined.ccm=='yes'">
+                            <div class="row ml-4">
+                                <label class="col-md-4 qw" for="cap">Concent</label>
+                                <div class="col-md-6">
+                                    <div class="row">
+
+                                        <div class="col-md-6" style="text-align: right;">
+                                            <div class="custom-control custom-radio">
+                                                <input id="ccmconcent1" type="radio" class="custom-control-input"
+                                                    value="Verbal" name="ccmconcent" #ccmconcent="ngModel"
+                                                    [(ngModel)]="combined.ccmconcent" required>
+                                                <label class="custom-control-label" for="ccmconcent1">Verbal</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="custom-control custom-radio">
+                                                <input id="ccmconcent2" type="radio" class="custom-control-input"
+                                                    value="Written" name="ccmconcent" #ccmconcent="ngModel"
+                                                    [(ngModel)]="combined.ccmconcent" required>
+                                                <label class="custom-control-label" for="ccmconcent2">Written</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p *ngIf="ccmconcent.touched && ccmconcent.invalid">Field is required</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row ml-4" *ngIf="combined.ccm=='no'">
+                            <div class="col-md-7">
+                                <label>Discontinued due to </label>
+                                <select class="form-control aq" id="exii" name="ccmreason" #ccmreason="ngModel"
+                                    [(ngModel)]="combined.ccmreason">
+                                    <!-- change7 -->
+                                    <option hidden value="" selected> Not Applicable </option>
+                                    <option *ngFor="let spike of med_reasons2" [value]="spike">{{spike}}</option>
+                                </select>
+                                <!-- <p *ngIf="ccmreason.touched && ccmreason.invalid">Reason is required</p> -->
+                            </div>
+                            <div class="col-md-4 form-group" *ngIf="combined.ccmreason=='Other'">
+                                <input type="text" class="form-control aq" name="otherccmreason"
+                                    #otherccmreason="ngModel" [(ngModel)]="combined.otherccmreason"
+                                    placeholder="Specify Reason" required>
+                                <p *ngIf="otherccmreason.touched && otherccmreason.invalid">Field is required</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-md-4 qw" for="chi">Continuity of Care at Home</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="cch1" type="radio" class="custom-control-input" value="yes"
+                                                name="cch" #cch="ngModel" [(ngModel)]="combined.cch">
+                                            <label class="custom-control-label" for="cch1">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="cch2" type="radio" class="custom-control-input" value="no"
+                                                name="cch" #cch="ngModel" [(ngModel)]="combined.cch">
+                                            <label class="custom-control-label" for="cch2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" *ngIf="combined.cch=='yes'">
+                            <div class="row ml-4">
+                                <label class="col-md-4 qw" for="cap">Concent</label>
+                                <div class="col-md-6">
+                                    <div class="row">
+
+                                        <div class="col-md-6" style="text-align: right;">
+                                            <div class="custom-control custom-radio">
+                                                <input id="cchconcent1" type="radio" class="custom-control-input"
+                                                    value="Verbal" name="cchconcent" #cchconcent="ngModel"
+                                                    [(ngModel)]="combined.cchconcent" required>
+                                                <label class="custom-control-label" for="cchconcent1">Verbal</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="custom-control custom-radio">
+                                                <input id="cchconcent2" type="radio" class="custom-control-input"
+                                                    value="Written" name="cchconcent" #cchconcent="ngModel"
+                                                    [(ngModel)]="combined.cchconcent" required>
+                                                <label class="custom-control-label" for="cchconcent2">Written</label>
+                                            </div>
+                                        </div>
+                                        <p *ngIf="cchconcent.touched && cchconcent.invalid">Field is required</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row mt-4 ml-3">
+                                <label class="col-md-5 qw" for="cap">Date Of Discharge</label>
+                                <div class="col-md-6">
+                                    <input type="date" style="text-align: right;" class="aq" name="cchdate"
+                                        #cchdate="ngModel" [(ngModel)]="combined.cchdate" required>
+                                </div>
+                                <p *ngIf="cchdate.touched && cchdate.invalid">Date is required</p>
+                            </div>
+                        </div>
+                        <div class="form-group row ml-4" *ngIf="combined.cch=='no'">
+                            <div class="col-md-7">
+                                <label>Discontinued due to</label>
+                                <select class="form-control aq" id="exii" name="cchreason" #cchreason="ngModel"
+                                    [(ngModel)]="combined.cchreason">
+                                    <!-- change8 -->
+                                    <option hidden value="" selected> Not Applicable </option>
+                                    <option *ngFor="let spike of med_reasons3" [value]="spike">{{spike}}</option>
+                                </select>
+                                <!-- <p *ngIf="cchreason.touched && cchreason.invalid">Reason is required</p> -->
+                            </div>
+                            <div class="col-md-4 form-group" *ngIf="combined.cchreason=='Other'">
+                                <input type="text" class="form-control aq" name="othercchreason"
+                                    #othercchreason="ngModel" [(ngModel)]="combined.othercchreason"
+                                    placeholder="Specify Reason" required>
+                                <p *ngIf="othercchreason.touched && othercchreason.invalid">Field is required</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-md-4 qw" for="bhi">Home Telepsych Virtual Clinic</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="homeclinic1" type="radio" class="custom-control-input"
+                                                value="yes" name="homeclinic" #homeclinic="ngModel"
+                                                [(ngModel)]="combined.homeclinic">
+                                            <label class="custom-control-label" for="homeclinic1">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="homeclinic2" type="radio" class="custom-control-input" value="no"
+                                                name="homeclinic" #homeclinic="ngModel"
+                                                [(ngModel)]="combined.homeclinic">
+                                            <label class="custom-control-label" for="homeclinic2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="combined.homeclinic=='yes'">
+                            <div class="row ml-4">
+                                <label class="col-md-4 qw" for="cap">Concent</label>
+                                <div class="col-md-6">
+                                    <div class="row">
+
+                                        <div class="col-md-6" style="text-align: right;">
+                                            <div class="custom-control custom-radio">
+                                                <input id="homeclinicconcent1" type="radio" class="custom-control-input"
+                                                    value="Verbal" name="homeclinicconcent" #homeclinicconcent="ngModel"
+                                                    [(ngModel)]="combined.homeclinicconcent" required>
+                                                <label class="custom-control-label"
+                                                    for="homeclinicconcent1">Verbal</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="custom-control custom-radio">
+                                                <input id="homeclinicconcent2" type="radio" class="custom-control-input"
+                                                    value="Written" name="homeclinicconcent"
+                                                    #homeclinicconcent="ngModel"
+                                                    [(ngModel)]="combined.homeclinicconcent" required>
+                                                <label class="custom-control-label"
+                                                    for="homeclinicconcent2">Written</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p *ngIf="homeclinicconcent.touched && homeclinicconcent.invalid">Field is required
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row ml-4" *ngIf="combined.homeclinic=='no'">
+                            <div class="col-md-7">
+                                <label>Discontinued due to</label>
+                                <select class="form-control aq" id="homeclinicreason" name="homeclinicreason"
+                                    #homeclinicreason="ngModel" [(ngModel)]="combined.homeclinicreason">
+                                    <!-- change9 -->
+                                    <option hidden value="" selected> Not Applicable </option>
+                                    <option *ngFor="let spike of med_reasons2" [value]="spike">{{spike}}</option>
+                                </select>
+                                <!-- <p *ngIf="homeclinicreason.touched && homeclinicreason.invalid">Reason is required</p> -->
+                            </div>
+                            <div class="col-md-4 form-group" *ngIf="combined.homeclinicreason=='Other'">
+                                <input type="text" class="form-control aq" name="otherhomeclinicreason"
+                                    #otherhomeclinicreason="ngModel" [(ngModel)]="combined.otherhomeclinicreason"
+                                    placeholder="Specify Reason" required>
+                                <p *ngIf="otherhomeclinicreason.touched && otherhomeclinicreason.invalid">Field is
+                                    required</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="currentmeds">Current Meds</label>
+                        <textarea name="currentmeds" id="currentmeds" class="form-control col-md-7 aq"
+                            style="height: 100px;" #currentmeds="ngModel" [(ngModel)]="combined.currentmeds"
+                            placeholder="Enter current meds"></textarea>
+                        <!-- <p *ngIf="currentmeds.touched && currentmeds.invalid">Field is required</p> -->
+                    </div>
+                    <label for="currentmeds">Reported Behaviors : </label>
+                    <div class="row ">
+                        <!-- //repotred behav -->
+                        <label for=""></label>
+                        <label class="col-md-4 qw" for="bhi">Patient is Stable </label>
+                        <div class="col-md-6">
+                            <div class="row">
+
+                                <div class="col-md-6" style="text-align: right;">
+                                    <div class="custom-control custom-radio">
+                                        <input id="masterstable1" type="radio" class="custom-control-input"
+                                            value="stable" name="masterstable" #masterstable="ngModel"
+                                            [(ngModel)]="combined.masterstable">
+                                        <label class="custom-control-label" for="masterstable1">stable</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" style="text-align: left;">
+                                    <div class="custom-control custom-radio">
+                                        <input id="masterstable2" type="radio" class="custom-control-input"
+                                            value="unstable" name="masterstable" #masterstable="ngModel"
+                                            [(ngModel)]="combined.masterstable">
+                                        <label class="custom-control-label" for="masterstable2">unstable</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ml-4" *ngIf="combined.masterstable=='unstable'">
+                        <textarea name="masterstablereason" id="masterstablereason"
+                            style="width: 100%; height: 100px; border: 2px solid #87c442;" class="form-control col-md-8"
+                            #masterstablereason="ngModel" [(ngModel)]="combined.masterstablereason"
+                            placeholder="why is patient unstable" required></textarea>
+                        <p *ngIf="masterstablereason.touched && masterstablereason.invalid">Field is required</p>
+                    </div>
+
+
+
+
+                    <h3 style="color: #87c442;" class="mt-4"> <b> Post Rounding updates </b></h3>
+                    <div class="row mt-3">
+                        <label class="col-md-4 qw" for="bhi" style="font-size: 1.1rem;">Is this is new patient?</label>
+                        <div class="col-md-6">
+                            <div class="row">
+
+                                <div class="col-md-6" style="text-align: right;">
+                                    <div class="custom-control custom-radio">
+                                        <input id="np1" type="radio" class="custom-control-input" value="yes" name="np"
+                                            #np="ngModel" [(ngModel)]="combined.np">
+                                        <label class="custom-control-label" for="np1">Yes</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" style="text-align: left;">
+                                    <div class="custom-control custom-radio">
+                                        <input id="np2" type="radio" class="custom-control-input" value="no" name="np"
+                                            #np="ngModel" [(ngModel)]="combined.np">
+                                        <label class="custom-control-label" for="np2">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 style="color: #87c442;" class="mt-2"> <b> Type Of Visit </b><span>*</span></h5>
+                    <div class="row ml-1 mt-4">
+                        <div class="col-md-3 form-check custom-control custom-radio" *ngFor="let type of type_visits">
+                            <div *ngIf="type=='Care coordination time spent'; else kk">
+                                <div *ngIf="combined.typevisit=='Care coordination time spent'; else disab">
+                                    <input class="form-check-input custom-control-input" type="radio" id="{{type}}"
+                                        name="typevisit" value="{{type}}" #typevisit="ngModel"
+                                        [(ngModel)]="combined.typevisit" required>
+                                    <label class="form-check-label custom-control-label" for="{{type}}">{{type}} <input
+                                            type="text" size="3" #typevisitreason="ngModel" id="carecordination"
+                                            name="typevisitreason" [(ngModel)]="combined.typevisitreason" required>
+                                        Minutes
+                                        <p *ngIf="typevisitreason.touched && typevisitreason.invalid">Field is required
+                                        </p></label>
+                                </div>
+                                <ng-template #disab>
+                                    <input class="form-check-input custom-control-input" type="radio" id="{{type}}"
+                                        name="typevisit" value="{{type}}" #typevisit="ngModel"
+                                        [(ngModel)]="combined.typevisit" required>
+                                    <label class="form-check-label custom-control-label" for="{{type}}">{{type}} <input
+                                            type="text" size="3" #typevisitreason="ngModel" id="carecordination"
+                                            name="typevisitreason" [(ngModel)]="combined.typevisitreason" disabled
+                                            required> Minutes
+                                        <p *ngIf="typevisitreason.touched && typevisitreason.invalid">Field is required
+                                        </p></label>
+
+                                </ng-template>
+                            </div>
+                            <ng-template #kk>
+                                <input class="form-check-input custom-control-input" type="radio" id="{{type}}"
+                                    name="typevisit" value="{{type}}" #typevisit="ngModel"
+                                    [(ngModel)]="combined.typevisit" required>
+                                <!-- {{typevisit.value}} -->
+                                <label class="form-check-label custom-control-label" for="{{type}}">{{type}}</label>
+                            </ng-template>
+                        </div>
+
+                    </div>
+                    <!-- other to different medmanagenrt service-->
+                    <!-- <div class="form-row mt-4" *ngIf="combined.typevisit=='Care coordination time spent'; else dis">
+                        <label for="carecordination" class="col-md-6">Care condition time spent in minutes</label>
+                        <div class="form-group col-md-4">
+                            <input type="text" class="form-control" #typevisitreason="ngModel" id="carecordination"
+                                name="typevisitreason" [(ngModel)]="combined.typevisitreason" required>
+                            <p *ngIf="typevisitreason.touched && typevisitreason.invalid">Field is required</p>
+                        </div>
+                    </div>
+                    <ng-template #dis>
+                    <div class="form-row mt-4">
+                        <label for="carecordination" class="col-md-6">Care condition time spent in minutes</label>
+                        <div class="form-group col-md-4">
+                            <input type="text" class="form-control" #typevisitreason="ngModel" id="carecordination"
+                                name="typevisitreason" [(ngModel)]="combined.typevisitreason" disabled required>
+                            <p *ngIf="typevisitreason.touched && typevisitreason.invalid">Field is required</p>
+                        </div>
+                    </div>
+                    </ng-template> -->
+                    <h5 style="color: #87c442;"> <b> Med Management Services </b></h5>
+                    <div class="form-group mt-3">
+                        <div class="row">
+                            <label class="col-md-4 qw" for="bhi" style="font-size: 1.1rem;">a) Med management
+                                options</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="medmanage2" type="radio" class="custom-control-input" value="yes"
+                                                name="medmanage2" #medmanage2="ngModel"
+                                                [(ngModel)]="combined.medmanage2">
+                                            <label class="custom-control-label" for="medmanage2">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="mm22" type="radio" class="custom-control-input" value="no"
+                                                name="medmanage2" #medmanage2="ngModel"
+                                                [(ngModel)]="combined.medmanage2">
+                                            <label class="custom-control-label" for="mm22">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-row ml-2" *ngIf="combined.medmanage2=='yes'">
+                            <div class="form-check col-md-6 ml-3">
+                                <input class="form-check-input" type="radio" name="seedoc" id="seedoc" value="seedoc"
+                                    #seedoc="ngModel" [(ngModel)]="combined.seedoc" required>
+                                <label class="form-check-label" for="exampleRadios1">
+                                    Attempted to see the patient but could not see because ...
+                                </label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row ml-4" *ngIf="combined.seedoc=='seedoc'">
+                                    <div class="col-md-6">
+                                        <select class="form-control aq" id="exii" name="noseedocreason"
+                                            #noseedocreason="ngModel" [(ngModel)]="combined.noseedocreason" required>
+                                            <option hidden value="" disabled selected> Discontinued due to </option>
+                                            <option *ngFor="let spike of no_see_doc_reasons" [value]="spike">{{spike}}
+                                            </option>
+                                        </select>
+                                        <p *ngIf="noseedocreason.touched && noseedocreason.invalid">Field is required
+                                        </p>
+                                    </div>
+                                    <div class="form-group col-md-4" *ngIf="combined.noseedocreason=='Other'">
+                                        <input type="text" class="form-control" name="othernoseedocreason"
+                                            #othernoseedocreason="ngModel" [(ngModel)]="combined.othermedreason"
+                                            placeholder="Specify Reason" required>
+                                        <!-- <p *ngIf="othermedreason.touched && othermedreason.invalid">Field is required</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check col-md-6 ml-3">
+                                <input class="form-check-input" type="radio" name="seedoc" id="seedoc" value="stable"
+                                    #seedoc="ngModel" [(ngModel)]="combined.seedoc" required>
+                                <label class="form-check-label" for="exampleRadios1">
+                                    Patient is stable
+                                </label>
+                            </div>
+                            <div class="form-group col-md-12" *ngIf="combined.seedoc=='stable'">
+                                <div>
+
+                                    <div class="row mt-1">
+                                        <div class="col-md-12" style="margin-top: 5px;">
+                                            <div class="row custom-radio-wrap">
+                                                <div class="col-md-6">
+                                                    <!-- no gave gdr -->
+                                                    <div class="form-check ml-4">
+                                                        <input id="yesps1" class="form-check-input" type="radio"
+                                                            value="yes" name="yesstable" #yesstable="ngModel"
+                                                            [(ngModel)]="combined.yesstable" required>
+                                                        <label class="custom-radio" class="form-check-label"
+                                                            for="yesps1">
+                                                            GDR was considered but could not perform as patient would
+                                                            become unstable
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" style="text-align: left;">
+                                                    <div class="form-group">
+                                                        <input id="yesps2" class="form-check-input" type="radio"
+                                                            value="no" name="yesstable" #nostable="ngModel"
+                                                            [(ngModel)]="combined.yesstable" required>
+                                                        <label class="custom-radio" for="yesps2"
+                                                            class="form-check-label">Performed following GDR</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p *ngIf="yesstable.touched && yesstable.invalid">Field is required</p>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="combined.yesstable=='no'">
+                                        <div class="row mt-2 ml-4">
+                                            <div class="form-group col-md-3 ml-4">
+                                                <label>Decreased</label>
+                                                <input type="text" class="gdp" name="decrease" class="form-control"
+                                                    #decrease="ngModel" [(ngModel)]="combined.decrease" required>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label>Stopped</label>
+                                                <input type="text" class="gdp" name="increase" #increase="ngModel"
+                                                    class="form-control" [(ngModel)]="combined.increase" required>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Meds continued, added stop date</label>
+                                                <input type="date" class="gdp" name="medstopdate" #medstopdate="ngModel"
+                                                    class="form-control" [(ngModel)]="combined.medstopdate" required>
+                                            </div>
+                                            <p
+                                                *ngIf="decrease.touched && decrease.invalid && increase.touched && increase.invalid && medstopdate.touched && medstopdate.invalid">
+                                                Field is required</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check col-md-6 ml-3">
+                                <input class="form-check-input" type="radio" name="seedoc" id="seedoc" value="unstable"
+                                    #seedoc="ngModel" [(ngModel)]="combined.seedoc" required>
+                                <label class="form-check-label" for="exampleRadios1">
+                                    Patient is unstable
+                                </label>
+                            </div>
+                            <div class="form-group col-md-12" *ngIf="combined.seedoc=='unstable'">
+                                <h6 class="ml-4">Patient shows symtoms of:</h6>
+                                <div class="row ml-4">
+                                    <div *ngFor="let sym of unstable_syms;let index=index" class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input symtoms_meds" type="checkbox"
+                                                id="{{index+30}}" [value]="sym">
+                                            <label class="form-check-label" for="{{index+30}}">{{sym}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row mt-2">
+                                        <div class="col-md-12">
+                                            <h6 style="font-weight: 500;" class="ml-4">Medication Changes</h6>
+                                            <div class="row custom-radio-wrap ml-4">
+                                                <div class="col-md-6">
+                                                    <div class="form-check">
+                                                        <input id="nops1" type="radio" value="yes" name="nostable"
+                                                            #nostable="ngModel" [(ngModel)]="combined.nostable"
+                                                            class="form-check-input">
+                                                        <label class="custom-radio form-check-label" for="nops1">No
+                                                            Change in Medicine</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check">
+                                                        <input id="nops2" type="radio" value="no" name="nostable"
+                                                            #nostable="ngModel" [(ngModel)]="combined.nostable"
+                                                            class="form-check-input">
+                                                        <label class="custom-radio form-check-label" for="nops2">Changed
+                                                            Medicine</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1 ml-4" *ngIf="combined.nostable=='yes'">
+                                        <div class="col-md-5 ml-4">
+                                            <label class="df">Will Just Monitor </label>
+                                        </div>
+                                        <div class="col-md-5 form-group">
+                                            <input type="text" class="gdp1 form-control" name="unstable_text"
+                                                class="form-control" #unstable_text="ngModel"
+                                                [(ngModel)]="combined.unstable_text" placeholder="Monitor">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1 ml-4" *ngIf="combined.nostable=='no'">
+                                        <div class="form-group col-md-3 ml-4">
+                                            <label>Started</label>
+                                            <input type="text" class="gdp form-control" name="started"
+                                                #started="ngModel" [(ngModel)]="combined.started">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>Increase</label>
+                                            <input type="text" class="increase form-control" name="increase"
+                                                #increase="ngModel" [(ngModel)]="combined.increase">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>Decrease</label>
+                                            <input type="text" class="gdp form-control" name="decrease"
+                                                #decrease="ngModel" [(ngModel)]="combined.decrease">
+                                        </div>
+                                        <div class="form-group col-md-3 ml-4">
+                                            <label>Stopped</label>
+                                            <input type="text" class="gdp form-control" name="stopped"
+                                                #stopped="ngModel" [(ngModel)]="combined.stopped">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>Added</label>
+                                            <input type="text" class="gdp form-control" name="added" #added="ngModel"
+                                                [(ngModel)]="combined.added">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>Stop Date Of Added Medicine</label>
+                                            <input type="date" class="gdp form-control" name="addeddate"
+                                                #addeddate="ngModel" [(ngModel)]="combined.addeddate">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check col-md-6 ml-3">
+                                <input class="form-check-input" type="radio" name="seedoc" id="seedoc"
+                                    value="verystable" #seedoc="ngModel" [(ngModel)]="combined.seedoc" required>
+                                <label class="form-check-label" for="exampleRadios1">
+                                    Patient is very stable
+                                </label>
+                            </div>
+                            <div class="form-group col-md-12" *ngIf="combined.seedoc=='verystable'">
+                                <div class="row ml-4">
+                                    <label class="col-md-4">Discharged patient from med management services
+                                        because:</label>
+                                    <div class="col-md-5">
+                                        <input type="text" name="verystable" id="verystable" #verystable="ngModel"
+                                            [(ngModel)]="combined.verystable" class="form-control" required>
+                                    </div>
+                                    <p *ngIf="verystable.touched && verystable.invalid">Field is required</p>
+                                </div>
+                            </div>
+                            <p *ngIf="seedoc.touched && seedoc.invalid">Field is required</p>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-md-4 qw" for="bhi" style="font-size: 1.1rem;">b) Ordered
+                                Labs</label>
+                            <div class="col-md-6">
+                                <div class="row">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="lab1" type="radio" class="custom-control-input" value="yes"
+                                                name="labs" #labs="ngModel" [(ngModel)]="combined.labs">
+                                            <label class="custom-control-label" for="lab1">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="lab2" type="radio" class="custom-control-input" value="no"
+                                                name="labs" #labs="ngModel" [(ngModel)]="combined.labs">
+                                            <label class="custom-control-label" for="lab2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row mt-4" *ngIf="combined.labs=='yes'">
+                            <label for="care" class="col-md-6">Enter Lab name saperated by comma</label>
+                            <div class="form-group col-md-4">
+                                <input type="text" class="form-control" #labname="ngModel" name="labname"
+                                    [(ngModel)]="combined.labname" required>
+                            </div>
+                            <p *ngIf="labname.touched&&labname.invalid">Field is required</p>
+                        </div>
+                        <!-- <h5 style="color: #87c442;" class="mt-2"> <b> Psychotherapy Services </b></h5> -->
+                        <div class="row mt-3">
+                            <label class="col-md-4 qw" for="bhi" style="font-size: 1.1rem; color:#87c442">Psychotherapy Services </label>
+                            <div class="col-md-6">
+                                <div class="row ml-">
+
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="psymanage" type="radio" class="custom-control-input" value="yes"
+                                                name="psymanage" #psymanage="ngModel" [(ngModel)]="combined.psymanage">
+                                            <label class="custom-control-label" for="psymanage">Yes</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="pm22" type="radio" class="custom-control-input" value="no"
+                                                name="psymanage" #psymanage="ngModel" [(ngModel)]="combined.psymanage">
+                                            <label class="custom-control-label" for="pm22">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-row ml-2" *ngIf="combined.psymanage=='yes'">
+                            <div class="form-check col-md-6 ml-3">
+                                <input class="form-check-input" type="radio" name="seepsy" id="seepsy" value="seepsy"
+                                    #seepsy="ngModel" [(ngModel)]="combined.seepsy" required>
+                                <label class="form-check-label" for="exampleRadios1">
+                                    Attempted to see the patient but could not see because ...
+                                </label>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group row ml-4" *ngIf="combined.seepsy=='seepsy'">
+                                    <div class="col-md-6">
+                                        <select class="form-control aq" id="exii" name="psynoseedocreason"
+                                            #psynoseedocreason="ngModel" [(ngModel)]="combined.psynoseedocreason"
+                                            required>
+                                            <option hidden value="" disabled selected> Discontinued due to </option>
+                                            <option *ngFor="let spike of no_see_doc_reasons" [value]="spike">{{spike}}
+                                            </option>
+                                        </select>
+                                        <p *ngIf="psynoseedocreason.touched && psynoseedocreason.invalid">Field is
+                                            required</p>
+                                    </div>
+                                    <div class="form-group col-md-4" *ngIf="combined.psynoseedocreason=='Other'">
+                                        <input type="text" class="form-control" name="otherpsynoseedocreason"
+                                            #otherpsynoseedocreason="ngModel"
+                                            [(ngModel)]="combined.otherpsynoseedocreason" placeholder="Specify Reason">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check col-md-6 ml-3">
+                                <input class="form-check-input" type="radio" name="seepsy" id="seepsy" value="stablepsy"
+                                    #seepsy="ngModel" [(ngModel)]="combined.seepsy" required>
+                                <label class="form-check-label" for="exampleRadios1">
+                                    Patient is stable
+                                </label>
+                            </div>
+                            <!-- <div class="form-group col-md-12" *ngIf="combined.seepsy=='stablepsy'">
+                                Continue Psycothreapy
+                            </div> -->
+                            <div class="form-check col-md-6 ml-3">
+                                <input class="form-check-input" type="radio" name="seepsy" id="seepsy" value="unstable"
+                                    #seepsy="ngModel" [(ngModel)]="combined.seepsy" required>
+                                <label class="form-check-label" for="exampleRadios1">
+                                    Patient is unstable
+                                </label>
+                            </div>
+                            <div class="form-group col-md-12" *ngIf="combined.seepsy=='unstable'">
+                                <h6 class="ml-4">Patient shows symtoms of:</h6>
+                                <div class="row ml-4">
+                                    <div *ngFor="let sym of unstable_syms;let index=index" class="col-md-6 ">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="{{index+200}}"
+                                                [value]="sym" class="symtoms_psy">
+                                            <label class="form-check-label" for="{{index+200}}">{{sym}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check col-md-6 ml-3">
+                                <input class="form-check-input" type="radio" name="seepsy" id="seepsy"
+                                    value="verystablepsy" #seepsy="ngModel" [(ngModel)]="combined.seepsy" required>
+                                <label class="form-check-label" for="exampleRadios1">
+                                    Patient is very stable
+                                </label>
+                            </div>
+                            <div class="form-group col-md-12" *ngIf="combined.seepsy=='verystablepsy'">
+                                <div class="row ml-4">
+                                    <label class="col-md-4">Discharged patient from Psychotherapy services
+                                        because:</label>
+                                    <div class="col-md-5">
+                                        <input type="text" name="verystablepsy" id="verystablepsy"
+                                            #verystablepsy="ngModel" [(ngModel)]="combined.verystablepsy"
+                                            class="form-control" required>
+                                        <p *ngIf="verystablepsy.touched && verystablepsy.invalid">Field is required</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mt-2 mb-2"
+                                *ngIf="combined.seepsy=='stablepsy'||combined.seepsy=='unstable'">
+                                <!-- change -->
+                                <!-- <input type="number" class="form-control" name="thtime" id="thtime" #thtime="ngModel"
+                                    [(ngModel)]="combined.thtime" placeholder="Time spend in threapy" required> -->
+                                Time Spend on psychotherapy
+                                <select class="form-control aq" id="thtime" name="thtime" #thtime="ngModel"
+                                    [(ngModel)]="combined.thtime" required>
+                                    <option hidden value="" disabled selected>Select Time </option>
+                                    <option *ngFor="let spike of sptime" [value]="spike">{{spike}}
+                                    </option>
+                                </select>
+                                <p *ngIf="thtime.touched && thtime.invalid">Field is required</p>
+                            </div>
+                            <p *ngIf="seepsy.touched && seepsy.invalid">Field is required</p>
+                        </div>
+                    </div>
+                    <h5 style="color: #87c442;" class="mt-2"> <b> Psychiatric scales/Case management service </b></h5>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-md-4 qw" for="iefs">Is Eligible For Scales ?</label>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6" style="text-align: right;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="iefs1" type="radio" class="custom-control-input" value="yes"
+                                                name="scaleeligible" #scaleeligible="ngModel"
+                                                [(ngModel)]="combined.scaleeligible" (ngModelChange)='fill($event)'>
+                                            <label class="custom-control-label" for="iefs1">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="text-align: left;">
+                                        <div class="custom-control custom-radio">
+                                            <input id="iefs2" type="radio" class="custom-control-input" value="no"
+                                                name="scaleeligible" #scaleeligible="ngModel"
+                                                [(ngModel)]="combined.scaleeligible" (ngModelChange)='fill($event)'>
+                                            <label class="custom-control-label" for="iefs2">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- What Scales are done -->
+                    <div class="form-group" *ngIf="combined.scaleeligible=='yes'">
+                        <div class="form-group row ml-4">
+                            <div class="col-md-7">
+                                <label>Attempted to see the patient but could not see because</label>
+                                <select class="form-control aq" id="exii" name="scaleeligiblereason"
+                                    #scaleeligiblereason="ngModel" [(ngModel)]="combined.scaleeligiblereason" required>
+                                    <option value="Not Applicable" selected> Not Applicable </option>
+                                    <option *ngFor="let spike of scaleeligible_reasons" [value]="spike">{{spike}}
+                                    </option>
+                                </select>
+                                <!-- <p *ngIf="scaleeligiblereason.touched && scaleeligiblereason.invalid">Reason is required</p> -->
+                            </div>
+                            <div class="col-md-4 form-group" *ngIf="combined.scaleeligiblereason=='Other'">
+                                <input type="text" class="form-control aq" name="otherscaleeligiblereason"
+                                    #otherscaleeligiblereason="ngModel" [(ngModel)]="combined.otherscaleeligiblereason"
+                                    placeholder="Specify Reason" required>
+                                <p *ngIf="otherscaleeligiblereason.touched && otherscaleeligiblereason.invalid">Field is
+                                    required
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row ml-4">
+                            <label class="col-md-4 qw" for="wsd">List of Scales : </label>
+                        </div>
+
+                        <div class="form-group" *ngIf="combined.scaleeligible=='yes'">
+                            <div class="row ml-4">
+                                <div class="col-md-10 ml-4" *ngFor="let i of scales;let im=index">
+                                    <div class="row" *ngIf="i=='Depression' || i=='Cognitive impairment' || i=='Trauma'
+                                || i=='Anxiety' || i=='PTSD' || i=='Bipolar diagnostic' || i=='Dementia with behaviors' ||
+                                i=='Dementia testing' || i=='Insomnia' || i=='Suicidal assessment' || i=='Schizophrenia'
+                                || i=='Substance use' || i=='Misc'; else kk">
+                                        <h3>{{i}}</h3>
+                                        <input type="checkbox" class="form-check-input scaleschkbx" [value]="i"
+                                            id="{{im+100}}" hidden>
+                                        <label for="scale" class="form-check-label" id="{{im+100}}"></label>
+                                        <input type="date" name="scale_date" id="{{im+100}}"
+                                            class="form-control scale_date" value="0" hidden>
+                                        <input type="number" min="0" max="75" placeholder="Enter scale score"
+                                            name="scale_score" id="{{im+100}}" class="form-control scale_score"
+                                            value="0" hidden>
+                                    </div>
+                                    <ng-template #kk>
+                                        <div class="row">
+                                            <div class="col-md-1 ml-4">
+                                                <input type="checkbox" class="form-check-input scaleschkbx" [value]="i"
+                                                    id="{{im+100}}">
+                                                <label for="scale" class="form-check-label"
+                                                    id="{{im+100}}">{{i}}</label>
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <input type="date" name="scale_date" id="{{im+100}}"
+                                                    class="form-control scale_date">
+                                            </div>
+                                            <div class="col-md-2 form-group">
+                                                <input type="number" min="0" max="250" placeholder="score"
+                                                    name="scale_score" id="{{im+100}}" class="form-control scale_score"
+                                                    [(ngModel)]="scale_score[im]">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="row">
+                                                    <!-- <div class="col-md-4">
+                                                        <div class="custom-control custom-radio">
+                                                          <input id="scaledays1" type="radio" class="custom-control-input" value="30" name="scaledays" #scaledays="ngModel"
+                                                            [(ngModel)]="combined.scaledays">
+                                                          <label class="custom-control-label lor" for="scaledays1">30 Days</label>
+                                                        </div>
+                                                      </div>
+                                                      <div class="col-md-4">
+                                                        <div class="custom-control custom-radio">
+                                                          <input id="scaledays2" type="radio" class="custom-control-input" value="60" name="scaledays" #scaledays="ngModel"
+                                                            [(ngModel)]="combined.scaledays">
+                                                          <label class="custom-control-label lor" for="scaledays2">60 Days</label>
+                                                        </div>
+                                                      </div>
+                                                      <div class="col-md-4">
+                                                        <div class="custom-control custom-radio">
+                                                          <input id="scaledays3" type="radio" class="custom-control-input" value="notapplicable" name="scaledays" #scaledays="ngModel"
+                                                            [(ngModel)]="combined.scaledays">
+                                                          <label class="custom-control-label lor" for="scaledays3">Not Applicable</label>
+                                                        </div>
+                                                      </div> -->
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='PHQ9'&&scale_score[im]<=4" style="padding: 10px;">
+                                                minimal depression
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='PHQ9'&&scale_score[im]>4&&scale_score[im]<=9"
+                                                style="padding: 10px;">
+                                                mild depression
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='PHQ9'&&scale_score[im]>10&&scale_score[im]<=14"
+                                                style="padding: 10px;">
+                                                moderate depression
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='PHQ9'&&scale_score[im]>14&&scale_score[im]<=19"
+                                                style="padding: 10px;">
+                                                moderately severe depression
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='PHQ9'&&scale_score[im]>19"
+                                                style="padding: 10px;">
+                                                severe depression
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='GDS'&&scale_score[im]<=5"
+                                                style="padding: 10px;">
+                                                No depression
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='GDS'&&scale_score[im]>5&&scale_score[im]<=9"
+                                                style="padding: 10px;">
+                                                Suggestive of depression
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='GDS'&&scale_score[im]>9"
+                                                style="padding: 10px;">
+                                                Indicative of depression.
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BDI'&&scale_score[im]<=10"
+                                                style="padding: 10px;">
+                                                Normal
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BDI'&&scale_score[im]>10&&scale_score[im]<=16"
+                                                style="padding: 10px;">
+                                                Mild mood disturbance
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BDI'&&scale_score[im]>16&&scale_score[im]<=20"
+                                                style="padding: 10px;">
+                                                Borderline clinical depression
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BDI'&&scale_score[im]>20&&scale_score[im]<=30"
+                                                style="padding: 10px;">
+                                                Moderate depression
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BDI'&&scale_score[im]>30&&scale_score[im]<=40"
+                                                style="padding: 10px;">
+                                                Severe depression
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BDI'&&scale_score[im]>40"
+                                                style="padding: 10px;">
+                                                Extreme depression
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BIMS'&&scale_score[im]<=7"
+                                                style="padding: 10px;">
+                                                Severe impairment
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BIMS'&&scale_score[im]>7&&scale_score[im]<12"
+                                                style="padding: 10px;">
+                                                Moderately impaired
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BIMS'&&scale_score[im]>=12"
+                                                style="padding: 10px;">
+                                                Cognitively intact
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='MMSE'&&scale_score[im]<=12"
+                                                style="padding: 10px;">
+                                                severe dementia
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='MMSE'&&scale_score[im]>12&&scale_score[im]<20"
+                                                style="padding: 10px;">
+                                                moderate dementia
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='MMSE'&&scale_score[im]>20&&scale_score[im]<24"
+                                                style="padding: 10px;">
+                                                mild dementia
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='MMSE'&&scale_score[im]>25"
+                                                style="padding: 10px;">
+                                                no dementia
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BTQ'&&scale_score[im]<1"
+                                                style="padding: 10px;">
+                                                No trauma
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BTQ'&&scale_score[im]>=1"
+                                                style="padding: 10px;">
+                                                Presence trauma
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='LEC-5'&&scale_score[im]<1"
+                                                style="padding: 10px;">
+                                                No trauma
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='LEC-5'&&scale_score[im]>=1"
+                                                style="padding: 10px;">
+                                                Presence trauma
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='GAD'&&scale_score[im]<=5"
+                                                style="padding: 10px;">
+                                                Normal
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='GAD'&&scale_score[im]>5&&scale_score[im]<10"
+                                                style="padding: 10px;">
+                                                Mild anxiety
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='GAD'&&scale_score[im]>10&&scale_score[im]<15"
+                                                style="padding: 10px;">
+                                                Moderate anxiety
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='GAD'&&scale_score[im]>15"
+                                                style="padding: 10px;">
+                                                Severe anxiety
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BAI'&&scale_score[im]<21"
+                                                style="padding: 10px;">
+                                                low anxiety
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BAI'&&scale_score[im]>21&&scale_score[im]<35"
+                                                style="padding: 10px;">
+                                                Moderate anxiety
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BAI'&&scale_score[im]>35"
+                                                style="padding: 10px;">
+                                                Severe anxiety
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='PCL'&&scale_score[im]<=17"
+                                                style="padding: 10px;">
+                                                PTSD unlikely
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='PCL'&&scale_score[im]>18"
+                                                style="padding: 10px;">
+                                                PTSD likely
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='NSESS'&&scale_score[im]<=9"
+                                                style="padding: 10px;">
+                                                Mild
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='NSESS'&&scale_score[im]>9&&scale_score[im]<=18"
+                                                style="padding: 10px;">
+                                                Moderate
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='NSESS'&&scale_score[im]>18&&scale_score[im]<=27"
+                                                style="padding: 10px;">
+                                                Moderate severe
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='NSESS'&&scale_score[im]>27"
+                                                style="padding: 10px;">
+                                                very severe
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BSDS'&&scale_score[im]<=6"
+                                                style="padding: 10px;">
+                                                Highly unlikely probability of Bipolar
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BSDS'&&scale_score[im]>7&&scale_score[im]<=12"
+                                                style="padding: 10px;">
+                                                Low probability of Bipolar
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BSDS'&&scale_score[im]>13&&scale_score[im]<=19"
+                                                style="padding: 10px;">
+                                                Moderate probability of Bipolar
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BSDS'&&scale_score[im]>20"
+                                                style="padding: 10px;">
+                                                High probability of Bipolar
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='MDQ'&&scale_score[im]<=1"
+                                                style="padding: 10px;">
+                                                Highly unlikely probability of Bipolar
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='MDQ'&&scale_score[im]==2"
+                                                style="padding: 10px;">
+                                                Low probability of Bipolar
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='MDQ'&&scale_score[im]==3"
+                                                style="padding: 10px;">
+                                                Moderate probability of Bipolar
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='MDQ'&&scale_score[im]>4"
+                                                style="padding: 10px;">
+                                                High probability of Bipolar
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BEHAVE-AD'&&scale_score[im]<1"
+                                                style="padding: 10px;">
+                                                No symptoms
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BEHAVE-AD'&&scale_score[im]>=1&&scale_score[im]<=5"
+                                                style="padding: 10px;">
+                                                Mild symptoms
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BEHAVE-AD'&&scale_score[im]>5&&scale_score[im]<=25"
+                                                style="padding: 10px;">
+                                                Moderate symtoms
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BEHAVE-AD'&&scale_score[im]>25&&scale_score[im]<=50"
+                                                style="padding: 10px;">
+                                                Severe symptoms
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BEHAVE-AD'&&scale_score[im]>50"
+                                                style="padding: 10px;">
+                                                Very severe symptoms
+                                            </div>
+
+                                            <div class="col-md-3" *ngIf="scales[im]=='RMBC'&&scale_score[im]<1"
+                                                style="padding: 10px;">
+                                                No symptoms
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='RMBC'&&scale_score[im]>=1&&scale_score[im]<=24"
+                                                style="padding: 10px;">
+                                                Mild symptoms
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='RMBC'&&scale_score[im]>25&&scale_score[im]<=48"
+                                                style="padding: 10px;">
+                                                Moderate symtoms
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='RMBC'&&scale_score[im]>49&&scale_score[im]<=72"
+                                                style="padding: 10px;">
+                                                Severe symptoms
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='RMBC'&&scale_score[im]>72"
+                                                style="padding: 10px;">
+                                                Very severe symptoms
+                                            </div>
+
+                                            <div class="col-md-3" *ngIf="scales[im]=='MOCA'&&scale_score[im]<5"
+                                                style="padding: 10px;">
+                                                severe dementia
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='MOCA'&&scale_score[im]>=6&&scale_score[im]<=10"
+                                                style="padding: 10px;">
+                                                moderate dementia
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='MOCA'&&scale_score[im]>11&&scale_score[im]<=17"
+                                                style="padding: 10px;">
+                                                mild dementia
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='MOCA'&&scale_score[im]>18&&scale_score[im]<=25"
+                                                style="padding: 10px;">
+                                                mild cognitive impairment
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='MOCA'&&scale_score[im]>26"
+                                                style="padding: 10px;">
+                                                No dementia
+                                            </div>
+
+                                            <div class="col-md-3" *ngIf="scales[im]=='NPIQ'&&scale_score[im]<=12"
+                                                style="padding: 10px;">
+                                                mild
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='NPIQ'&&scale_score[im]>13&&scale_score[im]<=24"
+                                                style="padding: 10px;">
+                                                moderate
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='NPIQ'&&scale_score[im]>25"
+                                                style="padding: 10px;">
+                                                severe
+                                            </div>
+
+                                            <div class="col-md-3" *ngIf="scales[im]=='ISI'&&scale_score[im]<=7"
+                                                style="padding: 10px;">
+                                                No clinically significant insomnia
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='ISI'&&scale_score[im]>7&&scale_score[im]<=14"
+                                                style="padding: 10px;">
+                                                Subthreshold insomnia
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='ISI'&&scale_score[im]>15&&scale_score[im]<=21"
+                                                style="padding: 10px;">
+                                                Clinical insomnia (moderate severity)
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='ISI'&&scale_score[im]>22"
+                                                style="padding: 10px;">
+                                                Clinical insomnia (severe)
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='AIS'&&scale_score[im]<=5"
+                                                style="padding: 10px;">
+                                                Insomnia unlikely
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='AIS'&&scale_score[im]>6&&scale_score[im]<=16"
+                                                style="padding: 10px;">
+                                                Likely moderate insomnia
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='AIS'&&scale_score[im]>16"
+                                                style="padding: 10px;">
+                                                Likely severe insomnia
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='CSSRS'&&scale_score[im]==0"
+                                                style="padding: 10px;">
+                                                mild risk
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='CSSRS'&&scale_score[im]>=1&&scale_score[im]<=2"
+                                                style="padding: 10px;">
+                                                moderate risk
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='CSSRS'&&scale_score[im]>2"
+                                                style="padding: 10px;">
+                                                severe risk
+                                            </div>
+
+                                            <div class="col-md-3" *ngIf="scales[im]=='PANSS'&&scale_score[im]<90"
+                                                style="padding: 10px;">
+                                                mild
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='PANSS'&&scale_score[im]>=91&&scale_score[im]<=120"
+                                                style="padding: 10px;">
+                                                moderate
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='PANSS'&&scale_score[im]>120&&scale_score[im]<=150"
+                                                style="padding: 10px;">
+                                                moderately severe
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='PANSS'&&scale_score[im]>150&&scale_score[im]<=180"
+                                                style="padding: 10px;">
+                                                severe
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='PANSS'&&scale_score[im]>180"
+                                                style="padding: 10px;">
+                                                extremely severe
+                                            </div>
+
+                                            <div class="col-md-3" *ngIf="scales[im]=='BPRS'&&scale_score[im]<=54"
+                                                style="padding: 10px;">
+                                                mild
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BPRS'&&scale_score[im]>54&&scale_score[im]<=72"
+                                                style="padding: 10px;">
+                                                moderate
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BPRS'&&scale_score[im]>72&&scale_score[im]<=90"
+                                                style="padding: 10px;">
+                                                moderately severe
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='BPRS'&&scale_score[im]>90&&scale_score[im]<=108"
+                                                style="padding: 10px;">
+                                                severe
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='BPRS'&&scale_score[im]>108"
+                                                style="padding: 10px;">
+                                                extremely severe
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='AUDIT'&&scale_score[im]>8&&scale_score[im]<=15"
+                                                style="padding: 10px;">
+                                                mild
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='AUDIT'&&scale_score[im]>15&&scale_score[im]<=19"
+                                                style="padding: 10px;">
+                                                moderate
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='AUDIT'&&scale_score[im]>19"
+                                                style="padding: 10px;">
+                                                severe
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='DAST'&&scale_score[im]<=1"
+                                                style="padding: 10px;">
+                                                healthy
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='DAST'&&scale_score[im]==2"
+                                                style="padding: 10px;">
+                                                risky
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='DAST'&&scale_score[im]>2&&scale_score[im]<=5"
+                                                style="padding: 10px;">
+                                                harmful
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='DAST'&&scale_score[im]>5"
+                                                style="padding: 10px;">
+                                                severe
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='FAGERSTORM'&&scale_score[im]<=2"
+                                                style="padding: 10px;">
+                                                Max dependence
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='FAGERSTORM'&&scale_score[im]>2&&scale_score[im]<=5"
+                                                style="padding: 10px;">
+                                                Low to moderate dependence
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='FAGERSTORM'&&scale_score[im]>5&&scale_score[im]<=7"
+                                                style="padding: 10px;">
+                                                Moderate dependence
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='FAGERSTORM'&&scale_score[im]>7"
+                                                style="padding: 10px;">
+                                                Severe dependence
+                                            </div>
+                                            <div class="col-md-3"
+                                                *ngIf="scales[im]=='FAGERSTORM'&&scale_score[im]>1&&scale_score[im]<=12"
+                                                style="padding: 10px;">
+                                                unlikely pseudobulbar affect
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='FAGERSTORM'&&scale_score[im]>12&&scale_score[im]<=16"
+                                                style="padding: 10px;">
+                                                possibility of pseudobulbar affect
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='FAGERSTORM'&&scale_score[im]>16"
+                                                style="padding: 10px;">
+                                                likely pseudobulbar affect
+                                            </div>
+                                            <div class="col-md-3" *ngIf="scales[im]=='AIMS'&&scale_score[im]>2"
+                                                style="padding: 10px;">
+                                                evidence of tardive dyskinesia. 
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #87c442;"> <b> Consultation </b></h3>
+                    <div class="form-row mt-4">
+                        <label class="col-md-4 qw" for="iop">Consulted</label>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6" style="text-align: right;">
+                                    <div class="custom-control custom-radio form-group">
+                                        <input id="consult" type="radio" class="custom-control-input" value="yes"
+                                            name="consult" #consult="ngModel" [(ngModel)]="combined.consult">
+                                        <label class="custom-control-label" for="consult">Yes</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="text-align: left;">
+                                    <div class="custom-control custom-radio form-group">
+                                        <input id="consult2" type="radio" class="custom-control-input" value="no"
+                                            name="consult" #consult="ngModel" [(ngModel)]="combined.consult">
+                                        <label class="custom-control-label" for="consult2">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row ml-4" *ngIf="combined.consult=='yes'">
+                        <label class="col-md-4 qw" for="iop">Consulted psychotherapy.</label>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6" style="text-align: right;">
+                                    <div class="custom-control custom-radio form-group">
+                                        <input id="conpsy" type="radio" class="custom-control-input" value="yes"
+                                            name="conpsy" #conpsy="ngModel" [(ngModel)]="combined.conpsy" required>
+                                        <label class="custom-control-label" for="conpsy">Yes</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="text-align: left;">
+                                    <div class="custom-control custom-radio form-group">
+                                        <input id="conpsy2" type="radio" class="custom-control-input" value="no"
+                                            name="conpsy" #conpsy="ngModel" [(ngModel)]="combined.conpsy" required>
+                                        <label class="custom-control-label" for="conpsy2">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <p *ngIf="conpsy.touched && conpsy.invalid">Field is required</p>
+                        </div>
+                    </div>
+                    <div class="row ml-4" *ngIf="combined.conpsy=='yes' && combined.consult=='yes'">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select class="form-control aq" id="conpsyname" name="conpsyname" #conpsyname="ngModel"
+                                    [(ngModel)]="combined.conpsyname" required>
+                                    <option hidden value="" disabled selected> Assigned to psychotherapist </option>
+                                    <option *ngFor="let spii of providers" [value]="spii.name">{{spii.name}}</option>
+                                </select>
+                                <p *ngIf="conpsyname.touched && conpsyname.invalid">Field is required</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <input type="text" class="form-control aq" placeholder="Reason for consultation"
+                                name="conpsyreason" #conpsyreason="ngModel" [(ngModel)]="combined.conpsyreason"
+                                required>
+                            <p *ngIf="conpsyreason.touched && conpsyreason.invalid">Field is required</p>
+                        </div>
+                    </div>
+                    <div class="form-row ml-4" *ngIf="combined.consult=='yes' && combined.consult=='yes'">
+                        <label class="col-md-4 qw" for="iop">Consulted Med Management.</label>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6" style="text-align: right;">
+                                    <div class="custom-control custom-radio form-group">
+                                        <input id="conmed" type="radio" class="custom-control-input" value="yes"
+                                            name="conmed" #conmed="ngModel" [(ngModel)]="combined.conmed" required>
+                                        <label class="custom-control-label" for="conmed">Yes</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="text-align: left;">
+                                    <div class="custom-control custom-radio form-group">
+                                        <input id="conmed2" type="radio" class="custom-control-input" value="no"
+                                            name="conmed" #conmed="ngModel" [(ngModel)]="combined.conmed" required>
+                                        <label class="custom-control-label" for="conmed2">No</label>
+                                    </div>
+                                </div>
+                                <p *ngIf="conmed.touched && conmed.invalid">Field is required</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ml-4" *ngIf="combined.conmed=='yes' && combined.consult=='yes'">
+                        <div class="col-md-6 form-group">
+                            <input type="text" class="form-control aq" placeholder="Reason for consultation"
+                                name="conmedreason" #conmedreason="ngModel" [(ngModel)]="combined.conmedreason"
+                                required>
+                            <p *ngIf="conmedreason.touched && conmedreason.invalid">Field is required</p>
+                        </div>
+                    </div>
+                    <div class="form-row ml-4" *ngIf="combined.consult=='yes'">
+                        <label class="col-md-4 qw" for="iop">Consulted Screening.</label>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6" style="text-align: right;">
+                                    <div class="custom-control custom-radio form-group">
+                                        <input id="conscr" type="radio" class="custom-control-input" value="yes"
+                                            name="conscr" #conscr="ngModel" [(ngModel)]="combined.conscr" required>
+                                        <label class="custom-control-label" for="conscr">Yes</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="text-align: left;">
+                                    <div class="custom-control custom-radio form-group">
+                                        <input id="conscr2" type="radio" class="custom-control-input" value="no"
+                                            name="conscr" #conscr="ngModel" [(ngModel)]="combined.conscr" required>
+                                        <label class="custom-control-label" for="conscr2">No</label>
+                                    </div>
+                                </div>
+                                <p *ngIf="conscr.touched && conscr.invalid">Field is required</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ml-4" *ngIf="combined.conscr=='yes' && combined.consult=='yes'">
+                        <div class="col-md-6 form-group">
+                            <input type="text" class="form-control aq" placeholder="Reason for consultation"
+                                name="conscrreason" #conscrreason="ngModel" [(ngModel)]="combined.conscrreason"
+                                required>
+                            <p *ngIf="conscrreason.touched && conscrreason.invalid">Field is required</p>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #87c442;"> <b> Urgency of follow ups </b></h3>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            For psychotherapy
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control aq" placeholder="No. of Days" name="followup"
+                                #followup="ngModel" [(ngModel)]="combined.followup">
+                            <!-- <p *ngIf="followup.touched && followup.invalid">Field is required</p> -->
+                        </div>
+                    </div>
+                    <label>For Others : </label>
+                    <div class="row ml-1 mt-4">
+                        <div class="col-md-3 form-check custom-control custom-radio" *ngFor="let type of followup_type">
+                            <input class="form-check-input custom-control-input" type="radio" id="{{type}}"
+                                name="medfollowup" value="{{type}}" #medfollowup="ngModel"
+                                [(ngModel)]="combined.medfollowup" required>
+                            <label class="form-check-label custom-control-label" for="{{type}}">{{type}}</label>
+                        </div>
+                    </div>
+                    <div *ngIf="combined.medfollowup==followup_type[1]||combined.medfollowup==followup_type[2]">
+                        <div class="row mt-4">
+                            <div class="col-md-3">
+                                <input type="text" name="followupreason" class="aq" #followupreason="ngModel"
+                                    [(ngModel)]="combined.followupreason" placeholder="followup reason">
+                            </div>
+                            <div class="col-md-3">
+                                <!-- <input type="number" name="followupdays" class="aq" #followupdays="ngModel"
+                            [(ngModel)]="combined.followupdays" placeholder="followup days">   -->
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="combined.medfollowup==followup_type[3]">
+                        <div class="row mt-4">
+                            <div class="col-md-3">
+                                <input type="date" name="followupdays" class="aq" #followupdays="ngModel"
+                                    [(ngModel)]="combined.followupdays" placeholder="followup days">
+                            </div>
+                            <div class="col-md-3">
+
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div *ngIf="form.invalid">
+                        <p>Fill all the fields With <span>*</span> </p>
+                    </div>
+                    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Submit</button>
+                    <!-- <button type="reset" class="btn btn-primary ml-2">Reset</button> -->
+                </form>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    </section>
+    <!-- <img src="/assets/img/login/logo.png" height="200px" style="position: fixed; right: 0; bottom: 0; padding: 50px;"> -->
+</div>

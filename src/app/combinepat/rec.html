@@ -1,0 +1,26 @@
+
+    <div class="form-group" *ngIf="combined.medication=='yes'">
+        <div class="container-fluid">
+            <div class="row" *ngFor="let iii of meds;let i=index;let m=false;let n='gugu'"
+                style="text-align: left;">
+                <div class="form-check col-md-2 ml-4">
+                    <input type="checkbox" value="{{iii.name}}" id="{{i+1}}" name="meds">
+                    <label for="{{i+1}}" class="form-check-label">{{iii.name}}</label>
+                </div>
+                <div class="form-group col-md-4">
+                    <select name="medname" id="medname" class="medstatus ii form-control"
+                        [(ngModel)]="n">
+                        <option value="prior auth action not taken">prior auth action not taken
+                        </option>
+                        <option value="Faxed">Faxed</option>
+                        <option value="Approved">Approved</option>
+                    </select>
+                </div>
+                <!-- <div class="col-md-5"></div> -->
+                <div class="form-group col-md-3" *ngIf="n=='Approved'">
+                    <input type="date" name="meddate" id="meddate" class="meddate ii form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,131 @@
+$green: #87C442;
+$yellow:#F4E5A9;
+.main{
+  color: $green;
+}
+#body-row {
+  margin-left:0;
+  margin-right:0;
+}
+.bt{
+  color: $green;
+  padding-left: 10px;
+   padding-top: 10px;
+}
+#sidebar-container {
+  min-height: 100vh;
+  background-color: white;
+  padding: 0;
+  box-shadow: 2px 15px 30px rgba($color: grey, $alpha: 0.6);
+}
+.main{
+  // border-bottom: 1px solid lightgrey;
+  padding-top:100px;
+  padding-bottom: 100px;
+}
+.bo span{
+  color: rgba($color: grey, $alpha: 0.6);
+}
+.menu-collapsed{
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.qd{
+  color: grey;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.2rem;
+}
+.ak{
+  border: 0px solid transparent;
+}
+/* Sidebar sizes when expanded and expanded */
+.sidebar-expanded {
+  width: 260px;
+}
+.sidebar-collapsed {
+  width: 70px;
+}
+
+/* Menu item*/
+#sidebar-container .list-group a {
+  height: 50px;
+  color: black;
+}
+
+/* Submenu item*/
+#sidebar-container .list-group .sidebar-submenu a {
+  height: 45px;
+  padding-left: 30px;
+}
+.sidebar-submenu {
+  font-size: 0.9rem;
+}
+
+/* Separators */
+.sidebar-separator-title {
+  background-color: white;
+  height: 35px;
+}
+.sidebar-separator {
+  background-color: white;
+  height: 25px;
+}
+.logo-separator {
+  background-color: white;
+  height: 60px;
+}
+
+/* Closed submenu icon */
+#sidebar-container .list-group .list-group-item[aria-expanded="false"] .submenu-icon::after {
+content: " \f0d7";
+font-family: FontAwesome;
+display: inline;
+text-align: right;
+padding-left: 10px;
+}
+/* Opened submenu icon */
+#sidebar-container .list-group .list-group-item[aria-expanded="true"] .submenu-icon::after {
+content: " \f0da";
+font-family: FontAwesome;
+display: inline;
+text-align: right;
+padding-left: 10px;
+}
+
+.db{
+  color: grey;
+  margin-top: 10vh;
+  margin-left: 50px;
+}
+.box{
+  height: 8vh;
+  background-color: $yellow;
+  // padding-left: 50px;
+  margin-top: -70vh;
+}
+
+.ig{
+  margin-top: -50px;
+  // padding-right: 70px;
+  height: 300px;
+  margin-left: 150px;
+}
+@media (max-width: 1200px) {
+  .igq{
+    margin-left: 200px;
+  }
+  .ig{
+    height: 170px;
+    margin-left:100px;
+  }
+}
+@media (max-width: 769px) {
+  .box{
+    margin-top: 2px;
+    background-color: transparent;
+  }
+  .ig{
+    margin-top: 5px;
+  }
+}
