@@ -1408,15 +1408,19 @@
                                                     name="scale_score" id="{{im+100}}" class="form-control aq scale_score"
                                                     [(ngModel)]="scale_score[im]">
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-3 mr-1">
                                                 <select class="form-control aq scaledays" id="{{im+100}}" name="scaledays" >
                                                 <option *ngFor="let spike of sday" [value]="spike">{{spike}}
                                                 </option>
                                             </select>
                                             </div>
-                                            <div class="col-md-3" *ngIf="scales[im]=='PHQ9'&&scale_score[im]<=4" style="padding: 10px;">
-                                                minimal depression
+                                            <div class="row">
+                                                <!-- <div class="col-md-1"></div> -->
+                                                <div class="col-md-3" *ngIf="scales[im]=='PHQ9'&&scale_score[im]<=4" style="padding: 10px;">
+                                                    minimal depression
+                                                </div>
                                             </div>
+                                            
                                             <div class="col-md-3"
                                                 *ngIf="scales[im]=='PHQ9'&&scale_score[im]>4&&scale_score[im]<=9"
                                                 style="padding: 10px;">
