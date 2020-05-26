@@ -196,7 +196,7 @@ export class CombinepatComponent implements OnInit {
   followup_type = ['Per routine protocol', 'Urgent', 'Very Urgent', 'Date Specific']
   scaleeligible_reasons = ['Patient was not in the Facility', 'Patient could not particpate in the interview', 'Patient refused to particpate in the interview', 'I met the target points for the day', 'Patient not available', 'Other']
   sptime = ['Upto 30 min', 'Upto 45 min', 'Upto 1 Hr', 'More then 1 Hr']
-  sday = ['Not Apllicable','30 Days','60 Days'];
+  sday = ['Not Apllicable','3 Months','6 Months'];
   // firstat : false;
   // reset_limited() {
   //   this.combined
