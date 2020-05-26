@@ -29,6 +29,7 @@ export class PatientComponent implements OnInit {
   dob;
   role;
   ngOnInit() {
+    
     var MMddyyyy = this.datePipe.transform(new Date(),"MM-dd-yyyy");
     console.log(MMddyyyy); 
     this.resetStuff();
@@ -181,8 +182,7 @@ export class PatientComponent implements OnInit {
       followupdays:null,
       scaleeligiblereason:'',
       otherscaleeligiblereason:'',
-      flag:0,
-      scaledays:''
+      flag:0
     }
   }
 
@@ -190,6 +190,7 @@ export class PatientComponent implements OnInit {
     this.service.logout();
   }
   submit(form: NgForm) {
+    
     this.service.sendBaseData(form.value);
     this.resetStuff();
     this.toastr.success('', 'Patient Added Successfully');

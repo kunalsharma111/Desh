@@ -38,6 +38,7 @@ export class CombinepatComponent implements OnInit {
     scale_name: string
     scale_date: string;
     scale_score: number;
+    scaledays: string;
   }
   p_id: string;
   masterobj;
@@ -47,7 +48,9 @@ export class CombinepatComponent implements OnInit {
   cd: Date;
   kd;
   default_scales = ['PHQ9', 'GDS', "BIMS", "MMSE", "BTQ", 'LEC-5', 'GAD', "BAI"];
+  scale60days = ['PHQ9','GDS','BIMS','MMSE','GAD','BAI','BEHAVE-AD', 'RMBC','MOCA','NPQ','ISI','AIS','PNASS','BPRS'];
   ngOnInit() {
+    
     this.kdate = new Date();
     this.cd = new Date();
     this.kd = this.cd.toISOString().slice(0, 10);
@@ -82,6 +85,7 @@ export class CombinepatComponent implements OnInit {
           var scalechkbx = this.el.nativeElement.querySelectorAll('.scaleschkbx');
           var scalescore = this.el.nativeElement.querySelectorAll('.scale_score');
           var scaledate = this.el.nativeElement.querySelectorAll('.scale_date');
+          var scaledayss = this.el.nativeElement.querySelectorAll('.scaledays');
           console.log(this.masterobj.visit.scaleinfo)
           scalechkbx.forEach((item, index) => {
             this.masterobj.visit.scaleinfo.forEach(med => {
@@ -89,6 +93,7 @@ export class CombinepatComponent implements OnInit {
                 item.checked = true;
                 scalescore[index].value = med.scale_score;
                 scaledate[index].value = med.scale_date;
+                scaledayss[index].value = med.scaledays;
               }
             })
           });
@@ -191,7 +196,7 @@ export class CombinepatComponent implements OnInit {
   followup_type = ['Per routine protocol', 'Urgent', 'Very Urgent', 'Date Specific']
   scaleeligible_reasons = ['Patient was not in the Facility', 'Patient could not particpate in the interview', 'Patient refused to particpate in the interview', 'I met the target points for the day', 'Patient not available', 'Other']
   sptime = ['Upto 30 min', 'Upto 45 min', 'Upto 1 Hr', 'More then 1 Hr']
-  sday = ['30 Days','60 Days','Not Applicable'];
+  sday = ['Not Apllicable','30 Days','60 Days'];
   // firstat : false;
   // reset_limited() {
   //   this.combined
@@ -310,8 +315,7 @@ export class CombinepatComponent implements OnInit {
       followupdays: null,
       scaleeligiblereason: 'Not Applicable',
       otherscaleeligiblereason: '',
-      flag: null,
-      scaledays:''
+      flag: null
     }
   }
   one(val: any) {
@@ -339,6 +343,8 @@ export class CombinepatComponent implements OnInit {
     var scalechkbx = this.el.nativeElement.querySelectorAll('.scaleschkbx');
     var scalescore = this.el.nativeElement.querySelectorAll('.scale_score');
     var scaledate = this.el.nativeElement.querySelectorAll('.scale_date');
+    var scaledayss = this.el.nativeElement.querySelectorAll('.scaledays');
+    console.log(scaledayss);
     let scaleData = [];
     var scalestream$ = from(scalechkbx);
     scalestream$.pipe(filter((val: any) => val.checked)).subscribe((res: any) => {
@@ -347,6 +353,8 @@ export class CombinepatComponent implements OnInit {
       let parstat = scalescore[parseInt(res.id) - 100].value;
       scaledata.scale_score = parstat;
       scaledata.scale_date = scaledate[res.id - 100].value;
+      scaledata.scaledays = scaledayss[res.id - 100].value;
+      console.log(scaledayss);
       scaleData.push(scaledata);
     })
 
@@ -413,6 +421,13 @@ export class CombinepatComponent implements OnInit {
           }
         })
       }, 1000)
+      // setTimeout(()=>{
+      //   this.masterobj.visit.scaleinfo.forEach(res => {
+      //     if (this.scale60days.includes(res.value)) {
+      //         res.scaledays = "60 Days"
+      //     }
+      //   })
+      // },1000)
     }
   }
 }

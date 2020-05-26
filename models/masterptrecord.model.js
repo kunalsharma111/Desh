@@ -108,8 +108,7 @@ let visitSchema = new mongoose.Schema({
     followupreason:String,
     followupdays:Date,
     scaleeligiblereason:String,
-    otherscaleeligiblereason:String,
-    scaledays:String
+    otherscaleeligiblereason:String
 })
 mongoose.model('MVM', visitSchema);
 let masterptSchema = new mongoose.Schema({

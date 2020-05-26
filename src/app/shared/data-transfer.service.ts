@@ -135,8 +135,7 @@ export interface combined {
   followupdays:Date,
   scaleeligiblereason:string,
   otherscaleeligiblereason:string,
-  flag:Number,
-  scaledays:string
+  flag:Number
 }
 export interface PatientRound2 {
   id: string;

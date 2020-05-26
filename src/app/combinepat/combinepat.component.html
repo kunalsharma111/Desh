@@ -1200,7 +1200,7 @@
                         </div>
                         <!-- <h5 style="color: #87c442;" class="mt-2"> <b> Psychotherapy Services </b></h5> -->
                         <div class="row mt-3">
-                            <label class="col-md-4 qw" for="bhi" style="font-size: 1.1rem; color:#87c442">Psychotherapy Services </label>
+                            <label class="col-md-4 qw" for="bhi" style="font-size: 1.3rem; font-weight: 600; color:#87c442">Psychotherapy Services </label>
                             <div class="col-md-6">
                                 <div class="row ml-">
 
@@ -1386,12 +1386,10 @@
                                         <input type="number" min="0" max="75" placeholder="Enter scale score"
                                             name="scale_score" id="{{im+100}}" class="form-control scale_score"
                                             value="0" hidden>
-                                            <!-- <div class="form-check custom-control custom-radio" *ngFor="let type of sday">
-                                                <input class="form-check-input custom-control-input" type="radio" id="{{im+100}}"
-                                                name="scaledays" value="{{type}}" #scaledays="ngModel"
-                                             [(ngModel)]="scaledays" hidden>
-                                            <label class="form-check-label custom-control-label" for="{{type}}" id={{im+100}} hidden>{{type}}</label>
-                                              </div> -->
+                                            <select class="form-control aq scaledays" id="{{im+100}}" name="scaledays" hidden>
+                                                <option *ngFor="let spike of sday" [value]="spike">{{spike}}
+                                                </option>
+                                            </select>
                                     </div>
                                     <ng-template #kk>
                                         <div class="row">
@@ -1403,22 +1401,18 @@
                                             </div>
                                             <div class="col-md-3 form-group">
                                                 <input type="date" name="scale_date" id="{{im+100}}"
-                                                    class="form-control scale_date">
+                                                    class="form-control aq scale_date">
                                             </div>
                                             <div class="col-md-2 form-group">
                                                 <input type="number" min="0" max="250" placeholder="score"
-                                                    name="scale_score" id="{{im+100}}" class="form-control scale_score"
+                                                    name="scale_score" id="{{im+100}}" class="form-control aq scale_score"
                                                     [(ngModel)]="scale_score[im]">
                                             </div>
-                                            <div class="col-md-3 form-group">
-                                                <!-- <div class="row">
-                                                    <div class="col-md-4 form-check custom-control custom-radio" *ngFor="let type of sday">
-                                                        <input class="form-check-input custom-control-input" type="radio" id="{{im+100}}"
-                                                        name="scaledays" value="{{type}}" #scaledays="ngModel"
-                                                         required>
-                                                    <label class="form-check-label custom-control-label" for="{{type}}" id={{im+100}}>{{type}}</label>
-                                                      </div>
-                                                </div> -->
+                                            <div class="col-md-3">
+                                                <select class="form-control aq scaledays" id="{{im+100}}" name="scaledays" >
+                                                <option *ngFor="let spike of sday" [value]="spike">{{spike}}
+                                                </option>
+                                            </select>
                                             </div>
                                             <div class="col-md-3" *ngIf="scales[im]=='PHQ9'&&scale_score[im]<=4" style="padding: 10px;">
                                                 minimal depression
