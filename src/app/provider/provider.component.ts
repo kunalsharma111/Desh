@@ -100,6 +100,7 @@ export class ProviderComponent implements OnInit {
     this.resetForm();
     this.s_id = id;
     this.providerData.name = data.name;
+    this.providerData.ain = data.ain;
     console.log(this.providerData.name);
     let arr = this.el.nativeElement.querySelectorAll(".chkbx");
     let arr1 = this.el.nativeElement.querySelectorAll(".chkbx2");
@@ -142,9 +143,10 @@ export class ProviderComponent implements OnInit {
       insurance: this.some,
       role: this.some2,
       name: form.value.name,
-      id: form.value.id
+      id: form.value.id,
+      ain: form.value.ain
     }
-    console.log(data);
+    console.log(data+"print hoja");
     this.service.sendProvider(data).subscribe(res => {
       console.log(res);
       this.toastr.success('', 'Provider Saved Successfully');

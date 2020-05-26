@@ -1386,6 +1386,12 @@
                                         <input type="number" min="0" max="75" placeholder="Enter scale score"
                                             name="scale_score" id="{{im+100}}" class="form-control scale_score"
                                             value="0" hidden>
+                                            <!-- <div class="form-check custom-control custom-radio" *ngFor="let type of sday">
+                                                <input class="form-check-input custom-control-input" type="radio" id="{{im+100}}"
+                                                name="scaledays" value="{{type}}" #scaledays="ngModel"
+                                             [(ngModel)]="scaledays" hidden>
+                                            <label class="form-check-label custom-control-label" for="{{type}}" id={{im+100}} hidden>{{type}}</label>
+                                              </div> -->
                                     </div>
                                     <ng-template #kk>
                                         <div class="row">
@@ -1404,30 +1410,15 @@
                                                     name="scale_score" id="{{im+100}}" class="form-control scale_score"
                                                     [(ngModel)]="scale_score[im]">
                                             </div>
-                                            <div class="col-md-3">
-                                                <div class="row">
-                                                    <!-- <div class="col-md-4">
-                                                        <div class="custom-control custom-radio">
-                                                          <input id="scaledays1" type="radio" class="custom-control-input" value="30" name="scaledays" #scaledays="ngModel"
-                                                            [(ngModel)]="combined.scaledays">
-                                                          <label class="custom-control-label lor" for="scaledays1">30 Days</label>
-                                                        </div>
+                                            <div class="col-md-3 form-group">
+                                                <!-- <div class="row">
+                                                    <div class="col-md-4 form-check custom-control custom-radio" *ngFor="let type of sday">
+                                                        <input class="form-check-input custom-control-input" type="radio" id="{{im+100}}"
+                                                        name="scaledays" value="{{type}}" #scaledays="ngModel"
+                                                         required>
+                                                    <label class="form-check-label custom-control-label" for="{{type}}" id={{im+100}}>{{type}}</label>
                                                       </div>
-                                                      <div class="col-md-4">
-                                                        <div class="custom-control custom-radio">
-                                                          <input id="scaledays2" type="radio" class="custom-control-input" value="60" name="scaledays" #scaledays="ngModel"
-                                                            [(ngModel)]="combined.scaledays">
-                                                          <label class="custom-control-label lor" for="scaledays2">60 Days</label>
-                                                        </div>
-                                                      </div>
-                                                      <div class="col-md-4">
-                                                        <div class="custom-control custom-radio">
-                                                          <input id="scaledays3" type="radio" class="custom-control-input" value="notapplicable" name="scaledays" #scaledays="ngModel"
-                                                            [(ngModel)]="combined.scaledays">
-                                                          <label class="custom-control-label lor" for="scaledays3">Not Applicable</label>
-                                                        </div>
-                                                      </div> -->
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="col-md-3" *ngIf="scales[im]=='PHQ9'&&scale_score[im]<=4" style="padding: 10px;">
                                                 minimal depression

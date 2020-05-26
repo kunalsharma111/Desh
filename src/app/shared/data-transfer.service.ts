@@ -14,18 +14,18 @@ export interface Admin {
 export interface Insurance {
   id: string;
   name: string;
-  ain:'Active';
+  ain: string;
 }
 export interface Provider {
   id: string;
   name: string;
   insurance: string;
-  ain:'Active';
+  ain: string;
 }
 export interface Medication {
   id: string;
   name: string;
-  ain:'Active';
+  ain:string;
 }
 export interface combined {
   id: string;
