@@ -372,6 +372,8 @@ router.post('/goku', verifyToken, (req, res) => {
         increase: req.body.increase,
         decrease: req.body.decrease,
         stopped: req.body.stopped,
+        decrease2 : req.body.decrease2,
+        stopped2 : req.body.stopped2,
         medstopdate: req.body.medstopdate,
         newappointmentrecord: req.body.newappointmentrecord,
         added: req.body.added,

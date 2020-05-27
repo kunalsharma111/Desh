@@ -102,6 +102,8 @@ export class PatientComponent implements OnInit {
       increase: '',
       decrease: '',
       stopped: '',
+      decrease2: '',
+      stopped2: '',
       medstopdate: null,
       newappointmentrecord: '',
       added: '',

@@ -236,6 +236,8 @@ export class CombinepatComponent implements OnInit {
       increase: '',
       decrease: '',
       stopped: '',
+      decrease2: '',
+      stopped2: '',
       medstopdate: null,
       newappointmentrecord: '',
       added: '',
@@ -322,66 +324,75 @@ export class CombinepatComponent implements OnInit {
     console.log(val);
     this.combined.sinsurance = val;
   }
+  notvalidate:boolean;
   submit(form: NgForm) {
-    var x = this.el.nativeElement.querySelectorAll('.chkbx');
-    var status = this.el.nativeElement.querySelectorAll('.medstatus');
-    var date = this.el.nativeElement.querySelectorAll('.meddate')
-    let medData: any = [];
-    let stream$ = from(x);
-    this.combined.flag = 1;
-    stream$.pipe(filter((val: any) => val.checked)).subscribe((res: any) => {
-      let meddata: any = {}
-      meddata.name = res.value;
-      let parstat = status[parseInt(res.id) - 1].value;
-      meddata.status = parstat;
-      if (parstat == 'Approved')
-        meddata.date = date[res.id - 1].value;
-      medData.push(meddata);
-    })
-    console.log(medData)
-
-    var scalechkbx = this.el.nativeElement.querySelectorAll('.scaleschkbx');
-    var scalescore = this.el.nativeElement.querySelectorAll('.scale_score');
-    var scaledate = this.el.nativeElement.querySelectorAll('.scale_date');
-    var scaledayss = this.el.nativeElement.querySelectorAll('.scaledays');
-    console.log(scaledayss);
-    let scaleData = [];
-    var scalestream$ = from(scalechkbx);
-    scalestream$.pipe(filter((val: any) => val.checked)).subscribe((res: any) => {
-      let scaledata: any = {}
-      scaledata.scale_name = res.value;
-      let parstat = scalescore[parseInt(res.id) - 100].value;
-      scaledata.scale_score = parstat;
-      scaledata.scale_date = scaledate[res.id - 100].value;
-      scaledata.scaledays = scaledayss[res.id - 100].value;
+    if(form.valid){
+      console.log("chlda kam");
+      var x = this.el.nativeElement.querySelectorAll('.chkbx');
+      var status = this.el.nativeElement.querySelectorAll('.medstatus');
+      var date = this.el.nativeElement.querySelectorAll('.meddate')
+      let medData: any = [];
+      let stream$ = from(x);
+      this.combined.flag = 1;
+      stream$.pipe(filter((val: any) => val.checked)).subscribe((res: any) => {
+        let meddata: any = {}
+        meddata.name = res.value;
+        let parstat = status[parseInt(res.id) - 1].value;
+        meddata.status = parstat;
+        if (parstat == 'Approved')
+          meddata.date = date[res.id - 1].value;
+        medData.push(meddata);
+      })
+      console.log(medData)
+  
+      var scalechkbx = this.el.nativeElement.querySelectorAll('.scaleschkbx');
+      var scalescore = this.el.nativeElement.querySelectorAll('.scale_score');
+      var scaledate = this.el.nativeElement.querySelectorAll('.scale_date');
+      var scaledayss = this.el.nativeElement.querySelectorAll('.scaledays');
       console.log(scaledayss);
-      scaleData.push(scaledata);
-    })
-
-    var medsyms = this.el.nativeElement.querySelectorAll('.symtoms_meds');
-    let syn_meds = [];
-    var med_syn_stream$ = from(medsyms);
-    med_syn_stream$.pipe(filter((val: any) => val.checked)).subscribe((res: any) => {
-      syn_meds.push(res.value);
-    })
-
-    var psysyms = this.el.nativeElement.querySelectorAll('.symtoms_psy');
-    let syn_psy = [];
-    var psy_syn_stream$ = from(psysyms);
-    console.log(psysyms)
-    psy_syn_stream$.pipe(filter((val: any) => val.checked)).subscribe((res: any) => {
-      syn_psy.push(res.value);
-      console.log(res)
-    })
-    var psy_psyms = { psy_symptoms: syn_psy }
-    var med_syms = { meds_symptoms: syn_meds }
-    var meds = { exmeds: medData }
-    var scaleinfo = { scaleinfo: scaleData }
-
-    let masterptdata = { ...meds, ...med_syms, ...psy_psyms, ...scaleinfo, ...form.value }
-    this.service.submitMasterPatientData(masterptdata);
-    this.toastr.success('', 'Patient Record Updated Successfully');
-    this.router.navigate(['/patient']);
+      let scaleData = [];
+      var scalestream$ = from(scalechkbx);
+      scalestream$.pipe(filter((val: any) => val.checked)).subscribe((res: any) => {
+        let scaledata: any = {}
+        scaledata.scale_name = res.value;
+        let parstat = scalescore[parseInt(res.id) - 100].value;
+        scaledata.scale_score = parstat;
+        scaledata.scale_date = scaledate[res.id - 100].value;
+        scaledata.scaledays = scaledayss[res.id - 100].value;
+        console.log(scaledayss);
+        scaleData.push(scaledata);
+      })
+  
+      var medsyms = this.el.nativeElement.querySelectorAll('.symtoms_meds');
+      let syn_meds = [];
+      var med_syn_stream$ = from(medsyms);
+      med_syn_stream$.pipe(filter((val: any) => val.checked)).subscribe((res: any) => {
+        syn_meds.push(res.value);
+      })
+  
+      var psysyms = this.el.nativeElement.querySelectorAll('.symtoms_psy');
+      let syn_psy = [];
+      var psy_syn_stream$ = from(psysyms);
+      console.log(psysyms)
+      psy_syn_stream$.pipe(filter((val: any) => val.checked)).subscribe((res: any) => {
+        syn_psy.push(res.value);
+        console.log(res)
+      })
+      var psy_psyms = { psy_symptoms: syn_psy }
+      var med_syms = { meds_symptoms: syn_meds }
+      var meds = { exmeds: medData }
+      var scaleinfo = { scaleinfo: scaleData }
+  
+      let masterptdata = { ...meds, ...med_syms, ...psy_psyms, ...scaleinfo, ...form.value }
+      this.service.submitMasterPatientData(masterptdata);
+      this.toastr.success('', 'Patient Record Updated Successfully');
+      this.router.navigate(['/patient']);
+    }
+    else{
+      this.notvalidate = true;
+      console.log("pata nh");
+    }
+  
     // this.resetForm();
   }
   app() {

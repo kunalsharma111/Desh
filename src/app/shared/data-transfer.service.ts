@@ -53,6 +53,8 @@ export interface combined {
   increase: string;
   decrease: string;
   stopped: string;
+  decrease2: string,
+  stopped2: string,
   medstopdate: Date;
   newappointmentrecord: string;
   added: string;
@@ -158,6 +160,8 @@ export interface PatientRound2 {
   increase: string;
   decrease: string;
   stopped: string;
+  decrease2: string;
+  stopped2: string;
   medstopdate: Date;
   psa: string;
   newappointmentrecord: string;

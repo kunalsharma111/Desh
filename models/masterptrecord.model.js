@@ -25,6 +25,8 @@ let visitSchema = new mongoose.Schema({
     increase: String,
     decrease: String,
     stopped: String,
+    decrease2: String,
+    stopped2: String,
     medstopdate: String,
     newappointmentrecord: String,
     added: String,

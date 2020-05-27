@@ -113,7 +113,8 @@
         aria-hidden="true"></i></p>
       <div class="modal-body">
         <form #form="ngForm" (submit)="form.form.valid && submit(form)">
-          <h4 class="ap">Add Provider</h4>
+          <h4 class="ap" *ngIf="!edit">Add Provider</h4>
+          <h4 class="ap" *ngIf="edit">Update Provider</h4>
           <div class="row mt-4">
             <div class="col-md-12">
               <div class="row" #row>
@@ -177,8 +178,12 @@
               </div>
             </div>
           </div>
-          <div class="das" style="text-align: center;">
-            <button type="submit" class="btn btn-custom bo" >Add</button>
+          <div class="das" style="text-align: center;" *ngIf="!edit">
+            <button type="submit" class="btn btn-custom bo" [disabled]="form.invalid">Add</button>
+            <button type="button" class="btn btn-custom bo" data-dismiss="modal">Cancel</button>
+          </div>
+          <div class="das" style="text-align: center;" *ngIf="edit">
+            <button type="submit" class="btn btn-custom bo" [disabled]="form.invalid">Update</button>
             <button type="button" class="btn btn-custom bo" data-dismiss="modal">Cancel</button>
           </div>
         </form>

@@ -263,10 +263,15 @@
               </div>
             </div>
           </div>
-          <div class="das" style="text-align: center;">
+          <div class="das" style="text-align: center;" *ngIf="!edit">
             <button type="submit" class="btn btn-custom bo" [disabled]="form.invalid">Add</button>
             <button type="button" class="btn btn-custom bo" data-dismiss="modal">Cancel</button>
           </div>
+          <div class="das" style="text-align: center;" *ngIf="edit">
+            <button type="submit" class="btn btn-custom bo" [disabled]="form.invalid">Update</button>
+            <button type="button" class="btn btn-custom bo" data-dismiss="modal">Cancel</button>
+          </div>
+          
         </form>
       </div>
     </div>

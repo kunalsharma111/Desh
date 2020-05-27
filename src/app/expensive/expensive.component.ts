@@ -57,6 +57,7 @@ export class ExpensiveComponent implements OnInit {
     });
   }
   resetForm(form?: NgForm) {
+    this.edit = false
     if (form != null) {
       form.resetForm();
     }
@@ -70,9 +71,11 @@ export class ExpensiveComponent implements OnInit {
     this.service.logout();
   }
   s_id;
+  edit = false;
   assign(data, id) {
     this.s_id = id;
     this.medData = data;
+    this.edit = true
   }
   submit(form: NgForm) {
     console.log(form.value);

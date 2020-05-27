@@ -59,6 +59,7 @@ export class InsuranceComponent implements OnInit {
     this.service.logout();
   }
   resetForm(form?: NgForm) {
+    this.edit = false
     if (form != null) {
       form.resetForm();
     }
@@ -69,9 +70,11 @@ export class InsuranceComponent implements OnInit {
     }
   }
   s_id;
+  edit=false
   assign(data, id) {
     this.s_id = id;
     this.insuranceData = data;
+    this.edit = true
   }
   submit(form: NgForm) {
     console.log(form.value);

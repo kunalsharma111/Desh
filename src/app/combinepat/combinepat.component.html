@@ -83,7 +83,7 @@
                                 <option hidden value="" disabled selected> Select Primary Insurance </option>
                                 <option *ngFor="let spii of insurances" [value]="spii.name">{{spii.name}}</option>
                             </select>
-                            <p *ngIf="pinsurance.touched && pinsurance.invalid">Primary Insurance is required</p>
+                            <p *ngIf="notvalidate && pinsurance.invalid">Primary Insurance is required</p>
                         </div>
                         <div class="form-group col-md-5">
                             <label for="inputname4">Select Secondary insurance <span>*</span> </label>
@@ -99,16 +99,16 @@
                             <label for="facility">Select Facility <span>*</span> </label>
                             <select class="form-control aq" id="pii" name="facility" #facility="ngModel"
                                 [(ngModel)]="combined.facility" required>
-                                <option hidden value="" disabled selected> Select Primary Insurance </option>
+                                <option hidden value="" disabled selected> Select Facility </option>
                                 <option *ngFor="let spii of facilities" [value]="spii.name">{{spii.name}}</option>
                             </select>
-                            <p *ngIf="facility.touched && facility.invalid">Facility is required</p>
+                            <p *ngIf="notvalidate && facility.invalid">Facility is required</p>
                         </div>
                         <div class="form-group col-md-5">
                             <label for="inputname4">Room number <span>*</span> </label>
                             <input type="text" class="form-control aq" id="room" name="room" #room="ngModel"
                                 [(ngModel)]="combined.room" placeholder="Enter Room No." required>
-                            <p *ngIf="room.touched && room.invalid">Room Number is required</p>
+                            <p *ngIf="notvalidate && room.invalid">Room Number is required</p>
                         </div>
                     </div>
                     <h3 style="color: #87c442;" class="mt-4"> <b> Patient statuses </b></h3>
@@ -152,7 +152,7 @@
                                 <input type="text" class="form-control aq" name="othermedreason"
                                     #othermedreason="ngModel" [(ngModel)]="combined.othermedreason"
                                     placeholder="Specify Reason" required>
-                                <p *ngIf="othermedreason.touched && othermedreason.invalid">Field is required</p>
+                                <p *ngIf="notvalidate && othermedreason.invalid">Field is required</p>
                             </div>
                         </div>
                         <div class="form-group" *ngIf="combined.medication=='yes'">
@@ -244,7 +244,7 @@
                                 <label class="custom-control-label lor" for="gtp4">Results Uploaded</label>
                             </div>
                         </div>
-                        <p *ngIf="genericresult.touched && genericresult.invalid">Field is required</p>
+                        <p *ngIf="notvalidate && genericresult.invalid">Field is required</p>
                     </div>
                     <div class="form-group row ml-4" *ngIf="combined.generictest=='no'">
                         <div class="col-md-7">
@@ -255,13 +255,13 @@
                                 <option hidden value="" selected> Not Applicable</option>
                                 <option *ngFor="let spike of genatic_reasons" [value]="spike">{{spike}}</option>
                             </select>
-                            <!-- <p *ngIf="geneticreason.touched && geneticreason.invalid">Field is required</p> -->
+                            <p *ngIf="notvalidate && geneticreason.invalid">Field is required</p>
                         </div>
                         <div class="col-md-4 form-group" *ngIf="combined.geneticreason=='Other'">
                             <input type="text" class="form-control aq" name="othergeneticreason"
                                 #othergeneticreason="ngModel" [(ngModel)]="combined.othergeneticreason"
                                 placeholder="Specify Reason" required>
-                            <p *ngIf="othergeneticreason.touched && othergeneticreason.invalid">Reason is required</p>
+                            <p *ngIf="notvalidate && othergeneticreason.invalid">Reason is required</p>
                         </div>
                     </div>
                     <div class="form-group mt-4">
@@ -418,7 +418,7 @@
                         <div class="col-md-4 form-group" *ngIf="combined.medreason2=='Other'">
                             <input type="text" class="form-control aq" name="othermedreason2" #othermedreason2="ngModel"
                                 [(ngModel)]="combined.othermedreason2" placeholder="Specify Reason" required>
-                            <p *ngIf="othermedreason2.touched && othermedreason2.invalid">Field is required</p>
+                            <p *ngIf="notvalidate && othermedreason2.invalid">Field is required</p>
                         </div>
                     </div>
                     <div class="form-group mt-4">
@@ -462,7 +462,7 @@
                         <div class="col-md-4 form-group" *ngIf="combined.psyreason=='Other'">
                             <input type="text" class="form-control aq" name="otherpsyreason" #otherpsyreason="ngModel"
                                 [(ngModel)]="combined.otherpsyreason" placeholder="Specify Reason" required>
-                            <p *ngIf="otherpsyreason.touched && otherpsyreason.invalid">Field is required</p>
+                            <p *ngIf="notvalidate && otherpsyreason.invalid">Field is required</p>
                         </div>
                     </div>
                     <div class="form-group mt-4">
@@ -505,7 +505,7 @@
                             <input type="text" class="form-control aq" name="otherpsyscreenreason"
                                 #otherpsyscreenreason="ngModel" [(ngModel)]="combined.otherpsyscreenreason"
                                 placeholder="Specify Reason" required>
-                            <p *ngIf="otherpsyscreenreason.touched && otherpsyscreenreason.invalid">Field is required
+                            <p *ngIf="notvalidate && otherpsyscreenreason.invalid">Field is required
                             </p>
                         </div>
                     </div>
@@ -557,7 +557,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <p *ngIf="bhiconcent.touched && bhiconcent.invalid">Field is required</p>
+                                    <p *ngIf="notvalidate && bhiconcent.invalid">Field is required</p>
                                 </div>
                             </div>
                         </div>
@@ -576,7 +576,7 @@
                                 <input type="text" class="form-control aq" name="otherbhireason"
                                     #otherbhireason="ngModel" [(ngModel)]="combined.otherbhireason"
                                     placeholder="Specify Reason" required>
-                                <p *ngIf="otherbhireason.touched && otherbhireason.invalid">Field is required</p>
+                                <p *ngIf="notvalidate && otherbhireason.invalid">Field is required</p>
                             </div>
                         </div>
                     </div>
@@ -628,7 +628,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <p *ngIf="ccmconcent.touched && ccmconcent.invalid">Field is required</p>
+                                    <p *ngIf="notvalidate && ccmconcent.invalid">Field is required</p>
                                 </div>
                             </div>
                         </div>
@@ -647,7 +647,7 @@
                                 <input type="text" class="form-control aq" name="otherccmreason"
                                     #otherccmreason="ngModel" [(ngModel)]="combined.otherccmreason"
                                     placeholder="Specify Reason" required>
-                                <p *ngIf="otherccmreason.touched && otherccmreason.invalid">Field is required</p>
+                                <p *ngIf="notvalidate && otherccmreason.invalid">Field is required</p>
                             </div>
                         </div>
                     </div>
@@ -699,7 +699,7 @@
                                                 <label class="custom-control-label" for="cchconcent2">Written</label>
                                             </div>
                                         </div>
-                                        <p *ngIf="cchconcent.touched && cchconcent.invalid">Field is required</p>
+                                        <p *ngIf="notvalidate && cchconcent.invalid">Field is required</p>
                                     </div>
 
                                 </div>
@@ -710,7 +710,7 @@
                                     <input type="date" style="text-align: right;" class="aq" name="cchdate"
                                         #cchdate="ngModel" [(ngModel)]="combined.cchdate" required>
                                 </div>
-                                <p *ngIf="cchdate.touched && cchdate.invalid">Date is required</p>
+                                <p *ngIf="notvalidate && cchdate.invalid">Date is required</p>
                             </div>
                         </div>
                         <div class="form-group row ml-4" *ngIf="combined.cch=='no'">
@@ -728,7 +728,7 @@
                                 <input type="text" class="form-control aq" name="othercchreason"
                                     #othercchreason="ngModel" [(ngModel)]="combined.othercchreason"
                                     placeholder="Specify Reason" required>
-                                <p *ngIf="othercchreason.touched && othercchreason.invalid">Field is required</p>
+                                <p *ngIf="notvalidate && othercchreason.invalid">Field is required</p>
                             </div>
                         </div>
                     </div>
@@ -785,7 +785,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <p *ngIf="homeclinicconcent.touched && homeclinicconcent.invalid">Field is required
+                                    <p *ngIf="notvalidate && homeclinicconcent.invalid">Field is required
                                     </p>
                                 </div>
                             </div>
@@ -805,7 +805,7 @@
                                 <input type="text" class="form-control aq" name="otherhomeclinicreason"
                                     #otherhomeclinicreason="ngModel" [(ngModel)]="combined.otherhomeclinicreason"
                                     placeholder="Specify Reason" required>
-                                <p *ngIf="otherhomeclinicreason.touched && otherhomeclinicreason.invalid">Field is
+                                <p *ngIf="notvalidate && otherhomeclinicreason.invalid">Field is
                                     required</p>
                             </div>
                         </div>
@@ -850,7 +850,7 @@
                             style="width: 100%; height: 100px; border: 2px solid #87c442;" class="form-control col-md-8"
                             #masterstablereason="ngModel" [(ngModel)]="combined.masterstablereason"
                             placeholder="why is patient unstable" required></textarea>
-                        <p *ngIf="masterstablereason.touched && masterstablereason.invalid">Field is required</p>
+                        <p *ngIf="notvalidate && masterstablereason.invalid">Field is required</p>
                     </div>
 
 
@@ -892,7 +892,7 @@
                                             type="text" size="3" #typevisitreason="ngModel" id="carecordination"
                                             name="typevisitreason" [(ngModel)]="combined.typevisitreason" required>
                                         Minutes
-                                        <p *ngIf="typevisitreason.touched && typevisitreason.invalid">Field is required
+                                        <p *ngIf="notvalidate && typevisitreason.invalid">Field is required
                                         </p></label>
                                 </div>
                                 <ng-template #disab>
@@ -903,10 +903,11 @@
                                             type="text" size="3" #typevisitreason="ngModel" id="carecordination"
                                             name="typevisitreason" [(ngModel)]="combined.typevisitreason" disabled
                                             required> Minutes
-                                        <p *ngIf="typevisitreason.touched && typevisitreason.invalid">Field is required
+                                        <p *ngIf="notvalidate && typevisitreason.invalid">Field is required
                                         </p></label>
 
                                 </ng-template>
+
                             </div>
                             <ng-template #kk>
                                 <input class="form-check-input custom-control-input" type="radio" id="{{type}}"
@@ -916,7 +917,6 @@
                                 <label class="form-check-label custom-control-label" for="{{type}}">{{type}}</label>
                             </ng-template>
                         </div>
-
                     </div>
                     <!-- other to different medmanagenrt service-->
                     <!-- <div class="form-row mt-4" *ngIf="combined.typevisit=='Care coordination time spent'; else dis">
@@ -983,7 +983,7 @@
                                             <option *ngFor="let spike of no_see_doc_reasons" [value]="spike">{{spike}}
                                             </option>
                                         </select>
-                                        <p *ngIf="noseedocreason.touched && noseedocreason.invalid">Field is required
+                                        <p *ngIf="notvalidate && noseedocreason.invalid">Field is required
                                         </p>
                                     </div>
                                     <div class="form-group col-md-4" *ngIf="combined.noseedocreason=='Other'">
@@ -1030,7 +1030,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p *ngIf="yesstable.touched && yesstable.invalid">Field is required</p>
+                                            <p *ngIf="notvalidate && yesstable.invalid">Field is required</p>
                                         </div>
                                     </div>
                                     <div *ngIf="combined.yesstable=='no'">
@@ -1050,9 +1050,7 @@
                                                 <input type="date" class="gdp" name="medstopdate" #medstopdate="ngModel"
                                                     class="form-control" [(ngModel)]="combined.medstopdate" required>
                                             </div>
-                                            <p
-                                                *ngIf="decrease.touched && decrease.invalid && increase.touched && increase.invalid && medstopdate.touched && medstopdate.invalid">
-                                                Field is required</p>
+                                            <!-- <p *ngIf="decrease.touched && decrease.invalid || increase.touched && increase.invalid || medstopdate.touched && medstopdate.invalid">  Field is required</p> -->
                                         </div>
                                     </div>
                                 </div>
@@ -1124,13 +1122,13 @@
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label>Decrease</label>
-                                            <input type="text" class="gdp form-control" name="decrease"
-                                                #decrease="ngModel" [(ngModel)]="combined.decrease">
+                                            <input type="text" class="gdp form-control" name="decrease2"
+                                                #decrease2="ngModel" [(ngModel)]="combined.decrease2">
                                         </div>
                                         <div class="form-group col-md-3 ml-4">
                                             <label>Stopped</label>
-                                            <input type="text" class="gdp form-control" name="stopped"
-                                                #stopped="ngModel" [(ngModel)]="combined.stopped">
+                                            <input type="text" class="gdp form-control" name="stopped2"
+                                                #stopped2="ngModel" [(ngModel)]="combined.stopped2">
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label>Added</label>
@@ -1161,10 +1159,10 @@
                                         <input type="text" name="verystable" id="verystable" #verystable="ngModel"
                                             [(ngModel)]="combined.verystable" class="form-control" required>
                                     </div>
-                                    <p *ngIf="verystable.touched && verystable.invalid">Field is required</p>
+                                    <p *ngIf="notvalidate && verystable.invalid">Field is required</p>
                                 </div>
                             </div>
-                            <p *ngIf="seedoc.touched && seedoc.invalid">Field is required</p>
+                            <p *ngIf="notvalidate && seedoc.invalid">Field is required</p>
                         </div>
                         <div class="row mt-3">
                             <label class="col-md-4 qw" for="bhi" style="font-size: 1.1rem;">b) Ordered
@@ -1196,7 +1194,7 @@
                                 <input type="text" class="form-control" #labname="ngModel" name="labname"
                                     [(ngModel)]="combined.labname" required>
                             </div>
-                            <p *ngIf="labname.touched&&labname.invalid">Field is required</p>
+                            <p *ngIf="notvalidate &&labname.invalid">Field is required</p>
                         </div>
                         <!-- <h5 style="color: #87c442;" class="mt-2"> <b> Psychotherapy Services </b></h5> -->
                         <div class="row mt-3">
@@ -1241,7 +1239,7 @@
                                             <option *ngFor="let spike of no_see_doc_reasons" [value]="spike">{{spike}}
                                             </option>
                                         </select>
-                                        <p *ngIf="psynoseedocreason.touched && psynoseedocreason.invalid">Field is
+                                        <p *ngIf="notvalidate && psynoseedocreason.invalid">Field is
                                             required</p>
                                     </div>
                                     <div class="form-group col-md-4" *ngIf="combined.psynoseedocreason=='Other'">
@@ -1295,7 +1293,7 @@
                                         <input type="text" name="verystablepsy" id="verystablepsy"
                                             #verystablepsy="ngModel" [(ngModel)]="combined.verystablepsy"
                                             class="form-control" required>
-                                        <p *ngIf="verystablepsy.touched && verystablepsy.invalid">Field is required</p>
+                                        <p *ngIf="notvalidate && verystablepsy.invalid">Field is required</p>
                                     </div>
                                 </div>
                             </div>
@@ -1312,9 +1310,9 @@
                                     <option *ngFor="let spike of sptime" [value]="spike">{{spike}}
                                     </option>
                                 </select>
-                                <p *ngIf="thtime.touched && thtime.invalid">Field is required</p>
+                                <p *ngIf="notvalidate && thtime.invalid">Field is required</p>
                             </div>
-                            <p *ngIf="seepsy.touched && seepsy.invalid">Field is required</p>
+                            <p *ngIf="notvalidate && seepsy.invalid">Field is required</p>
                         </div>
                     </div>
                     <h5 style="color: #87c442;" class="mt-2"> <b> Psychiatric scales/Case management service </b></h5>
@@ -1360,7 +1358,7 @@
                                 <input type="text" class="form-control aq" name="otherscaleeligiblereason"
                                     #otherscaleeligiblereason="ngModel" [(ngModel)]="combined.otherscaleeligiblereason"
                                     placeholder="Specify Reason" required>
-                                <p *ngIf="otherscaleeligiblereason.touched && otherscaleeligiblereason.invalid">Field is
+                                <p *ngIf="notvalidate && otherscaleeligiblereason.invalid">Field is
                                     required
                                 </p>
                             </div>
@@ -1912,7 +1910,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p *ngIf="conpsy.touched && conpsy.invalid">Field is required</p>
+                            <p *ngIf="notvalidate && conpsy.invalid">Field is required</p>
                         </div>
                     </div>
                     <div class="row ml-4" *ngIf="combined.conpsy=='yes' && combined.consult=='yes'">
@@ -1923,14 +1921,14 @@
                                     <option hidden value="" disabled selected> Assigned to psychotherapist </option>
                                     <option *ngFor="let spii of providers" [value]="spii.name">{{spii.name}}</option>
                                 </select>
-                                <p *ngIf="conpsyname.touched && conpsyname.invalid">Field is required</p>
+                                <p *ngIf="notvalidate && conpsyname.invalid">Field is required</p>
                             </div>
                         </div>
                         <div class="col-md-4 form-group">
                             <input type="text" class="form-control aq" placeholder="Reason for consultation"
                                 name="conpsyreason" #conpsyreason="ngModel" [(ngModel)]="combined.conpsyreason"
                                 required>
-                            <p *ngIf="conpsyreason.touched && conpsyreason.invalid">Field is required</p>
+                            <p *ngIf="notvalidate && conpsyreason.invalid">Field is required</p>
                         </div>
                     </div>
                     <div class="form-row ml-4" *ngIf="combined.consult=='yes' && combined.consult=='yes'">
@@ -1951,7 +1949,7 @@
                                         <label class="custom-control-label" for="conmed2">No</label>
                                     </div>
                                 </div>
-                                <p *ngIf="conmed.touched && conmed.invalid">Field is required</p>
+                                <p *ngIf="notvalidate && conmed.invalid">Field is required</p>
                             </div>
                         </div>
                     </div>
@@ -1960,7 +1958,7 @@
                             <input type="text" class="form-control aq" placeholder="Reason for consultation"
                                 name="conmedreason" #conmedreason="ngModel" [(ngModel)]="combined.conmedreason"
                                 required>
-                            <p *ngIf="conmedreason.touched && conmedreason.invalid">Field is required</p>
+                            <p *ngIf="notvalidate && conmedreason.invalid">Field is required</p>
                         </div>
                     </div>
                     <div class="form-row ml-4" *ngIf="combined.consult=='yes'">
@@ -1981,7 +1979,7 @@
                                         <label class="custom-control-label" for="conscr2">No</label>
                                     </div>
                                 </div>
-                                <p *ngIf="conscr.touched && conscr.invalid">Field is required</p>
+                                <p *ngIf="notvalidate && conscr.invalid">Field is required</p>
                             </div>
                         </div>
                     </div>
@@ -1990,7 +1988,7 @@
                             <input type="text" class="form-control aq" placeholder="Reason for consultation"
                                 name="conscrreason" #conscrreason="ngModel" [(ngModel)]="combined.conscrreason"
                                 required>
-                            <p *ngIf="conscrreason.touched && conscrreason.invalid">Field is required</p>
+                            <p *ngIf="notvalidate && conscrreason.invalid">Field is required</p>
                         </div>
                     </div>
 
@@ -2038,12 +2036,14 @@
                         </div>
                     </div>
                     <br>
-                    <div *ngIf="form.invalid">
+                    <div style="text-align: center; margin-bottom: 50px; margin-top: 20px;">
+                    <div *ngIf="notvalidate && form.invalid">
                         <p>Fill all the fields With <span>*</span> </p>
                     </div>
                     <!-- <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Submit</button> -->
                     <button type="submit" class="btn btn-custom" style="background-color:#87c442; color:white" >Submit</button>
                     <button  class="btn btn-danger ml-2" [routerLink]="['/patient']">Cancel</button>
+                </div>
                 </form>
             </div>
             <div class="col-md-1"></div>

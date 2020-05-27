@@ -71,6 +71,7 @@ export class ProviderComponent implements OnInit {
     console.log(this.batch.nativeElement)
   }
   resetForm(form?: NgForm) {
+    this.edit = false
     if (form != null) {
       form.resetForm();
     }
@@ -96,8 +97,10 @@ export class ProviderComponent implements OnInit {
     }
   }
   s_id;
+  edit = false;
   assign(data, id) {
     this.resetForm();
+    this.edit = true
     this.s_id = id;
     this.providerData.name = data.name;
     this.providerData.ain = data.ain;
