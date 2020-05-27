@@ -79,14 +79,14 @@
                         <div class="form-group col-md-5">
                             <label for="inputname4">Select Primary Insurance <span>*</span> </label>
                             <select class="form-control aq" id="pii" name="pinsurance" #pinsurance="ngModel"
-                                [(ngModel)]="combined.pinsurance" (ngModelChange)='one($event)'>
+                                [(ngModel)]="combined.pinsurance" (ngModelChange)='one($event)' required>
                                 <option hidden value="" disabled selected> Select Primary Insurance </option>
                                 <option *ngFor="let spii of insurances" [value]="spii.name">{{spii.name}}</option>
                             </select>
                             <p *ngIf="notvalidate && pinsurance.invalid">Primary Insurance is required</p>
                         </div>
                         <div class="form-group col-md-5">
-                            <label for="inputname4">Select Secondary insurance <span>*</span> </label>
+                            <label for="inputname4">Select Secondary insurance </label>
                             <select class="form-control aq" id="pii" name="sinsurance" #sinsurance="ngModel"
                                 [(ngModel)]="combined.sinsurance">
                                 <option hidden value="" disabled selected> Select Secondary Insurance </option>
@@ -243,7 +243,7 @@
                                     required>
                                 <label class="custom-control-label lor" for="gtp4">Results Uploaded</label>
                             </div>
-                        </div>
+                        </div><br>
                         <p *ngIf="notvalidate && genericresult.invalid">Field is required</p>
                     </div>
                     <div class="form-group row ml-4" *ngIf="combined.generictest=='no'">
@@ -880,7 +880,7 @@
                             </div>
                         </div>
                     </div>
-                    <h5 style="color: #87c442;" class="mt-2"> <b> Type Of Visit </b><span>*</span></h5>
+                    <h5 style="color: #87c442;" class="mt-2"> <b> Type Of Visit </b><span>*</span></h5><p *ngIf="notvalidate">Field is required </p>
                     <div class="row ml-1 mt-4">
                         <div class="col-md-3 form-check custom-control custom-radio" *ngFor="let type of type_visits">
                             <div *ngIf="type=='Care coordination time spent'; else kk">
@@ -903,8 +903,7 @@
                                             type="text" size="3" #typevisitreason="ngModel" id="carecordination"
                                             name="typevisitreason" [(ngModel)]="combined.typevisitreason" disabled
                                             required> Minutes
-                                        <p *ngIf="notvalidate && typevisitreason.invalid">Field is required
-                                        </p></label>
+                                        </label>
 
                                 </ng-template>
 
@@ -916,27 +915,10 @@
                                 <!-- {{typevisit.value}} -->
                                 <label class="form-check-label custom-control-label" for="{{type}}">{{type}}</label>
                             </ng-template>
+                            
                         </div>
+                        
                     </div>
-                    <!-- other to different medmanagenrt service-->
-                    <!-- <div class="form-row mt-4" *ngIf="combined.typevisit=='Care coordination time spent'; else dis">
-                        <label for="carecordination" class="col-md-6">Care condition time spent in minutes</label>
-                        <div class="form-group col-md-4">
-                            <input type="text" class="form-control" #typevisitreason="ngModel" id="carecordination"
-                                name="typevisitreason" [(ngModel)]="combined.typevisitreason" required>
-                            <p *ngIf="typevisitreason.touched && typevisitreason.invalid">Field is required</p>
-                        </div>
-                    </div>
-                    <ng-template #dis>
-                    <div class="form-row mt-4">
-                        <label for="carecordination" class="col-md-6">Care condition time spent in minutes</label>
-                        <div class="form-group col-md-4">
-                            <input type="text" class="form-control" #typevisitreason="ngModel" id="carecordination"
-                                name="typevisitreason" [(ngModel)]="combined.typevisitreason" disabled required>
-                            <p *ngIf="typevisitreason.touched && typevisitreason.invalid">Field is required</p>
-                        </div>
-                    </div>
-                    </ng-template> -->
                     <h5 style="color: #87c442;"> <b> Med Management Services </b></h5>
                     <div class="form-group mt-3">
                         <div class="row">
@@ -1026,7 +1008,7 @@
                                                             value="no" name="yesstable" #nostable="ngModel"
                                                             [(ngModel)]="combined.yesstable" required>
                                                         <label class="custom-radio" for="yesps2"
-                                                            class="form-check-label">Performed following GDR</label>
+                                                            class="form-check-label">Performed following GDR</label><p *ngIf="combined.yesstable=='no' && notvalidate ">One Field is required from three</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1038,19 +1020,19 @@
                                             <div class="form-group col-md-3 ml-4">
                                                 <label>Decreased</label>
                                                 <input type="text" class="gdp" name="decrease" class="form-control"
-                                                    #decrease="ngModel" [(ngModel)]="combined.decrease" required>
+                                                    #decrease="ngModel" [(ngModel)]="combined.decrease" >
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>Stopped</label>
                                                 <input type="text" class="gdp" name="increase" #increase="ngModel"
-                                                    class="form-control" [(ngModel)]="combined.increase" required>
+                                                    class="form-control" [(ngModel)]="combined.increase" >
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>Meds continued, added stop date</label>
                                                 <input type="date" class="gdp" name="medstopdate" #medstopdate="ngModel"
-                                                    class="form-control" [(ngModel)]="combined.medstopdate" required>
+                                                    class="form-control" [(ngModel)]="combined.medstopdate" >
                                             </div>
-                                            <!-- <p *ngIf="decrease.touched && decrease.invalid || increase.touched && increase.invalid || medstopdate.touched && medstopdate.invalid">  Field is required</p> -->
+                                            <!-- <p *ngIf="notvalidate && decrease.invalid || notvalidate && increase.invalid || notvalidate && medstopdate.invalid">One Field from three is required</p> -->
                                         </div>
                                     </div>
                                 </div>
@@ -1082,7 +1064,7 @@
                                                     <div class="form-check">
                                                         <input id="nops1" type="radio" value="yes" name="nostable"
                                                             #nostable="ngModel" [(ngModel)]="combined.nostable"
-                                                            class="form-check-input">
+                                                            class="form-check-input" required>
                                                         <label class="custom-radio form-check-label" for="nops1">No
                                                             Change in Medicine</label>
                                                     </div>
@@ -1091,22 +1073,24 @@
                                                     <div class="form-check">
                                                         <input id="nops2" type="radio" value="no" name="nostable"
                                                             #nostable="ngModel" [(ngModel)]="combined.nostable"
-                                                            class="form-check-input">
+                                                            class="form-check-input" required>
                                                         <label class="custom-radio form-check-label" for="nops2">Changed
-                                                            Medicine</label>
+                                                            Medicine</label><p *ngIf="notvalidate && combined.nostable == 'no'">one field is must required</p>
                                                     </div>
                                                 </div>
+                                                <p *ngIf="notvalidate && nostable.invalid">Field is required</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-1 ml-4" *ngIf="combined.nostable=='yes'">
+                                    <div class="row mt-3 ml-4" *ngIf="combined.nostable=='yes'">
                                         <div class="col-md-5 ml-4">
                                             <label class="df">Will Just Monitor </label>
                                         </div>
                                         <div class="col-md-5 form-group">
                                             <input type="text" class="gdp1 form-control" name="unstable_text"
                                                 class="form-control" #unstable_text="ngModel"
-                                                [(ngModel)]="combined.unstable_text" placeholder="Monitor">
+                                                [(ngModel)]="combined.unstable_text" placeholder="Monitor" required>
+                                                <p *ngIf="notvalidate && unstable_text.invalid">field required</p>
                                         </div>
                                     </div>
                                     <div class="row mt-1 ml-4" *ngIf="combined.nostable=='no'">
