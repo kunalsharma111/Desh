@@ -408,10 +408,7 @@ a:focus {
   display: inline;
   padding-left: 50px;
 }
-.dob {
-  display: inline;
-  padding-left: 50px;
-}
+
 .edit {
   display: inline;
   text-align: right;
@@ -746,3 +743,23 @@ input[type="checkbox"]:checked + label:before {
     outline: none;
   }
 }
+@media (max-width:1537px){
+  .name {
+    display: inline;
+    font-size: 14px;
+  }
+}
+  @media (max-width:1367px){
+    .name {
+      display: inline;
+      font-size: 13px;
+      font-weight: 400;
+    }
+  }
+  @media (max-width:1025){
+    .name {
+      display: inline;
+      font-size: 8px;
+      font-weight: 200;
+    }
+  }

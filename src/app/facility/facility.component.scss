@@ -221,6 +221,26 @@ a:focus {
     margin-right: 60px;
   }
 }
+@media (max-width:1537px){
+  .name {
+    display: inline;
+    font-size: 14px;
+  }
+}
+  @media (max-width:1367px){
+    .name {
+      display: inline;
+      font-size: 13px;
+      font-weight: 400;
+    }
+  }
+  @media (max-width:1025){
+    .name {
+      display: inline;
+      font-size: 8px;
+      font-weight: 200;
+    }
+  }
 
 @media (min-width: 768px) and (max-width: 991px) {
 
@@ -378,6 +398,7 @@ a:focus {
   transform: scale(1.4);
   display: block;
 }
+
 @media (max-width: 1491px) {
   .sidebar-nav > li {
     padding-left: 40px;
@@ -495,6 +516,7 @@ a:focus {
   display: inline;
   padding-left: 40px;
 }
+
 .edit {
   display: inline;
   text-align: right;

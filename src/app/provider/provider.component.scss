@@ -614,3 +614,23 @@ input[type="checkbox"]:checked + label:before {
   border-radius: 50%;
   display: inline-block;
 }
+@media (max-width:1537px){
+  .name {
+    display: inline;
+    font-size: 14px;
+  }
+}
+  @media (max-width:1367px){
+    .name {
+      display: inline;
+      font-size: 13px;
+      font-weight: 400;
+    }
+  }
+  @media (max-width:1025){
+    .name {
+      display: inline;
+      font-size: 8px;
+      font-weight: 200;
+    }
+  }

@@ -81,10 +81,10 @@
               <div class="details">
                 <div class="row">
                   <div class="col-md-2 name">{{i.name}}</div>
-                  <div class="col-md-2">{{i.sn}}</div>
+                  <div class="col-md-2 name">{{i.sn}}</div>
                   <div class="col-md-2 name">{{i.address}}</div>
-                  <div class="col-md-1">{{i.city}}</div>
-                  <div class="col-md-2">
+                  <div class="col-md-2 name">{{i.city}}</div>
+                  <div class="col-md-2 name">
                     <div *ngIf="i.tof == 'nh'">Nursing Home</div>
                     <div *ngIf="i.tof == 'ah'">Assisted Home</div>
                     <div *ngIf="i.tof == 'gh'">Group Home</div>

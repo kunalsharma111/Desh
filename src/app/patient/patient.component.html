@@ -94,7 +94,7 @@
             <div class="details">
               <div class="row">
                 <div class="col-md-4 name">{{i.name}}</div>
-                <div class="col-md-4 dob">{{i.dob|date}}</div>
+                <div class="col-md-4 name">{{i.dob|date}}</div>
                 <div class="col-md-4 edit" [routerLink]="['/cpat']" ><i class="fa fa-pencil" aria-hidden="true"
                    style="color: #87c442;" (click)="service.useriden(i._id)"
                   tooltip="Update Patient record" placement="right"></i>
