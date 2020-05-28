@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Subject, BehaviorSubject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 export interface Admin {
   fname: string;
@@ -225,6 +226,7 @@ export class DataTransferService {
   private c3 = new Subject<String>(); cc3$ = this.c3.asObservable();
   private c4 = new Subject<String>(); cc4$ = this.c4.asObservable();
   private c5 = new Subject<String>(); cc5$ = this.c5.asObservable();
+  private c6 = new Subject<String>(); cc6$ = this.c6.asObservable();
   metcha = 'https://deshdesh.herokuapp.com/api';
   // metcha = 'http://localhost:4000/api'
   url = `${this.metcha}/login`;
@@ -341,6 +343,12 @@ export class DataTransferService {
     }, 100)
     this.router.navigateByUrl('/expensive');
   }
+  toreport(message: string) {
+    setTimeout(() => {
+      this.c6.next('yes');
+    }, 100)
+    this.router.navigateByUrl('/reports');
+  }
   createdownloadlink(some) {
     console.log("i do nothing")
   }
@@ -372,5 +380,21 @@ export class DataTransferService {
     // return this.http.post<any>(this.url19,data).subscribe(res=>{
     //   console.log(res)
     // })
+  }
+  private history = [];
+  public loadRouting(): void {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(({urlAfterRedirects}: NavigationEnd) => {
+        this.history = [...this.history, urlAfterRedirects];
+      });
+  }
+
+  public getHistory(): string[] {
+    return this.history;
+  }
+
+  public getPreviousUrl(): string {
+    return this.history[this.history.length - 2] || '/index';
   }
 }

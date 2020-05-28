@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DataTransferService } from './shared/data-transfer.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'desh';
+  constructor(service : DataTransferService){
+    service.loadRouting();
+  }
 }

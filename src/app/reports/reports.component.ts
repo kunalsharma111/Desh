@@ -2,7 +2,7 @@ import { Component, OnInit, Renderer2, ViewChild, ElementRef, PLATFORM_ID, Injec
 import { NgForm } from '@angular/forms';
 import { DataTransferService, PatientRound2, Facility } from '../shared/data-transfer.service';
 import { HttpErrorResponse } from '@angular/common/http';
-
+declare var $: any
 import 'jspdf-autotable'
 // import { isPlatformBrowser } from '@angular/common';
 
@@ -45,6 +45,14 @@ export class ReportsComponent implements OnInit {
     this.service.logout();
   }
   ngOnInit() {
+    this.service.cc6$
+    .subscribe(
+      message => {
+        if (message === 'yes') {
+          this.open();
+        }
+      }
+    )
     this.resetform();
     const $button = document.querySelector('#sidebar-toggle');
     const $wrapper = document.querySelector('#wrapper');
@@ -86,16 +94,35 @@ export class ReportsComponent implements OnInit {
   pn;
   dd;
   submit(form) {
-    // console.log(form.value);
+    localStorage.setItem("facility",form.value.facility);
+    localStorage.setItem("provider",form.value.provider);
+    localStorage.setItem("date",form.value.date);
+    console.log(form.value);
     this.service.findprerecords(form.value).subscribe(res =>{
       this.output = res;
       this.gammma =true;
       this.showit = false;
-      console.log(this.output);
+     
     })
     this.fn = this.repo.facility;
     this.pn = this.repo.provider;
     this.dd = this.repo.date;
+    this.resetform();
+  }
+  submit2(obj) {
+    localStorage.setItem("facility",obj.facility);
+    localStorage.setItem("provider",obj.provider);
+    localStorage.setItem("date",obj.date);
+    console.log(obj);
+    this.service.findprerecords(obj).subscribe(res =>{
+      this.output = res;
+      this.gammma =true;
+      this.showit = false;
+    })
+
+    this.fn = obj.facility;
+    this.pn = obj.provider;
+    this.dd = obj.date;
     this.resetform();
   }
   
@@ -141,4 +168,22 @@ export class ReportsComponent implements OnInit {
     doc.save('tableToPdf.pdf');
   }
   // }
+  open() {
+    setTimeout(() => {
+      console.log("please call me");
+      $("#myModalap").modal("show");
+
+    let f = localStorage.getItem("facility");
+    let p = localStorage.getItem("provider");
+    let d = localStorage.getItem("date");
+    console.log(f+p+d);
+   var obj = {
+      facility:f,
+      provider:p,
+      date:d
+    }
+    // console.log(obj.facility);
+    this.submit2(obj);
+    }, 100)
+  }
 }

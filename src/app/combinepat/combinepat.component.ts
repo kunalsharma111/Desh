@@ -16,6 +16,7 @@ declare var $: any
 })
 export class CombinepatComponent implements OnInit {
   modalRef: BsModalRef;
+  previousRoute: string;
   constructor(public service: DataTransferService, private modalService: BsModalService, public el: ElementRef,
     public toastr: ToastrService, public router: Router) { }
   scale_score=[];
@@ -50,7 +51,7 @@ export class CombinepatComponent implements OnInit {
   default_scales = ['PHQ9', 'GDS', "BIMS", "MMSE", "BTQ", 'LEC-5', 'GAD', "BAI"];
   scale60days = ['PHQ9','GDS','BIMS','MMSE','GAD','BAI','BEHAVE-AD', 'RMBC','MOCA','NPQ','ISI','AIS','PNASS','BPRS'];
   ngOnInit() {
-    
+    this.previousRoute = this.service.getPreviousUrl();
     this.kdate = new Date();
     this.cd = new Date();
     this.kd = this.cd.toISOString().slice(0, 10);
@@ -196,7 +197,7 @@ export class CombinepatComponent implements OnInit {
   followup_type = ['Per routine protocol', 'Urgent', 'Very Urgent', 'Date Specific']
   scaleeligible_reasons = ['Patient was not in the Facility', 'Patient could not particpate in the interview', 'Patient refused to particpate in the interview', 'I met the target points for the day', 'Patient not available', 'Other']
   sptime = ['Upto 30 min', 'Upto 45 min', 'Upto 1 Hr', 'More then 1 Hr']
-  sday = ['Not Apllicable','3 Months','6 Months'];
+  sday = ['Not Applicable','3 Months','6 Months'];
   // firstat : false;
   // reset_limited() {
   //   this.combined
@@ -327,7 +328,6 @@ export class CombinepatComponent implements OnInit {
   notvalidate:boolean;
   submit(form: NgForm) {
     if(form.valid){
-      console.log("chlda kam");
       var x = this.el.nativeElement.querySelectorAll('.chkbx');
       var status = this.el.nativeElement.querySelectorAll('.medstatus');
       var date = this.el.nativeElement.querySelectorAll('.meddate')
@@ -386,11 +386,14 @@ export class CombinepatComponent implements OnInit {
       let masterptdata = { ...meds, ...med_syms, ...psy_psyms, ...scaleinfo, ...form.value }
       this.service.submitMasterPatientData(masterptdata);
       this.toastr.success('', 'Patient Record Updated Successfully');
+      if(this.previousRoute == '/patient'){
       this.router.navigate(['/patient']);
+      }else{
+        this.gotoreport();
+      }
     }
     else{
       this.notvalidate = true;
-      console.log("pata nh");
     }
   
     // this.resetForm();
@@ -422,6 +425,9 @@ export class CombinepatComponent implements OnInit {
   }
   ae() {
     this.service.toexpensive('yes');
+  }
+  gotoreport(){
+    this.service.toreport('yes');
   }
   fill(e) {
     if (e == "yes" && this.combined.flag == 0) {
