@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 let visitSchema = new mongoose.Schema({
-    visit: String,
+    visit: Date,
     careconditiontimespent: String,
     seedoc: String,
     noseedocreason: String,

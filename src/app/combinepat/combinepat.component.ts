@@ -382,8 +382,12 @@ export class CombinepatComponent implements OnInit {
       var med_syms = { meds_symptoms: syn_meds }
       var meds = { exmeds: medData }
       var scaleinfo = { scaleinfo: scaleData }
-  
-      let masterptdata = { ...meds, ...med_syms, ...psy_psyms, ...scaleinfo, ...form.value }
+      let formdata = form.value;
+      formdata.visit = this.stringdate;
+      if(formdata.followup=="") {
+      formdata.followup=null;
+      }
+      let masterptdata = { ...meds, ...med_syms, ...psy_psyms, ...scaleinfo, ...formdata }
       this.service.submitMasterPatientData(masterptdata);
       this.toastr.success('', 'Patient Record Updated Successfully');
       if(this.previousRoute == '/patient'){

@@ -343,10 +343,11 @@ router.post('/medadd', verifyToken, (req, res) => {
     }
 })
 router.post('/goku', verifyToken, (req, res) => {
-    let days = 7;
-    if (req.body.medfollowup != "Per routine protocol") {
-        days = req.body.followupdays;
-    }
+    var days = new Date();
+days.setDate(days.getDate() + 7);
+if (req.body.medfollowup != "Per routine protocol") {
+days = req.body.followupdays;
+}
     let masterdata = {
         visit: req.body.visit,
         careconditiontimespent: req.body.careconditiontimespent,
@@ -558,13 +559,16 @@ router.post('/preround', verifyToken, (req, res) => {
                     let x = pat.visits[pat.visits.length - 1]
                     if (x != undefined) {
                         let veryUrgent = false;
-                        if (x.medfollowup == "Very Urgent") veryUrgent = true;
-                        if (result.insurance.includes(x.pinsurance) || result.insurance.includes(x.sinsurance) || veryUrgent) {
+                        if (x.medfollowup == "Very Urgent") veryUrgent =
+true;
+                        if (result.insurance.includes(x.pinsurance) ||
+result.insurance.includes(x.sinsurance) || veryUrgent) {
                             console.log(pat.name)
                             if (req.body.facility === x.facility) {
                                 console.log(pat.name)
                                 let visitdate = new Date(x.visit);
-                                let selecteddate = new Date(req.body.date);
+                                let selecteddate = new
+Date(req.body.date);
                                 let psydate = new Date(x.visit);
                                 let v_t = [];
                                 let p_s = [];
@@ -575,21 +579,27 @@ router.post('/preround', verifyToken, (req, res) => {
                                 }
                                 let psyco = false;
                                 if (x.followup) {
-                                    psydate.setDate(psydate.getDate() + parseInt(x.followup));
+                                    psydate.setDate(psydate.getDate() +
+parseInt(x.followup));
                                     psyco = true;
                                 }
                                 let medmanage = false;
-                                if (x.nostable == 'no') {
+                                if (x.nostable == 'no' || x.medfollowup
+== "Date Specific") {
                                     medmanage = true;
                                     console.log(visitdate.getDate());
-                                    if (x.followupdays != null || x.followupdays != undefined) {
-                                        visitdate = new Date(x.followupdays.valueOf());
+                                    if (x.followupdays != null ||
+x.followupdays != undefined) {
+                                        visitdate = new
+Date(x.followupdays.valueOf());
                                     }
                                     else
-                                        visitdate.setDate(visitdate.getDate() + 7);
+
+visitdate.setDate(visitdate.getDate() + 7);
                                 }
                                 else {
-                                    visitdate.setDate(visitdate.getDate() + 30);
+
+visitdate.setDate(visitdate.getDate() + 30);
                                     medmanage = true;
                                 }
                                 let s_e = [];
@@ -611,37 +621,59 @@ router.post('/preround', verifyToken, (req, res) => {
                                 if (x.homeclinic == "yes") {
                                     s_e.push("virtual clinic")
                                 }
-                                let scale_names = ['PHQ9', 'GDS', 'BIMS', 'GAD7', 'AIMS', 'MOCA'];
                                 let scale_dataa = false;
-                                if (result.role.includes('Scale Performer')) {
+                                if (result.role.includes('ScalePerformer')) {
                                     x.scaleinfo.forEach(scale => {
-                                        // console.log(scale)
+                                        console.log(scale)
                                         if (scale.scale_score == '') {
+                                            console.log('insidestep1/2')
                                             p_s.push(scale.scale_name)
                                         }
-                                        else if (scale_names.includes(scale.scale_name)) {
-                                            let scale_visit_date = new Date(scale.scale_date);
-                                            console.log(scale_visit_date.toString())
-                                            var newDate = new Date(scale_visit_date.setMonth(scale_visit_date.getMonth() + 6));
-                                            console.log(scale_visit_date.toString())
-                                            if (+newDate <= +selecteddate) {
-                                                scale_dataa = true;
-                                                s_d.push(scale);
+                                        if (scale.scaledays != "" || scale.scaledays != "Not Applicable") {
+                                            let scale_visit_date = newDate(scale.scale_date);
+                                            console.log("scale visitdate" + scale_visit_date)
+                                            if (scale_visit_date !="Invalid Date" || scale.scale_date != "") {
+                                                console.log('insidestep2')
+                                                if (scale.scaledays =="6 Months") {
+                                                    console.log("6 mah")
+                                                    var newdate = new Date(scale_visit_date.setMonth(scale_visit_date.getMonth() + 6));
+                                                }
+                                                if (scale.scaledays =="3 Months") {
+                                                    console.log("3 mah")
+                                                    var newdate = new Date(scale_visit_date.setMonth(scale_visit_date.getMonth() + 3));
+                                                }
+
+console.log(scale_visit_date.toString())
+                                                console.log("new date" +
+newdate);
+                                                if (+newdate <=
++selecteddate) {
+
+console.log("inside");
+                                                    scale_dataa = true;
+                                                    s_d.push(scale);
+                                                }
                                             }
                                         }
                                     })
                                 }
-                                if (scale_dataa) {
+                                if (scale_dataa || p_s.length) {
                                     v_t.push("Scales")
                                 }
-                                console.log(visitdate.toString(), selecteddate.toString(), psydate.toString())
-                                console.log(result.role.includes('Medication management'))
+                                console.log(scale_dataa, v_t);
+                                console.log(visitdate.toString(),
+selecteddate.toString(), psydate.toString())
+
+console.log(result.role.includes('Medication management'))
                                 let followup_reason = "-"
                                 if (x.followupreason != undefined) {
                                     followup_reason = x.followupreason
                                 }
-                                if (+visitdate <= +selecteddate && result.role.includes('Medication management') && medmanage || urgent || veryUrgent) {
-                                    if (+visitdate <= +selecteddate && result.role.includes('Medication management')) {
+                                if (+visitdate <= +selecteddate &&
+result.role.includes('Medication management') && medmanage || urgent ||
+veryUrgent) {
+                                    if (+visitdate <= +selecteddate &&
+result.role.includes('Medication management')) {
                                         v_t.push("Med-Management")
                                     }
 
@@ -657,7 +689,8 @@ router.post('/preround', verifyToken, (req, res) => {
                                         name: pat.name,
                                         dob: pat.dob,
                                         room: x.room,
-                                        insurance: x.pinsurance + " " + x.sinsurance,
+                                        insurance: x.pinsurance + " " +
+x.sinsurance,
                                         services_eligible: s_e,
                                         visit_type: v_t,
                                         followup_type: x.medfollowup,
@@ -666,14 +699,16 @@ router.post('/preround', verifyToken, (req, res) => {
                                     console.log(data_partial);
                                     preroundupdata.push(data_partial);
                                 }
-                                if (+psydate <= +selecteddate && result.role.includes('Psychotherapist') && psyco) {
+                                if (+psydate <= +selecteddate &&
+result.role.includes('Psychotherapist') && psyco) {
                                     v_t.push("Psycothreapy");
                                     let data_partial = {
                                         id: pat._id,
                                         name: pat.name,
                                         dob: pat.dob,
                                         room: x.room,
-                                        insurance: x.pinsurance + " " + x.sinsurance,
+                                        insurance: x.pinsurance + " " +
+x.sinsurance,
                                         services_eligible: s_e,
                                         visit_type: v_t,
                                         followup_type: x.medfollowup,
@@ -682,13 +717,13 @@ router.post('/preround', verifyToken, (req, res) => {
                                     console.log(data_partial);
                                     preroundupdata.push(data_partial);
                                 }
-                                if (result.role.includes('Scale Performer') && (p_s.length > 0 || s_d.length > 0)) {
+                                if (result.role.includes('ScalePerformer') && (p_s.length > 0 || s_d.length > 0)) {
                                     let data_partial = {
                                         id: pat._id,
                                         name: pat.name,
                                         dob: pat.dob,
                                         room: x.room,
-                                        insurance: x.pinsurance + " " + x.sinsurance,
+                                        insurance: x.pinsurance + " " +x.sinsurance,
                                         services_eligible: s_e,
                                         pending_scales: p_s,
                                         scales_due: s_d,
@@ -707,4 +742,45 @@ router.post('/preround', verifyToken, (req, res) => {
             })
         })
 })
+router.post('/preroundfast', verifyToken, (req, res) => {
+    // $add: [ "$CreatedDate", 2*24*60*60000 ] }
+    MasterPatientModel.aggregate([{
+        $project: {
+            name: 1,
+            visits: { $slice: ["$visits", -1] },
+            v: "$visits.visit"
+        }
+    },
+    {
+        $addFields: {
+            // convertedQty: {
+            //     $convert: {
+            //         input: "", to: "date",
+            //         onError: "error",
+            //         onNull: "off"
+            //     }
+            // },
+            visitDate:
+            {
+                $cond: {
+                    if: { $eq: ["$visits.nostable", ["no"]] },
+                    then: { $add: [{ $arrayElemAt: ["$visits.visit", 0] }, 7 * 24 * 60 * 60000] },
+                    else: { $add: [{ $arrayElemAt: ["$visits.visit", 0] }, 30 * 24 * 60 * 60000] }
+                }
+            },
+        }
+    },
+    {
+        $match: {
+            "visits.facility": `${req.body.facility}`
+            // visitDate: { $lte: new Date(req.body.date) }
+        }
+    }
+    ])
+        .then(result => {
+            res.json(result)
+        }).catch(err => {
+            console.log(err);
+        })
+ })
 module.exports = router;
