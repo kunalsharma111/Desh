@@ -27,6 +27,7 @@ import { FilterdatePipe } from './filterdate.pipe';
 import { CapitalizePipe } from './capitalize.pipe';
 import { CombinepatComponent } from './combinepat/combinepat.component';
 import {DatePipe} from '@angular/common';
+import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import {DatePipe} from '@angular/common';
     FilterNamePipe,
     FilterdatePipe,
     CapitalizePipe,
-    CombinepatComponent
+    CombinepatComponent,
+    ForgotpasswordComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

@@ -41,6 +41,8 @@
     "ng-pdf-make": "^0.1.1",
     "ngx-bootstrap": "^5.5.0",
     "ngx-toastr": "^10.0.4",
+    "nodemailer": "^6.4.8",
+    "nodemon": "^2.0.4",
     "popper": "^1.0.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",

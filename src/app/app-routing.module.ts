@@ -12,6 +12,7 @@ import { ProviderComponent } from './provider/provider.component';
 import { ExpensiveComponent } from './expensive/expensive.component';
 import { ReportsComponent } from './reports/reports.component';
 import { CombinepatComponent } from './combinepat/combinepat.component';
+import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,7 @@ const routes: Routes = [
     canActivate: [RouteGuard]
   },
   { path: 'register', component: RegisterComponent },
+  { path: 'forgotpassword', component: ForgotpasswordComponent },
   { path: 'facility', component: FacilityComponent, canActivate: [RouteGuard] },
   { path: 'insurance', component: InsuranceComponent, canActivate: [RouteGuard] },
   { path: 'provider', component: ProviderComponent, canActivate: [RouteGuard] },

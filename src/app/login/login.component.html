@@ -19,13 +19,13 @@
             [(ngModel)]="user.pwd" required>
             <div class="row mt-3 mb-5 si">
               <div class="col-md-4"></div>
-              <div class="com-md-4" class="fp">Forget Password?</div>
+              <div class="com-md-4" class="fp" [routerLink]="['/forgotpassword']">Forgot Password?</div>
             </div>
             <button type="submit" class="btn btn-custom btn-lg btn-block">
               LOGIN
             </button>
             <div class="rg">
-            <i [routerLink]="['/register']">Dont have an account? Register</i>
+            <!-- <i [routerLink]="['/register']">Dont have an account? Register</i> -->
             </div>
           </form>
           <!-- <form (submit)="submit(form)" #form="ngForm">

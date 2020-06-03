@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require("mongoose");
 const jwt = require('jsonwebtoken');
-
+var nodemailer = require("nodemailer");
 const router = express.Router();
 
 require('../models/db');
@@ -479,6 +479,55 @@ router.get('/getmed', verifyToken, (req, res) => {
         }
         else {
             console.log('err to fetch details');
+        }
+    })
+})
+router.post("/confirmotp",(req,res)=>{
+    var user = req.body;
+    console.log(user.oo + user.em);
+
+})
+router.post("/otp",(req,res)=>{
+    var user = req.body;
+    var ott = Math.floor(100000 + Math.random() * 900000);
+    var ee = user.email;
+    userModel.findOne({email:user.email},(err,doc)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            if(!doc){
+                res.status(401).send('Email not registered')
+            }
+            else{
+                const user = userModel.updateOne({_id:doc._id},{$set:{otp:ott}},(err,doc)=>{
+                    if(!err){
+                        res.json({e:ee});
+                    }
+                });
+                console.log("akhir te");
+                let mailTransporter = nodemailer.createTransport({ 
+                    service: 'gmail', 
+                    auth: { 
+                        user: 'email', 
+                        pass: 'password'
+                    } 
+                }); 
+                  
+                let mailDetails = { 
+                    from: 'famemedia315@gmail.com', 
+                    to: user.email, 
+                    subject: 'Reset password OTP For Dr. Desh', 
+                    text: 'One time OTP is ' + ott
+                }; 
+                mailTransporter.sendMail(mailDetails, function(err, data) { 
+                    if(err) { 
+                        console.log('Error Occurs'); 
+                    } else { 
+                        console.log('Email sent successfully'); 
+                    } 
+                }); 
+            }
         }
     })
 })

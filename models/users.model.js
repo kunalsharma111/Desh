@@ -18,6 +18,9 @@ let userSchema = new mongoose.Schema({
     },
     userrole: {
         type:String
+    },
+    otp:{
+        type:String
     }
 });
 

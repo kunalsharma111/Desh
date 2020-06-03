@@ -48,7 +48,8 @@ export class RegisterComponent implements OnInit {
       email: '',
       pwd: '',
       mobile: '',
-      userrole: ''
+      userrole: '',
+      otp:'',
     }
   }
   submit(form: NgForm) {

@@ -11,6 +11,7 @@ export interface Admin {
   email: string;
   mobile: string;
   userrole: string;
+  otp: string;
 }
 export interface Insurance {
   id: string;
@@ -227,8 +228,8 @@ export class DataTransferService {
   private c4 = new Subject<String>(); cc4$ = this.c4.asObservable();
   private c5 = new Subject<String>(); cc5$ = this.c5.asObservable();
   private c6 = new Subject<String>(); cc6$ = this.c6.asObservable();
-  metcha = 'https://deshdesh.herokuapp.com/api';
-  // metcha = 'http://localhost:4000/api'
+  // metcha = 'https://deshdesh.herokuapp.com/api';
+  metcha = 'http://localhost:4000/api'
   url = `${this.metcha}/login`;
   url1 = `${this.metcha}/users`;
   url2 = `${this.metcha}/red`;
@@ -249,13 +250,20 @@ export class DataTransferService {
   url17 = `${this.metcha}/basedata`;
   url18 = `${this.metcha}/get`;
   url19 = `${this.metcha}/preround`;
-
+  url20 = `${this.metcha}/otp`;
+  url21 = `${this.metcha}/confirmotp`;
   constructor(public http: HttpClient, public router: Router, public _route: ActivatedRoute) { }
 
   subject = new BehaviorSubject("123");
   checkLogin(form) {
     // console.log(this._route.snapshot.url);
     return this.http.post<any>(this.url, form.value);
+  }
+  sendotp(form){
+    return this.http.post<any>(this.url20,form.value);
+  }
+  compareotp(form){
+    return this.http.post<any>(this.url21,form.value);
   }
   transferToServer(form) {
     return this.http.post<any>(this.url1, form.value);
