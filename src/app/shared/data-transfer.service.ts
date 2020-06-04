@@ -252,6 +252,7 @@ export class DataTransferService {
   url19 = `${this.metcha}/preround`;
   url20 = `${this.metcha}/otp`;
   url21 = `${this.metcha}/confirmotp`;
+  url22 = `${this.metcha}/changepassword`;
   constructor(public http: HttpClient, public router: Router, public _route: ActivatedRoute) { }
 
   subject = new BehaviorSubject("123");
@@ -264,6 +265,9 @@ export class DataTransferService {
   }
   compareotp(form){
     return this.http.post<any>(this.url21,form.value);
+  }
+  newpassword(form){
+    return this.http.post<any>(this.url22,form.value);
   }
   transferToServer(form) {
     return this.http.post<any>(this.url1, form.value);

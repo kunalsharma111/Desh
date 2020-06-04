@@ -485,8 +485,64 @@ router.get('/getmed', verifyToken, (req, res) => {
 router.post("/confirmotp",(req,res)=>{
     var user = req.body;
     console.log(user.oo + user.em);
-
+    userModel.findOne({email:user.em},(err,doc) => {
+        if(err){
+            console.log(err);
+        }
+        else{
+            if(!doc){
+                res.status(401).send('Email not present');
+            }
+            else{
+                if(doc.otp == user.oo){
+                    res.json("right OTP Change Passoword");
+                }
+                else{
+                    res.status(401).send('Wrong OTP');
+                }
+            }
+        }
+    });
 })
+
+router.post("/changepassword",(req,res)=>{
+    var userr = req.body;
+    userModel.findOne({email:userr.em},(err,doc) => {
+        if(err){
+            console.log(err);
+        }
+        else{
+            if(!doc){
+                res.status(401).send('Email not present');
+            }
+            else{
+                bcrypt.genSalt(10, function (err, salt) {
+                    bcrypt.hash(userr.pw1, salt, function (err, hash) {
+                        // Store hash in your password DB.
+                        console.log(hash);
+                        userr.pw1 = hash;
+                        if (!err) {
+                            const user = userModel.updateOne({_id:doc._id},{$set:{pwd:userr.pw1}},(err,doc)=>{
+                                if(!err){
+                                    res.json("password change successfully");
+                                    // let payload = { subject: doc._id };
+                                    // let token = jwt.sign(payload, 'keysecret');
+                                    // res.status(200).json(token);
+                                }
+                                else{
+                                    res.json("password change failed");
+                                }
+                            });
+                        } else {
+                            console.log("error in hashing the password");
+                        }
+                    });
+                });
+            }
+        }
+    });
+})
+
 router.post("/otp",(req,res)=>{
     var user = req.body;
     var ott = Math.floor(100000 + Math.random() * 900000);
