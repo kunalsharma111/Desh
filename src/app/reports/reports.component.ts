@@ -41,6 +41,8 @@ export class ReportsComponent implements OnInit {
   providers:Provider;
   facilities:Facility;
   output:any;
+  providerreportoutput:any;
+  facilityreportoutput:any;
   logout() {
     this.service.logout();
   }
@@ -102,13 +104,26 @@ export class ReportsComponent implements OnInit {
       this.output = res;
       this.gammma =true;
       this.showit = false;
-     
     })
     this.fn = this.repo.facility;
     this.pn = this.repo.provider;
     this.dd = this.repo.date;
     this.resetform();
   }
+
+  submitproviderreport(form){
+    console.log(form.value);
+    this.service.findproviderreport(form.value).subscribe(res =>{
+      this.providerreportoutput = res;
+    })
+  }
+  submitfacilityreport(form){
+    console.log(form.value);
+    this.service.findfacilityreport(form.value).subscribe(res =>{
+      this.facilityreportoutput = res;
+    })
+  }
+
   submit2(obj) {
     localStorage.setItem("facility",obj.facility);
     localStorage.setItem("provider",obj.provider);

@@ -253,6 +253,9 @@ export class DataTransferService {
   url20 = `${this.metcha}/otp`;
   url21 = `${this.metcha}/confirmotp`;
   url22 = `${this.metcha}/changepassword`;
+  url23 = `${this.metcha}/providerperformancereport`;
+  url24 = `${this.metcha}/facilityreport`;
+
   constructor(public http: HttpClient, public router: Router, public _route: ActivatedRoute) { }
 
   subject = new BehaviorSubject("123");
@@ -392,6 +395,12 @@ export class DataTransferService {
     // return this.http.post<any>(this.url19,data).subscribe(res=>{
     //   console.log(res)
     // })
+  }
+  findproviderreport(data) {
+    return this.http.post<any>(this.url23,data);
+  }
+  findfacilityreport(data){
+    return this.http.post<any>(this.url24,data);
   }
   private history = [];
   public loadRouting(): void {

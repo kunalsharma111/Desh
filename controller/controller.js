@@ -565,14 +565,14 @@ router.post("/otp",(req,res)=>{
                 let mailTransporter = nodemailer.createTransport({ 
                     service: 'gmail', 
                     auth: { 
-                        user: 'email', 
-                        pass: 'password'
+                        user: 'balwellbeingllc@gmail.com', 
+                        pass: 'Balanced123'
                     } 
                 }); 
-                  
+                
                 let mailDetails = { 
-                    from: 'famemedia315@gmail.com', 
-                    to: user.email, 
+                    from: 'balwellbeingllc@gmail.com', 
+                    to: ee, 
                     subject: 'Reset password OTP For Dr. Desh', 
                     text: 'One time OTP is ' + ott
                 }; 
@@ -647,6 +647,20 @@ router.get('/get', verifyToken, (req, res) => {
         res.json(err);
     })
 })
+
+router.post('/facilityreport',verifyToken,(req,res)=>{
+    console.log(req.body.facility1 + req.body.fromdate1 + req.body.todate1);
+    MasterPatientModel.find({facility : req.body.facility1}).then(doc => {
+        console.log(doc);
+    })
+})
+
+router.post('/providerperformancereport',verifyToken,(req,res)=>{
+    ProviderModel.find({name: req.body.provider1 }).then(doc => {
+        console.log(doc);
+    })
+})
+
 router.post('/preround', verifyToken, (req, res) => {
 
     ProviderModel.find({ name: req.body.provider }).then(doc => {
