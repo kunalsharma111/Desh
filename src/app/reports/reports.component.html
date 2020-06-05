@@ -237,17 +237,17 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label for="provider">Provider</label>
-                            <select name="provider1" id="provider1" #provider1="ngModel" [(ngModel)]="repo.provider1">
+                            <select name="provider1" id="provider1" #provider1="ngModel" [(ngModel)]="repo1.provider1">
                                 <option *ngFor="let i of providers" [value]="i.name">{{i.name}}</option>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label for="fromdate">From</label>
-                            <input type="date" name="fromdate" id="fromdate" #fromdate="ngModel" [(ngModel)]="repo.fromdate">
+                            <input type="date" name="fromdate" id="fromdate" #fromdate="ngModel" [(ngModel)]="repo1.fromdate">
                         </div>
                         <div class="col-md-3">
                             <label for="todate">TO</label>
-                            <input type="date" name="todate" id="todate" #todate="ngModel" [(ngModel)]="repo.todate">
+                            <input type="date" name="todate" id="todate" #todate="ngModel" [(ngModel)]="repo1.todate">
                         </div>
                         <div class="col-md-3">
                             <button class="btn btn-info mt-4"
@@ -287,17 +287,17 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label for="facility1">Facility</label>
-                            <select name="facility1" id="facility1" #facility1="ngModel" [(ngModel)]="repo.facility1">
+                            <select name="facility1" id="facility1" #facility1="ngModel" [(ngModel)]="repo2.facility1">
                                 <option *ngFor="let i of facilities" [value]="i.name">{{i.name}}</option>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label for="fromdate1">From</label>
-                            <input type="date" name="fromdate1" id="fromdate1" #fromdate1="ngModel" [(ngModel)]="repo.fromdate1">
+                            <input type="date" name="fromdate1" id="fromdate1" #fromdate1="ngModel" [(ngModel)]="repo2.fromdate1">
                         </div>
                         <div class="col-md-3">
                             <label for="todate1">TO</label>
-                            <input type="date" name="todate1" id="todate1" #todate1="ngModel" [(ngModel)]="repo.todate1">
+                            <input type="date" name="todate1" id="todate1" #todate1="ngModel" [(ngModel)]="repo2.todate1">
                         </div>
                         <div class="col-md-3">
                             <button class="btn btn-info mt-4"

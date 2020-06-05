@@ -649,8 +649,8 @@ router.get('/get', verifyToken, (req, res) => {
 })
 
 router.post('/facilityreport',verifyToken,(req,res)=>{
-    console.log(req.body.facility1 + req.body.fromdate1 + req.body.todate1);
-    MasterPatientModel.find({facility : req.body.facility1}).then(doc => {
+    console.log(req.body.fromdate1 + req.body.todate1);
+    MasterPatientModel.find({facility : req.body.facility1,"visit": {"$gte": req.body.fromdate1, "$lte": req.body.todate1}}).then(doc => {
         console.log(doc);
     })
 })

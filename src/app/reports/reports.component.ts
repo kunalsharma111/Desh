@@ -90,6 +90,16 @@ export class ReportsComponent implements OnInit {
     provider:string,
     date:string
   }
+  repo1:{
+    provider1:string,
+    fromdate:string,
+    todate:string
+  }
+  repo2:{
+    facility1:string,
+    fromdate1:string,
+    todate1:string
+  }
   showit = true;
   gammma = false;
   fn;
